@@ -3,10 +3,12 @@
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { useEffect, useState } from 'react'
 import styles from './header.module.scss'
+import HeaderNav from './header-nav'
+import { cn } from '@/lib/utils'
 
 export default function Header() {
   const scrollDirection = useScrollDirection()
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [isVisible, setIsVisible] = useState<boolean>(true)
 
   useEffect(() => {
     if (scrollDirection === 'up') {
@@ -17,8 +19,10 @@ export default function Header() {
   }, [scrollDirection])
 
   return (
-    <header className={styles.header}>
-      <nav></nav>
-    </header>
-  )
+		<header className={cn(styles.header, `fixed z-50 top-10 transition-all duration-500 ${
+      isVisible ? '-translate-y-0' : '-translate-y-28 overflow-hidden'
+    }`)}>
+			<HeaderNav />
+		</header>
+	)
 }

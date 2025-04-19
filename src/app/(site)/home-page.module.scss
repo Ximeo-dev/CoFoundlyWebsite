@@ -1,0 +1,29 @@
+@reference "tailwindcss";
+
+.title {
+  @apply text-[9rem] text-center mt-[180px];
+}
+
+.text_block {
+  @apply mt-1.5 text-center flex items-center justify-center gap-x-3;
+
+  .sub_text {
+    @apply text-2xl text-[#929191];
+  }
+}
+
+.btn_block {
+  @apply mt-20 flex items-center justify-center;
+
+  .main_btn {
+    @apply cursor-pointer text-3xl rounded-[18px];
+  }
+}
+
+.sec_text_block {
+  @apply flex items-center justify-center mt-16;
+
+  .sec_text {
+    @apply text-2xl max-w-[405px] text-center;
+  }
+}
