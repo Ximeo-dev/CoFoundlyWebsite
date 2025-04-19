@@ -2,7 +2,7 @@
 
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { useEffect, useState } from 'react'
-import styles from './header.module.scss'
+import styles from './header.module.css'
 import HeaderNav from './header-nav'
 import { cn } from '@/lib/utils'
 

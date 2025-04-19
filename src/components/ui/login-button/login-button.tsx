@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import styles from './login-button.module.scss'
+import styles from './login-button.module.css'
 
 export default function LoginButton() {
   return (

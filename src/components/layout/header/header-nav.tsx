@@ -1,7 +1,7 @@
 'use client'
 
 import { IMenuItem, MENU } from '@/constants/menu.constants'
-import styles from './header.module.scss'
+import styles from './header.module.css'
 import Link from 'next/link'
 import Image from 'next/image'
 import LoginButton from '@/components/ui/login-button/login-button'
