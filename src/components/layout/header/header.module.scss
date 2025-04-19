@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.header {
+  @apply bg-[#1A1A1A] rounded-[20px] border border-[#3A3A3A] left-1/2 -translate-x-1/2 ;
+
+  .nav {
+    @apply flex justify-between items-center pl-[1.25rem] pr-[0.3125rem] py-1;
+
+    .nav_list {
+      @apply flex items-center gap-x-6 pl-6 pr-8;
+
+      .list_item {
+        @apply text-[#939393] font-medium hover:text-white transition-colors duration-300;
+      }
+    }
+  }
+}
