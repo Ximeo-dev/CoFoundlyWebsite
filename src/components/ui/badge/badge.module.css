@@ -1,5 +1,5 @@
 @reference "tailwindcss";
 
 .badge {
-  @apply bg-white text-[#111111] rounded-[35px] px-3.5 py-2 text-xl select-none;
+  @apply bg-white text-[#111111] rounded-[35px] px-1.5 py-0.5 sm:px-1.5 sm:py-1 md:px-2 md:py-1.5 lg:px-2.5 lg:py-1.5 xl:px-3.5 xl:py-2 text-sm lg:text-base xl:text-lg select-none;
 }

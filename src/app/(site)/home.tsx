@@ -23,7 +23,12 @@ export default function Home() {
 					— достигай быстрее
 				</TextAnimate>
 			</div>
-			<motion.div variants={slideUp} initial='hidden' animate='visible' className={styles.btn_block}>
+			<motion.div
+				variants={slideUp}
+				initial='hidden'
+				animate='visible'
+				className={styles.btn_block}
+			>
 				<Button size={'lg'} className={styles.main_btn}>
 					Начать
 				</Button>

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import styles from './header.module.css'
 import HeaderNav from './header-nav'
 import { cn } from '@/lib/utils'
+import MobileNav from './mobile/mobile-nav'
 
 export default function Header() {
   const scrollDirection = useScrollDirection()
@@ -18,11 +19,29 @@ export default function Header() {
     }
   }, [scrollDirection])
 
+  const [isDesktop, setIsDesktop] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsDesktop(window.innerWidth > 950)
+    setIsMobile(window.innerWidth <= 950)
+  }, [])
+
   return (
-		<header className={cn(styles.header, `fixed z-50 top-10 transition-all duration-500 ${
-      isVisible ? '-translate-y-0' : '-translate-y-28 overflow-hidden'
-    }`)}>
-			<HeaderNav />
-		</header>
+		<>
+			{isDesktop && (
+				<header
+					className={cn(
+						styles.header,
+						`fixed z-50 top-10 transition-all duration-500 ${
+							isVisible ? '-translate-y-0' : '-translate-y-28 overflow-hidden'
+						}`
+					)}
+				>
+					<HeaderNav />
+				</header>
+			)}
+      {isMobile && <MobileNav />}
+		</>
 	)
 }
