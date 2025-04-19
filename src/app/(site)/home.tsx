@@ -4,7 +4,7 @@ import Badge from '@/components/ui/badge/badge'
 import { Button } from '@/components/ui/shadcn/button'
 import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import { PROJECT_NAME } from '@/constants/seo.constants'
-import styles from './home-page.module.scss'
+import styles from './home-page.module.css'
 import * as motion from 'motion/react-client'
 import { slideUp } from '@/lib/motion-variants'
 

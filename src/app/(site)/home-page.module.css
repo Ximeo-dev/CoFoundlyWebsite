@@ -1,14 +1,14 @@
 @reference "tailwindcss";
 
 .title {
-  @apply text-[9rem] text-center mt-[180px];
+  @apply text-[8.5rem] text-center mt-[180px];
 }
 
 .text_block {
   @apply mt-1.5 text-center flex items-center justify-center gap-x-3;
 
   .sub_text {
-    @apply text-2xl text-[#929191];
+    @apply text-xl text-[#929191];
   }
 }
 
