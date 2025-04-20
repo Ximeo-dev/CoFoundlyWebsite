@@ -1,4 +1,4 @@
-export const ENPOINTS = {
+export const ENDPOINTS = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',

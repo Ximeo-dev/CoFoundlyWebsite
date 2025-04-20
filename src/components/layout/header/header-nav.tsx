@@ -5,7 +5,7 @@ import styles from './header.module.css'
 import Link from 'next/link'
 import Image from 'next/image'
 import LoginButton from '@/components/ui/login-button/login-button'
-import { ENPOINTS } from '@/config/endpoints.config'
+import { ENDPOINTS } from '@/config/endpoints.config'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-react'
@@ -16,7 +16,7 @@ export default function HeaderNav() {
 
   return (
 		<nav className={styles.nav}>
-			<Link href={ENPOINTS.HOME} className={styles.logo}>
+			<Link href={ENDPOINTS.HOME} className={styles.logo}>
 				<Image src={'/logo.svg'} alt='logo' width={50} height={50} />
 			</Link>
 			<ul className={styles.nav_list}>

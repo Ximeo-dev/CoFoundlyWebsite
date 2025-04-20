@@ -7,24 +7,64 @@ import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { CircleUser, Eye, EyeOff, KeyRound } from 'lucide-react'
+import { CircleUser, Eye, EyeOff, KeyRound, Mail } from 'lucide-react'
 import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { slideUp } from '@/lib/motion-variants'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ILoginForm } from '@/types/auth.types'
+import { authService } from '@/services/auth.service'
+import { toast } from 'sonner'
+import { ResponseError } from '@/types/error.types'
 
 export default function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
+	const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false)
+	const [buttonKey, setButtonKey] = useState(0)
+
+	const router = useRouter()
+
+	const queryClient = useQueryClient()
+
+	const { mutate: login } = useMutation({
+		mutationKey: ['login'],
+		mutationFn: (data: ILoginForm) => authService.login(data),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['userProfile'],
+			})
+			router.push('/profile')
+			toast('Успешный вход')
+		},
+		onError: (error: ResponseError) => {
+			toast.dismiss()
+			if (error.status && error.status === 401) {
+				toast.error('Указан неверный логин или пароль')
+			} else {
+				toast.error(error.message)
+			}
+		},
+	})
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset
-  } = useForm({
+  } = useForm<ILoginForm>({
     mode: 'onChange'
   })
 
-  const onSubmit: SubmitHandler<any> = data => {
-    reset()
+	const handleButtonClick = () => {
+		setIsButtonClicked(true)
+		if (errors.email || errors.password) {
+			setButtonKey(prevKey => prevKey + 1)
+			toast.error('Пожалуйста, заполните все поля')
+		}
+	}
+
+  const onSubmit: SubmitHandler<ILoginForm> = data => {
+		login(data)
+		reset()
   }
 
   return (
@@ -39,26 +79,45 @@ export default function LoginForm() {
 				>
 					<h1 className={styles.title}>
 						С возвращением в{' '}
-						<span className='bg-black dark:bg-white text-white rounded-[30px] px-3 py-1.5 dark:text-black select-none'>
+						<span className='bg-black dark:bg-white text-white rounded-[30px] px-2 py-1 dark:text-black select-none'>
 							{PROJECT_NAME}
 						</span>
 					</h1>
 					<form onSubmit={handleSubmit(onSubmit)} className='mt-10'>
-						<label className={cn(styles.field, 'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-slate-800')}>
+						<label
+							className={cn(
+								styles.field,
+								'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+							)}
+						>
 							<div className={styles.icon}>
-								<CircleUser />
+								<Mail />
 							</div>
 							<input
 								className='bg-transparent outline-none'
 								placeholder='Почта'
-								type='text'
-								{...register('identifier', {
+								type='email'
+								{...register('email', {
 									required: true,
-									minLength: 4,
+									validate: {
+										hasAtSymbol: value =>
+											/@/.test(value) ||
+											'Адрес электронной почты должен содержать символ "@"',
+										isValidEmailFormat: value =>
+											/^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/.test(
+												value
+											) ||
+											'Адрес электронной почты должен быть в корректном формате',
+									},
 								})}
 							/>
 						</label>
-						<label className={cn(styles.field, 'mb-2 mt-6 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-slate-800')}>
+						<label
+							className={cn(
+								styles.field,
+								'mb-2 mt-6 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+							)}
+						>
 							<div className={styles.icon}>
 								<KeyRound />
 							</div>
@@ -91,9 +150,19 @@ export default function LoginForm() {
 						<div className='mb-3 mt-8 text-center'>
 							<button
 								type='submit'
-								// disabled={!isValid}
+								onClick={handleButtonClick}
+								disabled={!isValid}
+								key={buttonKey}
 								className={cn(
-									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white dark:border-[#3a3a3a] rounded-full px-6 py-2.5 text-sm font-medium transition-colors duration-300 cursor-pointer'
+									{
+										[styles.buttonError]:
+											isButtonClicked && (errors.email || errors.password),
+										[styles.form_btn]: !(
+											isButtonClicked &&
+											(errors.email || errors.password)
+										),
+									},
+									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white dark:border-[#3a3a3a] transition-colors duration-300'
 								)}
 							>
 								ВОЙТИ
