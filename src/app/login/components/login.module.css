@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+.wrapper {
+  @apply h-screen;
+
+  .wrapper_inner {
+    @apply flex justify-center items-center h-full w-full;
+  }
+}

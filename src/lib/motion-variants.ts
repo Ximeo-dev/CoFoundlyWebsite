@@ -10,7 +10,7 @@ export const slideUp: Variants = {
 		opacity: 1,
 		transition: {
 			delay: custom * 0.15,
-			duration: 0.4,
+			duration: 0.35,
 			ease: 'easeInOut',
 		},
 	}),
