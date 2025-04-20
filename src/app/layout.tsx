@@ -25,17 +25,18 @@ export default function RootLayout({
 }>) {
   return (
 		<html lang='en' suppressHydrationWarning>
-			<body className={`${inter.className} antialiased bg-[#151515] overflow-x-auto min-h-screen`}>
+			<body
+				className={`${inter.className} antialiased overflow-x-auto min-h-screen`}
+			>
 				<ThemeProvider
-          attribute={'class'}
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
+					attribute='class'
+					defaultTheme='system'
+					enableSystem
+					disableTransitionOnChange
+				>
 					<QueryProvider>
 						<Header />
 						{children}
-
 					</QueryProvider>
 				</ThemeProvider>
 			</body>

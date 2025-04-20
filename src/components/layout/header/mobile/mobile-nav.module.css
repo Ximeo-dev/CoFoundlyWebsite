@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .menu {
-  @apply fixed bottom-2 left-0 px-5 sm:px-10 w-full;
+  @apply fixed bottom-0.5 left-0 px-5 sm:px-10 w-full z-50;
 
   .menu_nav {
     @apply w-full;

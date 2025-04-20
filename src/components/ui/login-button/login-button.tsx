@@ -1,9 +1,10 @@
 import { cn } from '@/lib/utils'
 import styles from './login-button.module.css'
+import Link from 'next/link'
 
 export default function LoginButton() {
   return (
-		<button className={cn(styles.button, 'group')}>
+		<Link href={'/login'} className={cn(styles.button, 'group')}>
 			<div className='relative overflow-hidden'>
 				<p className='group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] text-lg'>
 					Войти
@@ -12,6 +13,6 @@ export default function LoginButton() {
 					Войти
 				</p>
 			</div>
-		</button>
+		</Link>
 	)
 }

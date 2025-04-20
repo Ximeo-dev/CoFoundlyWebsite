@@ -1,14 +1,14 @@
 @reference "tailwindcss";
 
 .title {
-  @apply text-5xl sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] 2xl:text-[8.5rem] text-center mt-12 sm:mt-[70px] md:mt-[100px] lg:mt-[140px] xl:mt-[180px];
+  @apply text-5xl sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] 2xl:text-[8.5rem] text-center pt-14 sm:pt-[80px] md:pt-[120px] lg:pt-[160px] xl:pt-[200px] select-none;
 }
 
 .text_block {
-  @apply lg:mt-1.5 mt-4 text-center flex items-center justify-center gap-x-3;
+  @apply lg:mt-1.5 mt-4 text-center flex items-center justify-center gap-x-2 lg:gap-x-3;
 
   .sub_text {
-    @apply text-sm lg:text-base xl:text-lg text-[#929191];
+    @apply text-sm lg:text-base xl:text-lg select-none;
   }
 }
 
@@ -21,9 +21,9 @@
 }
 
 .sec_text_block {
-  @apply flex items-center justify-center mt-16 xl:mt-20;
+  @apply flex items-center justify-center mt-12 xl:mt-20;
 
   .sec_text {
-    @apply text-lg lg:text-xl xl:text-2xl text-center;
+    @apply text-lg lg:text-xl xl:text-2xl text-center max-w-[350px] md:max-w-[400px];
   }
 }
