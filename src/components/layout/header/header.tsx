@@ -29,7 +29,7 @@ export default function Header() {
     setIsMobile(window.innerWidth <= 950)
   }, [])
 
-  if (pathname === '/login' || pathname === '/register') return null
+  if (pathname === '/login' || pathname === '/register' || pathname === '/reset-password') return null
 
   return (
 		<>
