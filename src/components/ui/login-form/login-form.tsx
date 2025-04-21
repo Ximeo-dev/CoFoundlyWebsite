@@ -90,7 +90,12 @@ export default function LoginForm() {
 								'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
-							<div className={styles.icon}>
+							<div
+								className={cn(
+									styles.icon,
+									'focus-within:text-black dark:focus-within:text-white/70'
+								)}
+							>
 								<Mail />
 							</div>
 							<input
@@ -118,7 +123,12 @@ export default function LoginForm() {
 								'mb-2 mt-6 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
-							<div className={styles.icon}>
+							<div
+								className={cn(
+									styles.icon,
+									'focus-within:text-black dark:focus-within:text-white/70'
+								)}
+							>
 								<KeyRound />
 							</div>
 							<input

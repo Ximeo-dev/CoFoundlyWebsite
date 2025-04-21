@@ -175,7 +175,12 @@ export default function RegisterForm() {
 								'mb-2 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
-							<div className={styles.icon}>
+							<div
+								className={cn(
+									styles.icon,
+									'focus-within:text-black dark:focus-within:text-white/70'
+								)}
+							>
 								<SquareUserRound />
 							</div>
 							<input
@@ -215,7 +220,12 @@ export default function RegisterForm() {
 								'mt-4 mb-1 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
-							<div className={styles.icon}>
+							<div
+								className={cn(
+									styles.icon,
+									'focus-within:text-black dark:focus-within:text-white/70'
+								)}
+							>
 								<Mail />
 							</div>
 							<input
@@ -253,7 +263,12 @@ export default function RegisterForm() {
 								'mb-1 mt-5 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
-							<div className={styles.icon}>
+							<div
+								className={cn(
+									styles.icon,
+									'focus-within:text-black dark:focus-within:text-white/70'
+								)}
+							>
 								<KeyRound />
 							</div>
 							<input
@@ -306,7 +321,12 @@ export default function RegisterForm() {
 								'mt-5 mb-2 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
-							<div className={styles.icon}>
+							<div
+								className={cn(
+									styles.icon,
+									'focus-within:text-black dark:focus-within:text-white/70'
+								)}
+							>
 								<Check />
 							</div>
 							<input

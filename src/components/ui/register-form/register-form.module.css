@@ -14,11 +14,11 @@
       @apply pr-2 py-2 outline-none bg-transparent placeholder:text-[#585654] w-full flex z-10;
     }
 
-    &:focus-within {
+    /* &:focus-within {
 		  .icon {
 			  @apply text-white/70;
 		  }
-	  }
+	  } */
 
     .icon {
       @apply mr-3 text-[#585654] transition-colors duration-200 ease-linear;
