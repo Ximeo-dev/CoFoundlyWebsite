@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/hooks/useAuth'
 import { useProfileData } from '@/hooks/useProfileData'
 import { IUser } from '@/types/user.types'
 import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'

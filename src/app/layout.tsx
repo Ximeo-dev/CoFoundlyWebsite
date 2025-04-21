@@ -6,6 +6,8 @@ import { ThemeProvider } from '@/providers/theme-provider'
 import { PROJECT_DESCRIPTION, PROJECT_NAME } from '@/constants/seo.constants'
 import Header from '@/components/layout/header/header'
 import { Toaster } from 'sonner'
+import { AuthProvider } from '@/providers/auth-provider'
+import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic']
@@ -36,11 +38,12 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<QueryProvider>
-						<Header />
-						<main>
-							{children}
-						</main>
-						<Toaster />
+						<AuthProvider>
+							<Toaster />
+							<Header />
+							<main>{children}</main>
+							<EmailConfirmationNotification />
+						</AuthProvider>
 					</QueryProvider>
 				</ThemeProvider>
 			</body>

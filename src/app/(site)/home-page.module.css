@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .title {
-  @apply text-5xl sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] 2xl:text-[8.5rem] text-center pt-14 sm:pt-[80px] md:pt-[120px] lg:pt-[160px] xl:pt-[200px] select-none;
+  @apply text-5xl sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] 2xl:text-[8.5rem] text-center pt-14 sm:pt-[80px] md:pt-[120px] lg:pt-[110px] xl:pt-[160px] select-none;
 }
 
 .text_block {

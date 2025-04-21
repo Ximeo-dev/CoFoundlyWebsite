@@ -168,7 +168,7 @@ export default function RegisterForm() {
 							{PROJECT_NAME}
 						</span>
 					</h1>
-					<form onSubmit={handleSubmit(onSubmit)} className='mt-10'>
+					<form onSubmit={handleSubmit(onSubmit)} className='mt-12'>
 						<label
 							className={cn(
 								styles.field,
@@ -185,7 +185,7 @@ export default function RegisterForm() {
 							</div>
 							<input
 								className='bg-transparent outline-none'
-								placeholder='Имя пользователя'
+								placeholder='Имя'
 								type='text'
 								{...register('name', {
 									required: true,
@@ -331,7 +331,7 @@ export default function RegisterForm() {
 							</div>
 							<input
 								className='bg-transparent outline-none'
-								placeholder='Повторить пароль'
+								placeholder='Повторите пароль'
 								type={isShowConfirmPassword ? 'text' : 'password'}
 								{...register('confirmPassword', {
 									required: true,
