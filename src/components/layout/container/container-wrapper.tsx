@@ -26,13 +26,21 @@ export default function ContainerWrapper({
 				}}
 			/>
 			<div
-				className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 hidden dark:block'
+				className='absolute inset-0 -z-10 opacity-100 hiiden dark:block'
 				style={{
 					backgroundImage:
-						'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
-					backgroundSize: '40px 40px',
+					'radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
+					backgroundSize: '25px 25px',
 				}}
 			/>
+				{/* <div
+					className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 hidden dark:block'
+					style={{
+						backgroundImage:
+							'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
+						backgroundSize: '40px 40px',
+					}}
+				/> */}
 			{children}
 		</section>
 	)

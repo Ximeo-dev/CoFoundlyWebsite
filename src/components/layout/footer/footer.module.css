@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.footer_block {
+  @apply w-full flex items-center justify-center mb-3;
+
+  .footer {
+    @apply rounded-[20px] shadow-lg w-fit flex items-center justify-center;
+
+    .footer_nav {
+      @apply flex justify-between items-center px-10 py-4;
+
+      .lt_block {
+        @apply text-center md:text-left mr-20;
+      }
+    }
+
+    .list {
+      @apply flex flex-wrap justify-center gap-12 mt-4 md:mt-0;
+    }
+  }
+}

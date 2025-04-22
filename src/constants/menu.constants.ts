@@ -1,4 +1,4 @@
-import { ENPOINTS } from '@/config/endpoints.config'
+import { ENDPOINTS } from '@/config/endpoints.config'
 import { CircleEllipsis, CircleUser, House, LucideIcon } from 'lucide-react'
 
 export interface IMenuItem {
@@ -12,17 +12,17 @@ export const MENU = [
 	{
 		id: 1,
 		label: 'Проекты',
-		href: ENPOINTS.SWIPE,
+		href: ENDPOINTS.SWIPE,
 	},
 	{
 		id: 2,
-		label: 'Идеи',
-		href: ENPOINTS.IDEAS,
+		label: 'Исполнители',
+		href: ENDPOINTS.SWIPE,
 	},
 	{
 		id: 3,
 		label: 'Премиум',
-		href: ENPOINTS.PRICING,
+		href: ENDPOINTS.PRICING,
 	},
 ]
 
@@ -30,22 +30,22 @@ export const MENU_MORE = [
 	{
 		id: 1,
 		label: 'Поддержка',
-		href: ENPOINTS.SUPPORT,
+		href: ENDPOINTS.SUPPORT,
 	},
 	{
 		id: 2,
 		label: 'Конфиденциальность',
-		href: ENPOINTS.PRIVACY,
+		href: ENDPOINTS.PRIVACY,
 	},
 	{
 		id: 3,
 		label: 'Поддержка',
-		href: ENPOINTS.SUPPORT,
+		href: ENDPOINTS.SUPPORT,
 	},
 	{
 		id: 4,
 		label: 'Конфиденциальность',
-		href: ENPOINTS.PRIVACY,
+		href: ENDPOINTS.PRIVACY,
 	},
 ]
 
@@ -53,11 +53,11 @@ export const MOBILE_MENU = [
 	{
 		id: 1,
 		icon: House,
-		href: ENPOINTS.HOME
+		href: ENDPOINTS.HOME
 	},
 	{
 		id: 2,
 		icon: CircleUser,
-		href: ENPOINTS.PROFILE
+		href: ENDPOINTS.PROFILE
 	},
 ]

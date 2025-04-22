@@ -21,7 +21,7 @@
         }
 
         .nav_more_block {
-          @apply w-[280px] absolute left-0 top-0;
+          @apply w-[247px] absolute left-0 top-0;
         }
       }
     }

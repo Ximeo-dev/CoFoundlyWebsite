@@ -4,7 +4,7 @@ import styles from './mobile-nav.module.css'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { CircleUser, House, Menu, X } from 'lucide-react'
-import { ENPOINTS } from '@/config/endpoints.config'
+import { ENDPOINTS } from '@/config/endpoints.config'
 import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import * as motion from 'motion/react-client'
@@ -36,7 +36,7 @@ export default function MobileNav() {
 			<nav className={styles.menu_nav}>
 				<ul className={styles.menu_list}>
 					<li>
-						<Link href={ENPOINTS.HOME}>
+						<Link href={ENDPOINTS.HOME}>
 							<House className={`size-7 text-black dark:text-white`} />
 						</Link>
 					</li>
@@ -46,7 +46,7 @@ export default function MobileNav() {
 						</button>
 					</li>
 					<li>
-						<Link href={ENPOINTS.LOGIN}>
+						<Link href={ENDPOINTS.LOGIN}>
 							<CircleUser className={`size-7 text-black dark:text-white`} />
 						</Link>
 					</li>

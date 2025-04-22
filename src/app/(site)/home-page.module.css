@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .title {
-  @apply text-5xl sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] 2xl:text-[8.5rem] text-center pt-14 sm:pt-[80px] md:pt-[120px] lg:pt-[160px] xl:pt-[200px] select-none;
+  @apply text-5xl sm:text-[4rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] 2xl:text-[8.5rem] text-center pt-14 sm:pt-[80px] md:pt-[120px] lg:pt-[110px] xl:pt-[160px] select-none;
 }
 
 .text_block {
@@ -25,5 +25,29 @@
 
   .sec_text {
     @apply text-lg lg:text-xl xl:text-2xl text-center max-w-[350px] md:max-w-[400px];
+  }
+}
+
+.card_block {
+  @apply mt-24 pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center;
+
+  .card_inner {
+    @apply flex flex-col justify-between h-full px-6 xl:px-8 pt-4 lg:pt-6 xl:py-8 pb-4 w-[300px] md:w-[300px] lg:w-[450px] xl:w-[500px] rounded-[15px];
+
+    .title {
+      @apply p-0 text-base md:text-lg lg:text-xl text-start;
+    }
+
+    .icon_block {
+      @apply flex items-center justify-center my-7 md:my-10 lg:my-12 xl:my-16;
+
+      .icon {
+        @apply size-12 lg:size-14 xl:size-20;
+      }
+    }
+
+    .desc {
+      @apply text-sm lg:text-base;
+    }
   }
 }

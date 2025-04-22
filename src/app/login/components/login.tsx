@@ -1,5 +1,3 @@
-'use client'
-
 import LoginForm from '@/components/ui/login-form/login-form'
 import styles from './login.module.css'
 

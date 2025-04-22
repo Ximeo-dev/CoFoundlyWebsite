@@ -1,5 +1,3 @@
-'use client'
-
 import RegisterForm from '@/components/ui/register-form/register-form'
 import styles from './register.module.css'
 
