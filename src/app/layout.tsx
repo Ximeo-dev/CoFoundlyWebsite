@@ -8,6 +8,7 @@ import Header from '@/components/layout/header/header'
 import { Toaster } from 'sonner'
 import { AuthProvider } from '@/providers/auth-provider'
 import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
+import Footer from '@/components/layout/footer/footer'
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic']
@@ -42,7 +43,8 @@ export default function RootLayout({
 							<Toaster />
 							<Header />
 							<main>{children}</main>
-							<EmailConfirmationNotification />
+							{/* <EmailConfirmationNotification /> */}
+							<Footer />
 						</AuthProvider>
 					</QueryProvider>
 				</ThemeProvider>

@@ -16,8 +16,8 @@ export const MENU = [
 	},
 	{
 		id: 2,
-		label: 'Идеи',
-		href: ENDPOINTS.IDEAS,
+		label: 'Исполнители',
+		href: ENDPOINTS.SWIPE,
 	},
 	{
 		id: 3,

@@ -21,7 +21,7 @@ export default function LoginButton() {
 			{isAuthenticated && (
 				<Link
 					href={'/profile'}
-					className='w-10 h-10 rounded-full border-2 border-[#3a3a3a] mr-6 hover:border-white/40 transition-colors duration-300'
+					className='w-10 h-10 rounded-full border-2 border-[#3a3a3a] mr-6 hover:border-neutral-400 dark:hover:border-white/40 transition-colors duration-300'
 				/>
 			)}
 			{!isAuthenticated && (

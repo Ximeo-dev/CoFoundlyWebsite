@@ -10,8 +10,21 @@ export const slideUp: Variants = {
 		opacity: 1,
 		transition: {
 			delay: custom * 0.15,
-			duration: 0.35,
+			duration: 0.3,
 			ease: 'easeInOut',
+		},
+	}),
+}
+
+export const cardAnimation = {
+	hidden: { opacity: 0, y: 50 },
+	visible: (i: number) => ({
+		opacity: 1,
+		y: 0,
+		transition: {
+			delay: i * 0.15,
+			duration: 0.6,
+			ease: [0.19, 1, 0.22, 1],
 		},
 	}),
 }
