@@ -3,7 +3,7 @@
 .dropdown {
   @apply relative items-center flex cursor-pointer z-50;
 
-  .dropdown_inner {
+  .dropdown_btn {
     @apply w-10 h-10 rounded-full mr-6 transition-colors duration-300 flex items-center justify-center;
   }
 
@@ -11,7 +11,7 @@
     @apply absolute -right-1.5 top-[4rem] rounded-[20px] text-base w-52;
 
     .dropdown_content {
-      @apply p-4 rounded-lg flex-col gap-y-4 flex shadow-lg;
+      @apply p-4 rounded-[20px] flex-col gap-y-4 flex shadow-lg;
 
       .dropdown_link {
         @apply relative inline-flex p-0 whitespace-nowrap items-center;

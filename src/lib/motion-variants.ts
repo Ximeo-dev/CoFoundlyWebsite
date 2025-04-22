@@ -62,27 +62,40 @@ export const slideRight: Variants = {
 };
 
 export const dropdownVariants = {
-	hidden: { opacity: 0, scale: 0, transformOrigin: 'top right' },
-	visible: {
-		opacity: 1,
-		scale: 1,
-		transformOrigin: 'top right',
-		transition: {
-			when: 'beforeChildren',
-			staggerChildren: 0.08,
-			duration: 0.4,
-			ease: [0.4, 0, 0.2, 1],
-		},
-	},
-	exit: {
-		opacity: 0,
-		scale: 0,
-		transformOrigin: 'top right',
-		transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
-	},
+  hidden: { opacity: 0, y: -20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 22,
+      mass: 0.8
+    }
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    scale: 0.95,
+    transition: {
+      type: 'spring',
+      stiffness: 260,
+      damping: 20,
+      mass: 0.8
+    }
+  }
 }
 
 export const itemVariants = {
-	hidden: { opacity: 0, y: 5 },
-	visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, x: -7 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 25
+    }
+  }
 }

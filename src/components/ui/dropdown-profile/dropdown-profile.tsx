@@ -70,7 +70,7 @@ export default function DropdownProfile() {
 		>
 			<div
 				className={cn(
-					styles.dropdown_inner,
+					styles.dropdown_btn,
 					'border border-[#3a3a3a] hover:border-neutral-400 dark:hover:border-white/30'
 				)}
 			>
