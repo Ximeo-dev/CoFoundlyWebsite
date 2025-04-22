@@ -43,7 +43,6 @@ export default function RootLayout({
 							<Toaster duration={3000} />
 							<Header />
 							<main>{children}</main>
-							{/* <EmailConfirmationNotification /> */}
 							<Footer />
 						</AuthProvider>
 					</QueryProvider>

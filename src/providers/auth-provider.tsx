@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       clearAuthState()
     } else {
       setUser(userProfile)
-      setIsEmailConfirmed(userProfile.isEmailConfirmed)
+      setIsEmailConfirmed(userProfile.securitySettings.isEmailConfirmed)
       setIsAuthenticated(true)
     }
   }, [userProfile, error])

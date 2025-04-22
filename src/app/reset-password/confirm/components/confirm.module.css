@@ -7,17 +7,17 @@
     @apply flex justify-center items-center h-full w-full;
 
     .login_wrapper {
-      @apply rounded-[20px] px-5 sm: px-6 md:px-12 pt-8 pb-4;
+      @apply rounded-[20px] px-5 sm:px-6 md:px-12 pt-8 pb-4;
 
       .title {
-        @apply text-xl lg: text-2xl xl:text-3xl text-center text-nowrap;
+        @apply text-xl lg:text-2xl xl:text-3xl text-center text-nowrap;
       }
 
       .field {
         @apply flex items-center relative px-2 rounded-[15px] transition-colors duration-200 ease-linear;
 
         >input {
-          @apply pr-2 py-2 outline-none bg-transparent placeholder: text-[#585654] w-full flex z-10;
+          @apply pr-2 py-2 outline-none bg-transparent placeholder:text-[#585654] w-full flex z-10;
         }
 
         .icon {
@@ -30,7 +30,7 @@
       }
 
       .form_btn {
-        @apply px-6 py-2.5 cursor-pointer inline-flex justify-center whitespace-nowrap rounded-[15px] text-xl font-medium shadow focus: outline-none focus-visible:outline-none relative w-full transition-all duration-300;
+        @apply px-6 py-2.5 cursor-pointer inline-flex justify-center whitespace-nowrap rounded-[15px] text-xl font-medium shadow focus:outline-none focus-visible:outline-none relative w-full transition-all duration-300;
 
         &:hover {
           @apply scale-105;
@@ -39,7 +39,7 @@
       }
 
       .buttonError {
-        @apply cursor-pointer inline-flex justify-center whitespace-nowrap rounded-[15px] text-xl font-medium bg-[#7F1D1D] shadow focus: outline-none focus-visible:outline-none relative w-full py-2 transition-all duration-300 text-white;
+        @apply cursor-pointer inline-flex justify-center whitespace-nowrap rounded-[15px] text-xl font-medium bg-[#7F1D1D] shadow focus:outline-none focus-visible:outline-none relative w-full py-2 transition-all duration-300 text-white;
 
         &:hover {
           @apply scale-105;
