@@ -5,6 +5,7 @@ import styles from './login-button.module.css'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect, useState } from 'react'
+import DropdownProfile from '../dropdown-profile/dropdown-profile'
 
 export default function LoginButton() {
 	const { isAuthenticated } = useAuth()
@@ -19,10 +20,7 @@ export default function LoginButton() {
   return (
 		<>
 			{isAuthenticated && (
-				<Link
-					href={'/profile'}
-					className='w-10 h-10 rounded-full border-2 border-[#3a3a3a] mr-6 hover:border-neutral-400 dark:hover:border-white/40 transition-colors duration-300'
-				/>
+				<DropdownProfile />
 			)}
 			{!isAuthenticated && (
 				<Link href={'/login'} className={cn(styles.button, 'group')}>

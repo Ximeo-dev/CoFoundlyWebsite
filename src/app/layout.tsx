@@ -40,7 +40,7 @@ export default function RootLayout({
 				>
 					<QueryProvider>
 						<AuthProvider>
-							<Toaster />
+							<Toaster duration={3000} />
 							<Header />
 							<main>{children}</main>
 							{/* <EmailConfirmationNotification /> */}
