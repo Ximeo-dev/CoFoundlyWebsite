@@ -6,7 +6,7 @@ import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import { PROJECT_NAME } from '@/constants/seo.constants'
 import styles from './home-page.module.css'
 import * as motion from 'motion/react-client'
-import { cardAnimation, slideUp } from '@/lib/motion-variants'
+import { slideUp } from '@/lib/motion-variants'
 import { cn } from '@/lib/utils'
 import { CARD, ICard } from './card.data'
 
@@ -53,23 +53,23 @@ export default function Home() {
 			</div>
 			<div className={styles.card_block}>
 				{CARD.map((item: ICard, index: number) => (
-					<motion.article
+					<article
 						key={item.id}
-						custom={index}
-						variants={cardAnimation}
-						initial='hidden'
-						animate='visible'
 						className={cn(
 							styles.card_inner,
 							'bg-white border border-[#D9D7D7] dark:bg-[#151515] dark:border-[#3a3a3a] hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300'
 						)}
 					>
-						<h2 className={styles.title}>{item.title}</h2>
+						<TextAnimate animation='slideUp' className={styles.title}>
+							{item.title}
+						</TextAnimate>
 						<div className={styles.icon_block}>
 							<item.icon className={styles.icon} />
 						</div>
-						<p className={styles.desc}>{item.desc}</p>
-					</motion.article>
+						<TextAnimate animation='slideUp' className={styles.desc}>
+							{item.desc}
+						</TextAnimate>
+					</article>
 				))}
 			</div>
 		</>

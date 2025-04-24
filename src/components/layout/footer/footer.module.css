@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .footer_block {
-  @apply w-full flex items-center justify-center mb-3;
+  @apply w-full lg:flex items-center justify-center mb-3 hidden;
 
   .footer {
     @apply rounded-[20px] shadow-lg w-fit flex items-center justify-center;

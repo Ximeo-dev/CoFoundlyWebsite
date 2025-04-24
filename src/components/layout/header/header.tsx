@@ -21,31 +21,21 @@ export default function Header() {
     }
   }, [scrollDirection])
 
-  const [isDesktop, setIsDesktop] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    setIsDesktop(window.innerWidth > 950)
-    setIsMobile(window.innerWidth <= 950)
-  }, [])
-
   if (pathname === '/login' || pathname === '/register' || pathname === '/reset-password') return null
 
   return (
 		<>
-			{isDesktop && (
-				<header
-					className={cn(
-						styles.header,
-						`fixed z-50 top-10 transition-all duration-500 bg-white dark:bg-[#1A1A1A] border border-[#D9D7D7] dark:border-[#3A3A3A] shadow-lg ${
-							isVisible ? '-translate-y-3' : '-translate-y-28 overflow-hidden'
-						}`
-					)}
-				>
-					<HeaderNav />
-				</header>
-			)}
-			{isMobile && <MobileNav />}
+      <header
+        className={cn(
+          styles.header,
+          `fixed z-50 top-10 transition-all duration-500 bg-white dark:bg-[#1A1A1A] border border-[#D9D7D7] dark:border-[#3A3A3A] shadow-lg hidden lg:block ${
+            isVisible ? '-translate-y-3' : '-translate-y-28 overflow-hidden'
+          }`
+        )}
+      >
+        <HeaderNav />
+      </header>
+			<MobileNav />
 		</>
 	)
 }

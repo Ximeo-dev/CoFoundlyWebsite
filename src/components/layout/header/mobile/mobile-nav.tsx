@@ -30,7 +30,7 @@ export default function MobileNav() {
 		<header
 			className={cn(
 				styles.menu,
-				'border-t border-t-[#D9D7D7] dark:border-t-[#3a3a3a]	'
+				'border-t border-t-[#D9D7D7] dark:border-t-[#3a3a3a] bg-white dark:bg-[#151515] block lg:hidden'
 			)}
 		>
 			<nav className={styles.menu_nav}>
