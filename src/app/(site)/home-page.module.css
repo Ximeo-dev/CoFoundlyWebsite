@@ -29,10 +29,10 @@
 }
 
 .card_block {
-  @apply mt-24 pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center;
+  @apply mt-24 pb-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-6 place-items-center select-none;
 
   .card_inner {
-    @apply flex flex-col justify-between h-full px-6 xl:px-8 pt-4 lg:pt-6 xl:py-8 pb-4 w-[300px] md:w-[300px] lg:w-[450px] xl:w-[500px] rounded-[15px];
+    @apply flex flex-col justify-between h-full px-6 xl:px-8 pt-4 lg:pt-6 xl:py-8 pb-4 w-[300px] md:w-[300px] lg:w-[400px] rounded-[15px];
 
     .title {
       @apply p-0 text-base md:text-lg lg:text-xl text-start;

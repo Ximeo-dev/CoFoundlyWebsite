@@ -13,7 +13,7 @@ import { dropdownVariants, itemVariants } from '@/lib/motion-variants'
 import { useEffect, useRef, useState } from 'react'
 import { toggleMenu } from '@/store/menu-store'
 import { useAtom } from 'jotai'
-import { CircleUserRound, LogOut } from 'lucide-react'
+import { CircleUserRound, LogOut, Settings } from 'lucide-react'
 
 export default function DropdownProfile() {
   const queryClient = useQueryClient()
@@ -70,7 +70,7 @@ export default function DropdownProfile() {
 		>
 			<div
 				className={cn(
-					styles.dropdown_inner,
+					styles.dropdown_btn,
 					'border border-[#3a3a3a] hover:border-neutral-400 dark:hover:border-white/30'
 				)}
 			>
@@ -84,7 +84,10 @@ export default function DropdownProfile() {
 						animate='visible'
 						exit='exit'
 						variants={dropdownVariants}
-						className={cn(styles.dropdown_block, 'bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] dark:bg-[#1A1A1A]')}
+						className={cn(
+							styles.dropdown_block,
+							'bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] dark:bg-[#1A1A1A]'
+						)}
 						onClick={(event: any) => event.stopPropagation()}
 					>
 						<motion.div
@@ -114,6 +117,28 @@ export default function DropdownProfile() {
 									/>
 									<span className="relative transition-all duration-300 after:content-[''] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none">
 										Профиль
+									</span>
+								</Link>
+							</motion.div>
+
+							<motion.div variants={itemVariants}>
+								<Link
+									href='/settings'
+									onClick={() => {
+										setMenuOpen(false)
+										setDropdownOpen(false)
+									}}
+									className={cn(styles.dropdown_link, 'group')}
+								>
+									<Settings
+										size={15}
+										className={cn(
+											styles.dropdown_icon,
+											'group-hover:opacity-100 opacity-0 transition-all duration-300'
+										)}
+									/>
+									<span className="relative transition-all duration-300 after:content-[''] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none">
+										Настройки
 									</span>
 								</Link>
 							</motion.div>

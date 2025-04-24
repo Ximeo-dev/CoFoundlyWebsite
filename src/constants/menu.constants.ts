@@ -1,11 +1,17 @@
 import { ENDPOINTS } from '@/config/endpoints.config'
-import { CircleEllipsis, CircleUser, House, LucideIcon } from 'lucide-react'
+import { CircleEllipsis, CircleUser, Fingerprint, House, LucideIcon, User, Wallet } from 'lucide-react'
 
 export interface IMenuItem {
 	id: number
 	label?: string
 	href: string
 	icon?: any
+}
+
+export interface ISettingsItem {
+	id: string
+	icon: LucideIcon
+	label: string
 }
 
 export const MENU = [
@@ -60,4 +66,22 @@ export const MOBILE_MENU = [
 		icon: CircleUser,
 		href: ENDPOINTS.PROFILE
 	},
+]
+
+export const SETTINGS_MENU = [
+	{
+		id: 'profile',
+		icon: User,
+		label: 'Аккаунт'
+	},
+	{
+		id: 'subs',
+		icon: Wallet,
+		label: 'Подсписка и оплата'
+	},
+	{
+		id: 'security',
+		icon: Fingerprint,
+		label: 'Безопасность'
+	}
 ]

@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Handshake, ListFilterPlus, OctagonX } from 'luci
 import { useMotionValue, useTransform, motion } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
-import Modal from './Modal'
+import Modal from './modal/Modal'
 
 const cardsData = [
 	{

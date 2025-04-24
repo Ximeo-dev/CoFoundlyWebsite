@@ -75,7 +75,7 @@ class AuthService {
 	}
 
 	async resetPasswordRequest(email: string) {
-		const response = axiosClassic.post(`${this.BASE_URL}/reset-password`, email)
+		const response = axiosClassic.post(`${this.BASE_URL}/reset-password`, { email })
 
 		return response
 	}

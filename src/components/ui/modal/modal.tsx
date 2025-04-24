@@ -8,7 +8,6 @@ export default function Modal({
 	isOpen,
 	onClose,
 	children,
-	header,
 	className,
 }: {
 	isOpen: boolean
@@ -16,7 +15,6 @@ export default function Modal({
 	children?: React.ReactNode
 	header?: any
 	className?: string
-	icon?: any
 }) {
 	useEffect(() => {
 		if (isOpen) {
@@ -80,7 +78,7 @@ export default function Modal({
 					exit={{ opacity: 0, scale: 0.9 }}
 					transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
 					className={cn(
-						'bg-white border border-[#D9D7D7] h-auto min-w-[300px] rounded-lg overflow-hidden',
+						'bg-white border border-[#D9D7D7] dark:bg-[#151515] dark:border-[#3a3a3a] h-auto min-w-[300px] rounded-lg overflow-hidden',
 						className
 					)}
 				>

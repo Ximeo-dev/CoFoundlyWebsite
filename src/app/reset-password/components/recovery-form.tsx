@@ -22,7 +22,7 @@ export default function RecoveryForm() {
 
 	const { mutate: resetPassword } = useMutation({
 		mutationKey: ['reset-password'],
-		mutationFn: (email: any) => authService.resetPasswordRequest(email),
+		mutationFn: ({ email }: IRecovery) => authService.resetPasswordRequest(email),
 		onSuccess: () => {
 			toast.success('Запрос на сброс пароля отправлен')
 			reset()

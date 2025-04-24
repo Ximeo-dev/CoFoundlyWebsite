@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+
+.sidebar_wrapper {
+  @apply fixed top-0 left-0 pl-6 h-full w-60;
+
+  .title_block {
+    @apply absolute left-6 top-14;
+
+    .title {
+      @apply text-3xl font-bold;
+    }
+  }
+
+}
+
+.sidebar_list {
+  @apply flex flex-col gap-y-3 pt-[150px];
+}
