@@ -1,15 +1,15 @@
 export interface IUser {
 	id: string
-	email: string
   name: string
-  bio: any
-  status: string
-  timezone: any
+	email: string
+	age: number
+	avatarUrl: string
 	createdAt: string
 	securitySettings: ISecuritySettings
 }
 
 interface ISecuritySettings {
 	isEmailConfirmed: boolean
+	telegramId: string
 	twoFactorEnabled: boolean
 }

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import SettingsSidebar from './profile-sidebar/profile-sidebar'
 import ProfileInfo from './profile-info/profile-info'
 import Settings from './settings/settings'
+import Anket from './anket/my-anket/anket'
 
 export default function ProfileMain() {
   const [selected, setSelected] = useState('profile')
@@ -13,7 +14,7 @@ export default function ProfileMain() {
       case 'security':
         return <Settings />
       case 'my-form':
-        return <div>my-form</div>
+        return <Anket />
       case 'project-form':
         return <div>project-form</div>
       default:

@@ -13,7 +13,7 @@ export default function ContainerWrapper({
 				<div
 					className={cn(
 						styles.container_bg_inner,
-						'bg-cyan-300 dark:bg-purple-200'
+						'bg-cyan-300 dark:bg-slate-400'
 					)}
 				/>
 			</div>
@@ -29,11 +29,11 @@ export default function ContainerWrapper({
 				className='absolute inset-0 -z-10 opacity-100 hiiden dark:block'
 				style={{
 					backgroundImage:
-					'radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
+						'radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
 					backgroundSize: '25px 25px',
 				}}
 			/>
-				{/* <div
+			{/* <div
 					className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 hidden dark:block'
 					style={{
 						backgroundImage:

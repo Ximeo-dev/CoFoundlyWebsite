@@ -67,7 +67,7 @@ export default function RecoveryForm() {
 					variants={slideUp}
 					className={cn(
 						styles.login_wrapper,
-						'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] shadow-lg w-[500px]'
+						'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] shadow-lg w-[340px] sm:w-[420px] md:w-[450px] lg:w-[500px]'
 					)}
 				>
 					<h1 className={styles.title}>Сброс пароля</h1>
