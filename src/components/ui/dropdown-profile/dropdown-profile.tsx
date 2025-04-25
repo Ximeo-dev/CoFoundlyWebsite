@@ -123,7 +123,7 @@ export default function DropdownProfile() {
 
 							<motion.div variants={itemVariants}>
 								<Link
-									href='/settings'
+									href='/profile'
 									onClick={() => {
 										setMenuOpen(false)
 										setDropdownOpen(false)
