@@ -7,12 +7,12 @@
     @apply absolute left-6 top-14;
 
     .title {
-      @apply text-3xl font-bold;
+      @apply text-3xl font-semibold;
     }
   }
 
 }
 
 .sidebar_list {
-  @apply flex flex-col gap-y-3 pt-[150px];
+  @apply flex flex-col gap-y-2 pt-[150px];
 }

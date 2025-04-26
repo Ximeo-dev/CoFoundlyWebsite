@@ -5,7 +5,7 @@ import maskEmail from '@/utils/maskEmail'
 import ResetPassword from './reset-password'
 import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 
-export default function SettingsProfile() {
+export default function ProfileInfo() {
 	const { userProfile } = useProfileData()
 
 	return (
@@ -36,12 +36,12 @@ export default function SettingsProfile() {
 				animation='slideUp'
 				by='character'
 				duration={0.2}
-				className='text-2xl font-bold mt-8 mb-12 text-start'
+				className='text-2xl font-semibold mt-8 mb-12 text-start'
 			>
 				Личные данные
 			</TextAnimate>
 
-			<div className='md:lg-[350px] lg:w-[400px] xl:w-[500px] mb-6'>
+			<div className='md:lg-[350px] lg:w-[400px] xl:w-[600px] mb-6'>
 				<div className='space-y-8'>
 					<div className='flex justify-between items-center border-b border-[#d9d7d7] dark:border-[#3a3a3a] pb-6'>
 						<div>
@@ -63,11 +63,11 @@ export default function SettingsProfile() {
 							</TextAnimate>
 						</div>
 						<button className='cursor-pointer px-3 py-1.5 bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700 transition-colors duration-300 rounded-[15px] text-sm'>
-							Поменять
+							{userProfile && userProfile?.name ? 'Поменять' : 'Указать имя'}
 						</button>
 					</div>
 
-					<div className='flex justify-between items-center border-b border-[#d9d7d7] dark:border-[#3a3a3a] pb-6'>
+					{/* <div className='flex justify-between items-center border-b border-[#d9d7d7] dark:border-[#3a3a3a] pb-6'>
 						<div>
 							<TextAnimate
 								className='text-xl font-medium'
@@ -89,9 +89,32 @@ export default function SettingsProfile() {
 						<button className='cursor-pointer px-3 py-1.5 bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700 transition-colors duration-300 rounded-[15px] text-sm'>
 							Поменять
 						</button>
+					</div> */}
+					<div className='flex justify-between items-center border-b border-[#d9d7d7] dark:border-[#3a3a3a] pb-6'>
+						<div>
+							<TextAnimate
+								className='text-xl font-medium'
+								animation='slideUp'
+								by='character'
+								duration={0.2}
+							>
+								Возраст
+							</TextAnimate>
+							<TextAnimate
+								className='text-[#696363] dark:text-[#929191] text-sm'
+								animation='slideUp'
+								by='character'
+								duration={0.2}
+							>
+								20
+							</TextAnimate>
+						</div>
+						<button className='cursor-pointer px-3 py-1.5 bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700 transition-colors duration-300 rounded-[15px] text-sm'>
+							Поменять
+						</button>
 					</div>
 
-					<ResetPassword />
+					{/* <ResetPassword /> */}
 				</div>
 			</div>
 		</div>

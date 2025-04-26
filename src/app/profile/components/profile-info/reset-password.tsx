@@ -27,7 +27,7 @@ export default function ResetPassword() {
   }
 
   return (
-		<div className='flex justify-between items-center'>
+		<div className='flex justify-between items-center w-full'>
 			<TextAnimate
 				animation='slideUp'
 				className='text-xl font-medium'

@@ -17,12 +17,10 @@ export default function Footer() {
 
 
   return (
-		<ContainerWrapper>
-			<footer
-				className={styles.footer_block}
-			>
-				<FooterNav />
-			</footer>
-		</ContainerWrapper>
+		<footer
+			className={styles.footer_block}
+		>
+			<FooterNav />
+		</footer>
 	)
 }

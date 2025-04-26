@@ -1,5 +1,6 @@
 import { ENDPOINTS } from '@/config/endpoints.config'
 import { CircleEllipsis, CircleUser, Fingerprint, House, LucideIcon, User, Wallet } from 'lucide-react'
+import { ReactNode } from 'react'
 
 export interface IMenuItem {
 	id: number
@@ -12,6 +13,7 @@ export interface ISettingsItem {
 	id: string
 	icon: LucideIcon
 	label: string
+	children?	: ReactNode
 }
 
 export const MENU = [
@@ -72,16 +74,26 @@ export const SETTINGS_MENU = [
 	{
 		id: 'profile',
 		icon: User,
-		label: 'Аккаунт'
+		label: 'Личные данные',
 	},
 	{
-		id: 'subs',
-		icon: Wallet,
-		label: 'Подсписка и оплата'
+		id: 'forms',
+		icon: CircleUser,
+		label: 'Анкеты',
+		children: [
+			{
+				id: 'my-form',
+				label: 'Моя анкета',
+			},
+			{
+				id: 'project-form',
+				label: 'Анкета проекта',
+			},
+		],
 	},
 	{
 		id: 'security',
 		icon: Fingerprint,
-		label: 'Безопасность'
-	}
+		label: 'Безопасность',
+	},
 ]
