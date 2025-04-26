@@ -14,5 +14,5 @@
 }
 
 .sidebar_list {
-  @apply flex flex-col gap-y-3 pt-[150px];
+  @apply flex flex-col gap-y-2 pt-[150px];
 }

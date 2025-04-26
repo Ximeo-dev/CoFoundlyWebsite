@@ -102,7 +102,7 @@ export default function ProfileSidebar({
 									{hasChildren && (
 										<ul
 											className={cn(
-												'ml-6 overflow-hidden transition-all duration-500',
+												'ml-10 overflow-hidden transition-all duration-500',
 												isDropdownOpen
 													? 'max-h-40 opacity-100'
 													: 'max-h-0 opacity-0'
