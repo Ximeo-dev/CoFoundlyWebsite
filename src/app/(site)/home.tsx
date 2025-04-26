@@ -38,9 +38,14 @@ export default function Home() {
 				animate='visible'
 				className={styles.btn_block}
 			>
-				<Button size={'lg'} className={styles.main_btn}>
+				<button
+					className={cn(
+						styles.main_btn,
+						'bg-black text-white dark:bg-white dark:text-black shadow-[-5px_0px_50px_-13px_#805ad5,5px_0px_50px_-13px_#81e6d9]'
+					)}
+				>
 					Начать
-				</Button>
+				</button>
 			</motion.div>
 			<div className={styles.sec_text_block}>
 				<TextAnimate
