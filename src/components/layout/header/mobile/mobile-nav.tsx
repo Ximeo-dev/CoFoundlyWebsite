@@ -12,6 +12,7 @@ import { MENU_MORE } from '@/constants/menu.constants'
 import Image from 'next/image'
 import { ModeToggle } from '@/components/ui/theme-toggle/theme-toggle'
 import { cn } from '@/lib/utils'
+import DropdownProfile from '@/components/ui/dropdown-profile/dropdown-profile'
 
 export default function MobileNav() {
   const pathname = usePathname()
@@ -61,9 +62,9 @@ export default function MobileNav() {
 						transition={{ duration: 0.3 }}
 						className='fixed inset-0 z-50 flex flex-col mt gap-8 backdrop-blur-lg bg-black/50'
 					>
-						<button className='absolute top-4 left-6'>
-							<Image src={'/logo.svg'} alt='logo' width={50} height={50} />
-						</button>
+						<div className='absolute top-[22px] left-5'>
+							<DropdownProfile />
+						</div>
 						<button onClick={toggleMenu} className='absolute top-6 right-6'>
 							<X className='size-8 text-black dark:text-white' />
 						</button>

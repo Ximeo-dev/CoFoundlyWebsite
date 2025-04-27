@@ -24,11 +24,11 @@ export default function ProfileSidebar({
 
 	return (
 		<>
-			<div className='lg:hidden fixed top-4 left-4 z-50'>
+			<div className={styles.sidebar_btn}>
 				<button
 					className={
 						!isOpen
-							? 'dark:bg-[#151515] bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] rounded-full w-16 h-16 flex items-center justify-center'
+							? 'dark:bg-[#151515] bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] rounded-full w-12 h-12 flex items-center justify-center'
 							: ''
 					}
 					onClick={toggleSidebar}

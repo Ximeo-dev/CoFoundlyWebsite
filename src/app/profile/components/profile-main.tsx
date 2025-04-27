@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import SettingsSidebar from './profile-sidebar/profile-sidebar'
 import ProfileInfo from './profile-info/profile-info'
-import Settings from './settings/settings'
+import Settings from './security/security'
 import Anket from './anket/my-anket/anket'
+import styles from './profile.module.css'
+import { cn } from '@/lib/utils'
 
 export default function ProfileMain() {
   const [selected, setSelected] = useState('profile')
@@ -23,9 +25,16 @@ export default function ProfileMain() {
   }
 
   return (
-		<div className='pb-14 pt-20 lg:pb-[70px] lg:pt-[160px] w-full min-h-screen'>
+		<div className={styles.profile_main}>
 			<SettingsSidebar selected={selected} onSelect={setSelected} />
-			<div className='lg:ml-[242px] dark:bg-[#151515] bg-white border dark:border-[#3a3a3a] border-[#d9d7d7] rounded-[15px] py-8 flex justify-center items-center'>{renderContent()}</div>
+			<div
+				className={cn(
+					styles.profile_section,
+					'dark:bg-[#151515] bg-white border dark:border-[#3a3a3a] border-[#d9d7d7]'
+				)}
+			>
+				{renderContent()}
+			</div>
 		</div>
 	)
 }
