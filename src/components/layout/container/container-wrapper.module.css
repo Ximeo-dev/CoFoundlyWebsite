@@ -7,7 +7,7 @@
     @apply absolute inset-0 -z-10;
 
     .container_bg_inner {
-      @apply absolute top-0 -left-1/4 w-1/3 h-1/3 rounded-full blur-3xl opacity-20;
+      @apply absolute top-0 -left-1/4 w-[30%] h-[30%] rounded-full blur-3xl opacity-20;
     }
   }
 }

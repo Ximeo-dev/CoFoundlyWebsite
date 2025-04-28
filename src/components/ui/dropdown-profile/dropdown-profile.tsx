@@ -9,7 +9,7 @@ import { ResponseError } from '@/types/error.types'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { dropdownVariants, itemVariants } from '@/lib/motion-variants'
+import { childVariant, dropdownMobileVariants, dropdownVariants, itemVariants } from '@/lib/motion-variants'
 import { useEffect, useRef, useState } from 'react'
 import { toggleMenu } from '@/store/menu-store'
 import { useAtom } from 'jotai'
@@ -78,87 +78,137 @@ export default function DropdownProfile() {
 			</div>
 			<AnimatePresence>
 				{dropdownOpen && (
-					<motion.div
-						ref={dropdownRef}
-						initial='hidden'
-						animate='visible'
-						exit='exit'
-						variants={dropdownVariants}
-						className={cn(
-							styles.dropdown_block,
-							'bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] dark:bg-[#1A1A1A]'
-						)}
-						onClick={(event: any) => event.stopPropagation()}
-					>
+					<>
 						<motion.div
-							className={styles.dropdown_content}
+							ref={dropdownRef}
+							initial='hidden'
+							animate='visible'
+							exit='exit'
+							variants={dropdownVariants}
+							className={cn(
+								styles.dropdown_block,
+								'bg-white dark:bg-[#1A1A1A] border border-[#d9d7d7] dark:border-[#3a3a3a] hidden lg:block'
+							)}
+							onClick={(event: any) => event.stopPropagation()}
+						>
+							<motion.div
+								className={styles.dropdown_content}
+								initial='hidden'
+								animate='visible'
+								exit='hidden'
+								variants={{
+									visible: { transition: { staggerChildren: 0.08 } },
+								}}
+							>
+								<motion.div variants={itemVariants}>
+									<Link
+										href={isAuthenticated ? '/profile' : '/login'}
+										onClick={() => {
+											setMenuOpen(false)
+											setDropdownOpen(false)
+										}}
+										className={cn(styles.dropdown_link, 'group')}
+									>
+										<CircleUserRound
+											size={15}
+											className={cn(
+												styles.dropdown_icon,
+												'group-hover:opacity-100 opacity-0 transition-all duration-300'
+											)}
+										/>
+										<span className="relative transition-all duration-300 after:content-[''] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none">
+											Профиль
+										</span>
+									</Link>
+								</motion.div>
+
+								<motion.div variants={itemVariants}>
+									<Link
+										href='/profile'
+										onClick={() => {
+											setMenuOpen(false)
+											setDropdownOpen(false)
+										}}
+										className={cn(styles.dropdown_link, 'group')}
+									>
+										<Settings
+											size={15}
+											className={cn(
+												styles.dropdown_icon,
+												'group-hover:opacity-100 opacity-0 transition-all duration-300'
+											)}
+										/>
+										<span className="relative transition-all duration-300 after:content-[''] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none">
+											Настройки
+										</span>
+									</Link>
+								</motion.div>
+
+								<motion.div variants={itemVariants}>
+									<button
+										onClick={() => logout()}
+										className='relative inline-flex transition-opacity border-none outline-none bg-transparent p-0 whitespace-nowrap group items-center cursor-pointer'
+									>
+										<LogOut
+											size={15}
+											className='absolute opacity-0 transition-all duration-300 group-hover:opacity-100'
+										/>
+										<span className='relative transition-all duration-300 after:content-[""] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none'>
+											Выйти
+										</span>
+									</button>
+								</motion.div>
+							</motion.div>
+						</motion.div>
+
+						<motion.div
+							ref={dropdownRef}
+							variants={dropdownMobileVariants}
 							initial='hidden'
 							animate='visible'
 							exit='hidden'
-							variants={{
-								visible: { transition: { staggerChildren: 0.08 } },
-							}}
+							className={cn(
+								styles.dropdown_block_mobile,
+								'bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a]'
+							)}
+							onClick={(event: any) => event.stopPropagation()}
 						>
-							<motion.div variants={itemVariants}>
+							<motion.div variants={childVariant}>
 								<Link
 									href={isAuthenticated ? '/profile' : '/login'}
 									onClick={() => {
 										setMenuOpen(false)
 										setDropdownOpen(false)
 									}}
-									className={cn(styles.dropdown_link, 'group')}
+									className='text-sm font-medium'
 								>
-									<CircleUserRound
-										size={15}
-										className={cn(
-											styles.dropdown_icon,
-											'group-hover:opacity-100 opacity-0 transition-all duration-300'
-										)}
-									/>
-									<span className="relative transition-all duration-300 after:content-[''] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none">
-										Профиль
-									</span>
+									<CircleUserRound size={20} />
 								</Link>
 							</motion.div>
 
-							<motion.div variants={itemVariants}>
+							<motion.div variants={childVariant}>
 								<Link
 									href='/profile'
 									onClick={() => {
 										setMenuOpen(false)
 										setDropdownOpen(false)
 									}}
-									className={cn(styles.dropdown_link, 'group')}
+									className='text-sm font-medium'
 								>
-									<Settings
-										size={15}
-										className={cn(
-											styles.dropdown_icon,
-											'group-hover:opacity-100 opacity-0 transition-all duration-300'
-										)}
-									/>
-									<span className="relative transition-all duration-300 after:content-[''] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none">
-										Настройки
-									</span>
+									<Settings size={20} />
 								</Link>
 							</motion.div>
 
-							<motion.div variants={itemVariants}>
+							<motion.div variants={childVariant}>
 								<button
 									onClick={() => logout()}
-									className='relative inline-flex transition-opacity border-none outline-none bg-transparent p-0 whitespace-nowrap group items-center cursor-pointer'
+									className='text-sm font-medium'
 								>
-									<LogOut
-										size={15}
-										className='absolute opacity-0 transition-all duration-300 group-hover:opacity-100'
-									/>
-									<span className='relative transition-all duration-300 after:content-[""] after:absolute after:top-[105%] after:h-[1px] after:left-0 after:w-0 after:transition-all after:duration-300 after:bg-black dark:after:bg-white group-hover:opacity-100 visible group-hover:after:w-[100%] group-hover:ml-5 select-none'>
-										Выйти
-									</span>
+									<LogOut size={20} />
 								</button>
 							</motion.div>
 						</motion.div>
-					</motion.div>
+					</>
 				)}
 			</AnimatePresence>
 		</div>

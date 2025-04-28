@@ -40,7 +40,7 @@ export default function MobileNav() {
 
 	return (
 		<LazyMotion features={domAnimation}>
-			<header
+			<div
 				className={cn(
 					styles.menu,
 					'border-t border-t-[#D9D7D7] dark:border-t-[#3a3a3a] bg-white dark:bg-[#151515]'
@@ -160,7 +160,7 @@ export default function MobileNav() {
 						</m.div>
 					)}
 				</AnimatePresence>
-			</header>
+			</div>
 		</LazyMotion>
 	)
 }
