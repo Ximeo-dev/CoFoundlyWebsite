@@ -1,7 +1,5 @@
 'use client'
 
-import ContainerWrapper from '../container/container-wrapper'
-import { ModeToggle } from '@/components/ui/theme-toggle/theme-toggle'
 import { PROJECT_NAME } from '@/constants/seo.constants'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
