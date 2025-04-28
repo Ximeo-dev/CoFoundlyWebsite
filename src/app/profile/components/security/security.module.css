@@ -8,7 +8,7 @@
   }
 
   .sec_inner {
-    @apply md:w-[350px] lg:w-[400px] xl:w-[600px] mb-6;
+    @apply sm:w-[350px] lg:w-[400px] xl:w-[600px] mb-6;
 
     .sec {
       @apply space-y-8;

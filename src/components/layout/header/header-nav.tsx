@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import LoginButton from '@/components/ui/login-button/login-button'
 import { ENDPOINTS } from '@/config/endpoints.config'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-react'
 import More from './more'
@@ -16,16 +16,26 @@ export default function HeaderNav() {
   const [show, setShow] = useState(false)
 	const { resolvedTheme } = useTheme()
 
+	const [isMounted, setIsMounted] = useState(false)
+	
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
   return (
 		<nav className={styles.nav}>
-			<Link href={ENDPOINTS.HOME} className={styles.logo}>
-				<Image
-					src={resolvedTheme === 'dark' ? '/logo.svg' : '/logo-light.svg'}
-					alt='logo'
-					width={50}
-					height={50}
-				/>
-			</Link>
+			<div className='w-[50px] h-[50px] relative'>
+				<Link href={ENDPOINTS.HOME} className={styles.logo}>
+					{isMounted && (
+						<Image
+							src={resolvedTheme === 'dark' ? '/logo.svg' : '/logo-light.svg'}
+							alt='logo'
+							width={50}
+							height={50}
+						/>
+					)}
+				</Link>
+			</div>
 			<ul className={styles.nav_list}>
 				{MENU.map((item: IMenuItem) => (
 					<li key={item.id}>

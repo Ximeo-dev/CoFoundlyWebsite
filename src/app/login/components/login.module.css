@@ -2,8 +2,12 @@
 
 .wrapper {
   @apply h-screen;
-
+  
   .wrapper_inner {
-    @apply flex justify-center items-center h-full w-full;
+    @apply flex justify-center items-center h-full w-full relative;
+
+    .back_btn {
+      @apply absolute sm:hidden top-20 left-10 w-12 h-12 rounded-[15px] flex items-center justify-center;
+    }
   }
 }

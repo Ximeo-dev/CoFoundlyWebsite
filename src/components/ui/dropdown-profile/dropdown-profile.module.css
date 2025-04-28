@@ -4,11 +4,11 @@
   @apply relative items-center flex cursor-pointer z-50;
 
   .dropdown_btn {
-    @apply w-10 h-10 rounded-full mr-6 transition-colors duration-300 flex items-center justify-center;
+    @apply w-10 h-10 rounded-full lg:mr-6 transition-colors duration-300 flex items-center justify-center;
   }
 
   .dropdown_block {
-    @apply absolute lg:-right-1.5 top-[4rem] rounded-[20px] text-base w-52;
+    @apply absolute lg:-right-1.5 right-0 bottom-[3rem] lg:top-[4rem] rounded-[20px] text-base w-52;
 
     .dropdown_content {
       @apply p-4 rounded-[20px] flex-col gap-y-4 flex shadow-lg;

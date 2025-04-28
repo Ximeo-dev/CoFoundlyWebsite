@@ -13,7 +13,7 @@ export default function ContainerWrapper({
 				<div
 					className={cn(
 						styles.container_bg_inner,
-						'bg-cyan-300 dark:bg-slate-400'
+						'bg-cyan-300 dark:bg-slate-400 hidden md:block'
 					)}
 				/>
 			</div>
