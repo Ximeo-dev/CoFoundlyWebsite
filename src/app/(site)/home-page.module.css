@@ -35,7 +35,7 @@
     @apply flex flex-col justify-between h-full px-6 xl:px-8 pt-4 lg:pt-6 xl:py-8 pb-4 w-[300px] md:w-[300px] lg:w-[400px] rounded-[15px];
 
     .title {
-      @apply p-0 text-base md:text-lg lg:text-xl text-start;
+      @apply p-0 text-sm md:text-lg lg:text-xl text-start;
     }
 
     .icon_block {

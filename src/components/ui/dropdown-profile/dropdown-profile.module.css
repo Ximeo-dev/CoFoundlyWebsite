@@ -8,7 +8,7 @@
   }
 
   .dropdown_block {
-    @apply absolute lg:-right-1.5 right-0 bottom-[3rem] lg:top-[4rem] rounded-[20px] text-base w-52;
+    @apply absolute lg:-right-1.5 top-[4rem] rounded-[20px] text-base w-52;
 
     .dropdown_content {
       @apply p-4 rounded-[20px] flex-col gap-y-4 flex shadow-lg;
@@ -27,4 +27,7 @@
     }
   }
 
+  .dropdown_block_mobile {
+    @apply lg:hidden absolute bottom-[60px] left-1/2 -translate-x-1/2 w-12 rounded-lg flex flex-col items-center gap-4 z-50 py-2.5;
+  }
 }
