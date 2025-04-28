@@ -1,7 +1,6 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import ContainerWrapper from '../container/container-wrapper'
 import FooterNav from './footer-nav'
 import styles from './footer.module.css'
 
