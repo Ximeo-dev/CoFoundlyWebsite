@@ -1,18 +1,18 @@
 'use client'
 
 import Badge from '@/components/ui/badge/badge'
-import { Button } from '@/components/ui/shadcn/button'
 import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import { PROJECT_NAME } from '@/constants/seo.constants'
 import styles from './home-page.module.css'
-import * as motion from 'motion/react-client'
+import * as m from 'motion/react-client'
 import { slideUp } from '@/lib/motion-variants'
 import { cn } from '@/lib/utils'
 import { CARD, ICard } from './card.data'
+import { domAnimation, LazyMotion } from 'framer-motion'
 
 export default function Home() {
 	return (
-		<>
+		<LazyMotion features={domAnimation}>
 			<TextAnimate animation='slideUp' className={styles.title}>
 				{PROJECT_NAME}
 			</TextAnimate>
@@ -32,16 +32,21 @@ export default function Home() {
 					— достигай быстрее
 				</TextAnimate>
 			</div>
-			<motion.div
+			<m.div
 				variants={slideUp}
 				initial='hidden'
 				animate='visible'
 				className={styles.btn_block}
 			>
-				<Button size={'lg'} className={styles.main_btn}>
+				{/* <button
+					className={cn(
+						styles.main_btn,
+						'bg-black text-white dark:bg-white dark:text-black shadow-[-5px_0px_50px_-13px_#805ad5,5px_0px_50px_-13px_#81e6d9] hover:scale-105 transition-transform duration-300' 
+					)}
+				>
 					Начать
-				</Button>
-			</motion.div>
+				</button> */}
+			</m.div>
 			<div className={styles.sec_text_block}>
 				<TextAnimate
 					by='word'
@@ -72,6 +77,6 @@ export default function Home() {
 					</article>
 				))}
 			</div>
-		</>
+		</LazyMotion>
 	)
 }

@@ -53,7 +53,7 @@ export default function AnketCard({
 		<AnimatePresence mode='wait'>
 			<div className='relative'>
 				<motion.div
-					className='bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] shadow-lg rounded-[15px] p-6 flex flex-col w-[400px]'
+					className='bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] shadow-lg rounded-[15px] p-6 flex flex-col w-[300px] md:w-[350px] lg:w-[400px]'
 					initial={{ x: 0 }}
 					animate={{ x: isEditing ? 450 : 0 }}
 					exit={{ x: 450 }}
@@ -68,7 +68,7 @@ export default function AnketCard({
 					}}
 				>
 					<div className='flex items-center justify-center'>
-						<div className='w-36 h-36 rounded-full bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] mb-10 flex justify-center items-center'>
+						<div className='w-28 h-28 lg:w-36 lg:h-36 rounded-full bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] mb-10 flex justify-center items-center'>
 							{avatarUrl && (
 								<Image
 									src={avatarUrl}

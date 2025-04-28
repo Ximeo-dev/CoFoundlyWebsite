@@ -1,0 +1,53 @@
+@reference "tailwindcss";
+
+.info_main {
+  @apply flex flex-col items-center w-full;
+
+  .info_block {
+    @apply flex flex-col items-center mb-10;
+
+    .avatar {
+      @apply w-32 h-32 rounded-full border;
+    }
+
+    .text_block {
+      @apply mt-4 text-center;
+
+      .name {
+        @apply text-xl font-semibold;
+      }
+    }
+  }
+
+  .block_name {
+    @apply text-2xl font-semibold mt-8 mb-12 text-start;
+  }
+
+  .change_block {
+    @apply w-[300px] md:w-[350px] lg:w-[400px] xl:w-[600px] mb-6;
+
+    .list {
+      @apply space-y-8;
+
+      .list_block {
+        @apply flex justify-between items-center pb-6 border-b;
+
+        .list_item {
+          @apply text-xl font-medium;
+        }
+
+        .change_button {
+          @apply cursor-pointer px-3 py-1.5 transition-colors duration-300 rounded-[15px] text-sm;
+        }
+      }
+
+      .age {
+        @apply flex justify-between items-center border-b pb-6;
+
+        .change_button {
+          @apply cursor-pointer px-3 py-1.5 transition-colors duration-300 rounded-[15px] text-sm;
+        }
+      }
+    }
+  }
+}

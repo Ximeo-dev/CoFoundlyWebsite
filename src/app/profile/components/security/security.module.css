@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+.sec_block {
+  @apply flex flex-col items-center w-full;
+
+  .sec_title {
+    @apply text-3xl font-semibold mt-2 mb-12 text-start;
+  }
+
+  .sec_inner {
+    @apply sm:w-[350px] lg:w-[400px] xl:w-[600px] mb-6;
+
+    .sec {
+      @apply space-y-8;
+
+      .change_block {
+        @apply flex justify-between items-center border-b pb-6;
+
+        .email {
+          @apply text-lg lg:text-xl font-medium;
+        }
+
+        .user_email {
+          @apply text-xs lg:text-sm;
+        }
+
+        .change_btn {
+          @apply cursor-pointer px-3 py-1.5  transition-colors duration-300 rounded-[15px] text-sm;
+        }
+      }
+
+      .reset_pass {
+        @apply flex justify-between items-center border-b pb-6;
+
+        .reset_block {
+          @apply flex justify-between items-center w-full;
+
+          .reset_text {
+            @apply text-lg lg:text-xl font-medium;
+          }
+
+          .pass_change {
+            @apply cursor-pointer px-3 py-1.5 transition-colors duration-300 rounded-[15px] text-sm;
+          }
+        }
+      }
+    }
+  }
+}

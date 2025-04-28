@@ -4,25 +4,18 @@ import { cn } from '@/lib/utils'
 import styles from './login-button.module.css'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
-import { useEffect, useState } from 'react'
 import DropdownProfile from '../dropdown-profile/dropdown-profile'
 
 export default function LoginButton() {
-	const { isAuthenticated } = useAuth()
-	const [isMounted, setIsMounted] = useState(false)
+	const { isAuthenticated, isLoading } = useAuth()
 
-	useEffect(() => {
-		setIsMounted(true)
-	}, [])
+	if (isLoading) return null
 
-	if (!isMounted) return null
-
-  return (
+	return (
 		<>
-			{isAuthenticated && (
+			{isAuthenticated ? (
 				<DropdownProfile />
-			)}
-			{!isAuthenticated && (
+			) : (
 				<Link href={'/login'} className={cn(styles.button, 'group')}>
 					<div className='relative overflow-hidden'>
 						<p className='group-hover:-translate-y-7 duration-[1.125s] ease-[cubic-bezier(0.19,1,0.22,1)] text-lg'>

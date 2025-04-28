@@ -1,5 +1,5 @@
 @reference "tailwindcss";
 
 .button {
-  @apply cursor-pointer bg-white text-black shadow-[-30px_0px_90px_-13px_#805ad5,30px_0px_90px_-13px_#81e6d9] px-6 py-3 rounded-[20px] font-medium;
+  @apply cursor-pointer bg-white text-black shadow-[-30px_0px_90px_-13px_#805ad5,30px_0px_90px_-13px_#81e6d9] px-6 py-3 rounded-[20px] font-medium w-fit;
 }

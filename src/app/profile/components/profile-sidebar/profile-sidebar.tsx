@@ -5,7 +5,7 @@ import { ISettingsItem, SETTINGS_MENU } from '@/constants/menu.constants'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { useState } from 'react'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { AlignLeft, ChevronDown } from 'lucide-react'
 import styles from './profile-sidebar.module.css'
 
 interface IProfileSidebar {
@@ -24,16 +24,16 @@ export default function ProfileSidebar({
 
 	return (
 		<>
-			<div className='lg:hidden fixed top-4 left-4 z-50'>
+			<div className={styles.sidebar_btn}>
 				<button
 					className={
 						!isOpen
-							? 'dark:bg-[#151515] bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] rounded-full w-16 h-16 flex items-center justify-center'
+							? 'dark:bg-[#151515] bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] rounded-[15px] w-12 h-12 flex items-center justify-center'
 							: ''
 					}
 					onClick={toggleSidebar}
 				>
-					{!isOpen && <Menu size={28} />}
+					{!isOpen && <AlignLeft size={28} />}
 				</button>
 			</div>
 

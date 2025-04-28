@@ -20,12 +20,12 @@ export const MENU = [
 	{
 		id: 1,
 		label: 'Проекты',
-		href: ENDPOINTS.SWIPE,
+		href: ENDPOINTS.SWIPE_USERS,
 	},
 	{
 		id: 2,
 		label: 'Исполнители',
-		href: ENDPOINTS.SWIPE,
+		href: ENDPOINTS.SWIPE_USERS,
 	},
 	{
 		id: 3,

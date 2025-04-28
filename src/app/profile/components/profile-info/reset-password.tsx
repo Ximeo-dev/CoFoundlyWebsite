@@ -5,6 +5,8 @@ import { useProfileData } from '@/hooks/useProfileData'
 import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import styles from '../security/security.module.css'
+import { cn } from '@/lib/utils'
 
 export default function ResetPassword() {
   const { userProfile } = useProfileData()
@@ -27,10 +29,10 @@ export default function ResetPassword() {
   }
 
   return (
-		<div className='flex justify-between items-center w-full'>
+		<div className={styles.reset_block}>
 			<TextAnimate
 				animation='slideUp'
-				className='text-xl font-medium'
+				className={styles.reset_text}
 				by='character'
 				duration={0.2}
 			>
@@ -38,7 +40,7 @@ export default function ResetPassword() {
 			</TextAnimate>
 			<button
 				onClick={handleClick}
-				className='cursor-pointer px-3 py-1.5 bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700 transition-colors duration-300 rounded-[15px] text-sm'
+				className={cn(styles.pass_change, 'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700')}
 			>
 				Поменять
 			</button>

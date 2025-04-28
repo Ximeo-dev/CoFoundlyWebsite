@@ -1,5 +1,9 @@
 @reference "tailwindcss";
 
+.sidebar_btn {
+  @apply lg:hidden fixed top-6 left-4 z-10;
+}
+
 .sidebar_wrapper {
   @apply fixed top-0 left-0 pl-6 h-full w-60;
 
