@@ -4,11 +4,10 @@ import Badge from '@/components/ui/badge/badge'
 import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import { PROJECT_NAME } from '@/constants/seo.constants'
 import styles from './home-page.module.css'
-import * as m from 'motion/react-client'
 import { slideUp } from '@/lib/motion-variants'
 import { cn } from '@/lib/utils'
 import { CARD, ICard } from './card.data'
-import { domAnimation, LazyMotion } from 'framer-motion'
+import { domAnimation, LazyMotion, m } from 'framer-motion'
 
 export default function Home() {
 	return (
