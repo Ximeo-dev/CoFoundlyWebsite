@@ -1,15 +1,15 @@
 'use client'
 
 import { TextAnimate } from '@/components/ui/shadcn/text-animate'
-import { useProfileData } from '@/hooks/useProfileData'
 import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import styles from '../security/security.module.css'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function ResetPassword() {
-  const { userProfile } = useProfileData()
+  const { user } = useAuth()
 
   const { mutate: resetPassword } = useMutation({
 		mutationKey: ['reset-password'],
@@ -25,7 +25,7 @@ export default function ResetPassword() {
 	})
 
   const handleClick = () => {
-    resetPassword(userProfile?.email)
+    resetPassword(user?.email)
   }
 
   return (

@@ -1,23 +1,19 @@
 'use client'
 
-import { useProfileData } from '@/hooks/useProfileData'
 import maskEmail from '@/utils/maskEmail'
 import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import styles from './profile-info.module.css'
 import { cn } from '@/lib/utils'
+import Avatar from './avatar'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function ProfileInfo() {
-	const { userProfile } = useProfileData()
+	const { user } = useAuth()
 
 	return (
 		<div className={styles.info_main}>
 			<div className={styles.info_block}>
-				<div
-					className={cn(
-						styles.avatar,
-						'border-[#d9d7d7] dark:border-[#3a3a3a] bg-white dark:bg-[#151515]'
-					)}
-				/>
+				<Avatar editable size={128} />
 				<div className={styles.text_block}>
 					<TextAnimate
 						className={styles.name}
@@ -25,7 +21,7 @@ export default function ProfileInfo() {
 						by='character'
 						duration={0.2}
 					>
-						{userProfile?.name || ''}
+						{user?.name || ''}
 					</TextAnimate>
 					<TextAnimate
 						animation='slideUp'
@@ -33,7 +29,7 @@ export default function ProfileInfo() {
 						duration={0.2}
 						className='text-[#696363] dark:text-[#929191] text-sm'
 					>
-						{(userProfile?.email && maskEmail(userProfile.email)) || ''}
+						{(user?.email && maskEmail(user.email)) || ''}
 					</TextAnimate>
 				</div>
 			</div>
@@ -70,7 +66,7 @@ export default function ProfileInfo() {
 								className='text-[#696363] dark:text-[#929191] text-sm'
 								animation='slideUp'
 							>
-								{userProfile?.name || ''}
+								{user?.name || ''}
 							</TextAnimate>
 						</div>
 						<button
@@ -79,7 +75,7 @@ export default function ProfileInfo() {
 								'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
 							)}
 						>
-							{userProfile && userProfile?.name ? 'Поменять' : 'Указать имя'}
+							{user && user?.name ? 'Поменять' : 'Указать имя'}
 						</button>
 					</div>
 					<div

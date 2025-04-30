@@ -33,7 +33,7 @@ export default function LoginForm() {
 				queryKey: ['userProfile'],
 			})
 			router.push('/profile')
-			toast('Успешный вход')
+			toast.success('Успешный вход')
 		},
 		onError: (error: ResponseError) => {
 			toast.dismiss()

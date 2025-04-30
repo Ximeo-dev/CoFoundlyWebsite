@@ -97,3 +97,8 @@ export const SETTINGS_MENU = [
 		label: 'Безопасность',
 	},
 ]
+
+export const TABS = [
+	{ id: 'specialists', label: 'Найти специалиста' },
+	{ id: 'projects', label: 'Найти проект' },
+]

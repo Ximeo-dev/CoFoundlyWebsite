@@ -1,14 +1,14 @@
 'use client'
 
 import { TextAnimate } from '@/components/ui/shadcn/text-animate'
-import { useProfileData } from '@/hooks/useProfileData'
 import maskEmail from '@/utils/maskEmail'
 import ResetPassword from '../profile-info/reset-password'
 import styles from './security.module.css'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Security() {
-  const { userProfile } = useProfileData()
+  const { user } = useAuth()
 
   return (
 		<div className={styles.sec_block}>
@@ -46,7 +46,7 @@ export default function Security() {
 								by='character'
 								duration={0.2}
 							>
-								{(userProfile?.email && maskEmail(userProfile.email)) || ''}
+								{(user?.email && maskEmail(user.email)) || ''}
 							</TextAnimate>
 						</div>
 						<button className={cn(styles.change_btn, 'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700')}>

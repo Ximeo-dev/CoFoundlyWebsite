@@ -1,7 +1,8 @@
 'use client'
 
-import { useProfileData } from '@/hooks/useProfileData'
+import { userService } from '@/services/user.service'
 import { IUser } from '@/types/user.types'
+import { useQuery } from '@tanstack/react-query'
 import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
 type AuthContextType = {
@@ -12,6 +13,9 @@ type AuthContextType = {
 	user: IUser | null
 	setUser: Dispatch<SetStateAction<any>>
 	isLoading: boolean
+	refetchProfile: () => void
+	avatarVersion: number
+	setAvatarVersion: Dispatch<SetStateAction<number>>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -21,8 +25,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [isEmailConfirmed, setIsEmailConfirmed] = useState(false)
 	const [user, setUser] = useState<IUser | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
+	const [avatarVersion, setAvatarVersion] = useState(Date.now())
 
-	const { userProfile, error } = useProfileData()
+	const {
+		data: userProfile,
+		error,
+		refetch,
+	} = useQuery({
+		queryKey: ['userProfile'],
+		queryFn: () => userService.getUserProfile(),
+		staleTime: 30 * 60 * 1000,
+		refetchOnWindowFocus: false,
+		retry: false,
+	})
 
 	const clearAuthState = () => {
 		setUser(null)
@@ -56,7 +71,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				setIsEmailConfirmed,
 				user,
 				setUser,
-        isLoading
+				isLoading,
+				refetchProfile: refetch,
+				avatarVersion,
+				setAvatarVersion
 			}}
 		>
 			{children}

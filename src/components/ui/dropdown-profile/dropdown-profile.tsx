@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react'
 import { toggleMenu } from '@/store/menu-store'
 import { useAtom } from 'jotai'
 import { CircleUserRound, LogOut, Settings } from 'lucide-react'
+import Avatar from '@/app/profile/components/profile-info/avatar'
 
 export default function DropdownProfile() {
   const queryClient = useQueryClient()
@@ -68,14 +69,7 @@ export default function DropdownProfile() {
 			}
 			className={cn(isAuthenticated ? styles.dropdown : '')}
 		>
-			<div
-				className={cn(
-					styles.dropdown_btn,
-					'border border-[#3a3a3a] hover:border-neutral-400 dark:hover:border-white/30'
-				)}
-			>
-				<span className=''>{user?.name?.charAt(0) || 'U'}</span>
-			</div>
+			<Avatar size={64} />
 			<AnimatePresence>
 				{dropdownOpen && (
 					<>
