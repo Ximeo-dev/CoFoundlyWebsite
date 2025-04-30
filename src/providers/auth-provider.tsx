@@ -14,6 +14,8 @@ type AuthContextType = {
 	setUser: Dispatch<SetStateAction<any>>
 	isLoading: boolean
 	refetchProfile: () => void
+	avatarVersion: number
+	setAvatarVersion: Dispatch<SetStateAction<number>>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -23,6 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [isEmailConfirmed, setIsEmailConfirmed] = useState(false)
 	const [user, setUser] = useState<IUser | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
+	const [avatarVersion, setAvatarVersion] = useState(Date.now())
 
 	const {
 		data: userProfile,
@@ -70,6 +73,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				setUser,
 				isLoading,
 				refetchProfile: refetch,
+				avatarVersion,
+				setAvatarVersion
 			}}
 		>
 			{children}

@@ -9,6 +9,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { Loader, Pencil } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
+import Spinner from '@/components/ui/spinner/spinner'
 
 interface IAvatarUploader {
 	size?: 64 | 128 | 512
@@ -19,17 +20,18 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
 
-	const { user, refetchProfile } = useAuth()
+	const { user, avatarVersion, setAvatarVersion, refetchProfile } = useAuth()
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['user-avatar'],
 		mutationFn: (file: File) => userService.uploadAvatar(file),
 		onSuccess: () => {
+			setAvatarVersion(Date.now())
 			queryClient.invalidateQueries({
 				queryKey: ['userProfile'],
 			})
 			toast.success('Аватар обновлён')
-			refetchProfile()
+			// refetchProfile()
 		},
 		onError: (error: any) => {
 			toast.error(
@@ -63,7 +65,7 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 		<div className='relative w-fit' style={{ width: size, height: size }}>
 			{user?.avatarUrl ? (
 				<Image
-					src={user.avatarUrl}
+					src={`${user?.avatarUrl}?v=${avatarVersion}`}
 					alt='avatar'
 					width={size}
 					height={size}
@@ -76,7 +78,7 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 			) : (
 				<span
 					className={cn(
-						'flex items-center justify-center rounded-[30px] bg-muted text-white font-bold uppercase',
+						'flex items-center justify-center rounded-[30px] bg-muted text-white font-semibold uppercase',
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}
 					style={{
@@ -90,8 +92,8 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 			)}
 
 			{isPending && (
-				<div className='absolute inset-0 bg-[#151515] flex items-center justify-center z-10 rounded-[30px]'>
-					<Loader />
+				<div className='absolute inset-0 bg-[#111111] flex items-center justify-center z-10 rounded-[30px]'>
+					<Spinner />
 				</div>
 			)}
 
