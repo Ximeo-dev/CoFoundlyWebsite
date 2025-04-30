@@ -4,10 +4,10 @@
   @apply rounded-[20px] left-1/2 -translate-x-1/2;
 
   .nav {
-    @apply flex justify-between items-center pl-[1.25rem] pr-[0.3125rem] py-3;
+    @apply flex justify-between items-center pl-[1.25rem] pr-[1.6rem] py-2.5;
 
     .nav_list {
-      @apply flex items-center gap-x-6 pl-6 pr-8;
+      @apply flex items-center gap-x-6 pl-6 pr-7;
 
       .list_item {
         @apply font-medium transition-colors duration-300;

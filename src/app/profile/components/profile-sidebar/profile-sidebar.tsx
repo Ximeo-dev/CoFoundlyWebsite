@@ -136,7 +136,7 @@ export default function ProfileSidebar({
 
 			{isOpen && (
 				<div
-					className='fixed inset-0 z-30 lg:hidden backdrop-blur-2xl'
+					className='fixed inset-0 z-30 lg:hidden backdrop-blur-xl'
 					onClick={toggleSidebar}
 				/>
 			)}

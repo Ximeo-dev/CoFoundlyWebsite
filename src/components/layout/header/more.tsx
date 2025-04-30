@@ -12,7 +12,7 @@ const More: FC = () => {
 			<m.div
 				className='rounded-[20px] shadow-lg bg-white dark:bg-[#1A1A1A] border border-[#D9D7D7] dark:border-[#3A3A3A] z-50'
 				initial={{ y: 20 }}
-				animate={{ y: 57 }}
+				animate={{ y: 58 }}
 				transition={{ type: 'spring', stiffness: 210, damping: 17 }}
 			>
 				<ul className='flex flex-col gap-y-4 p-4'>

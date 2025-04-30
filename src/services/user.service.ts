@@ -48,7 +48,7 @@ class UserService {
 		return response.data
 	}
 
-	async getAvatarUrl(userId: string, size: '64x64' | '128x128' | '512x512') {
+	async getAvatarUrl(userId: string, size: 64 | 128 | 512) {
 		return `${this.BASE_URL}/images/avatar/${userId}/${size}`
 	}
 }

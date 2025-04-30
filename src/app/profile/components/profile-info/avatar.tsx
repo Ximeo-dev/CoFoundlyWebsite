@@ -5,9 +5,9 @@ import styles from './profile-info.module.css'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { userService } from '@/services/user.service'
 import { toast } from 'sonner'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
-import { Loader, Pencil } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import Spinner from '@/components/ui/spinner/spinner'
 
@@ -19,9 +19,8 @@ interface IAvatarUploader {
 export default function Avatar({ size, editable = false }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
-
-	const { user, avatarVersion, setAvatarVersion, refetchProfile } = useAuth()
-
+	const { user, avatarVersion, setAvatarVersion } = useAuth()
+	
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['user-avatar'],
 		mutationFn: (file: File) => userService.uploadAvatar(file),
@@ -31,7 +30,6 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 				queryKey: ['userProfile'],
 			})
 			toast.success('Аватар обновлён')
-			// refetchProfile()
 		},
 		onError: (error: any) => {
 			toast.error(
@@ -62,7 +60,7 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 	}
 
 	return (
-		<div className='relative w-fit' style={{ width: size, height: size }}>
+		<div className='relative'>
 			{user?.avatarUrl ? (
 				<Image
 					src={`${user?.avatarUrl}?v=${avatarVersion}`}
@@ -70,15 +68,20 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 					width={size}
 					height={size}
 					className={cn(
-						size === 64 ? 'rounded-full object-cover' : styles.avatar,
+						size === 64
+							? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
+							: size === 128
+							? 'object-cover w-32 h-32 rounded-[30px]'
+							: size === 512
+							? 'object-cover w-64 h-64 rounded-[30px]'
+							: styles.avatar,
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}
-					style={{ width: size, height: size }}
 				/>
 			) : (
 				<span
 					className={cn(
-						'flex items-center justify-center rounded-[30px] bg-muted text-white font-semibold uppercase',
+						'flex items-center justify-center rounded-[30px] bg-muted text-white font-semibold uppercase select-none',
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}
 					style={{
