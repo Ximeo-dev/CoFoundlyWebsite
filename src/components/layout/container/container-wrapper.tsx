@@ -1,14 +1,26 @@
+'use client'
+
 import { ReactNode } from 'react'
 import styles from './container-wrapper.module.css'
 import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
 
 export default function ContainerWrapper({
 	children,
 }: {
 	children: ReactNode
 }) {
+	const pathname = usePathname()
+
+	const isSwipePage = pathname === '/swipe-users'
+
 	return (
-		<section className={styles.container_wrapper}>
+		<section
+			className={cn(
+				styles.container_wrapper,
+				isSwipePage ? 'px-5 sm:px-10 md:px-28 lg:px-42 xl:px-60' : 'px-5 sm:px-10 md:px-14 lg:px-15 xl:px-20'
+			)}
+		>
 			<div className={styles.container_bg}>
 				<div
 					className={cn(

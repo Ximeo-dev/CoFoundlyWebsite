@@ -4,7 +4,7 @@
   @apply fixed bottom-0 left-0 w-full z-50 block lg:hidden;
 
   .menu_nav {
-    @apply w-full px-5 sm:px-10 py-1.5;
+    @apply w-full px-5 sm:px-10 py-2;
 
     .menu_list {
       @apply flex justify-between items-center;

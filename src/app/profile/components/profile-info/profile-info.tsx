@@ -13,7 +13,7 @@ export default function ProfileInfo() {
 	return (
 		<div className={styles.info_main}>
 			<div className={styles.info_block}>
-				<Avatar editable size={128} />
+				<Avatar editable size={512} />
 				<div className={styles.text_block}>
 					<TextAnimate
 						className={styles.name}
