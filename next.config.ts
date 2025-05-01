@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
 	images: {
@@ -8,8 +8,13 @@ const nextConfig: NextConfig = {
 				hostname: 'storage.yandexcloud.net',
 				pathname: '/**',
 			},
+			{
+				protocol: 'https',
+				hostname: 'cofoundly-api.infinitum.su',
+				pathname: '/**',
+			},
 		],
 	},
 }
 
-export default nextConfig;
+export default nextConfig
