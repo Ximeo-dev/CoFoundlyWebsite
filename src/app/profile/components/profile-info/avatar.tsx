@@ -12,7 +12,7 @@ import { useAuth } from '@/hooks/useAuth'
 import Spinner from '@/components/ui/spinner/spinner'
 
 interface IAvatarUploader {
-	size?: 64 | 128 | 512
+	size: 64 | 128 | 512
 	editable?: boolean
 }
 
@@ -73,7 +73,7 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 							: size === 128
 							? 'object-cover w-32 h-32 rounded-[30px]'
 							: size === 512
-							? 'object-cover w-64 h-64 rounded-[30px]'
+							? 'object-cover w-68 h-68 rounded-[30px]'
 							: styles.avatar,
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}

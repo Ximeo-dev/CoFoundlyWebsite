@@ -6,10 +6,6 @@
   .info_block {
     @apply flex flex-col items-center mb-10;
 
-    .avatar {
-      @apply rounded-[30px];
-    }
-
     .text_block {
       @apply mt-12 text-center;
 
