@@ -6,7 +6,7 @@ import ProfileInfo from './profile-info/profile-info'
 import Settings from './security/security'
 import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
-import Anket from './anket/my-anket/anket'
+import PcAnketCard from './anket/my-anket/pc-anket-card'
 
 export default function ProfileMain() {
   const [selected, setSelected] = useState('profile')
@@ -16,7 +16,7 @@ export default function ProfileMain() {
       case 'security':
         return <Settings />
       case 'my-form':
-        return <Anket />
+        return <PcAnketCard />
       case 'project-form':
         return <div>project-form</div>
       default:

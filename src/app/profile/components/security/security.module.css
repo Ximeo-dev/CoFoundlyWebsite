@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .sec_block {
-  @apply flex flex-col items-center w-full;
+  @apply flex flex-col items-center w-full py-8;
 
   .sec_title {
     @apply text-3xl font-semibold mt-2 mb-12 text-start;
