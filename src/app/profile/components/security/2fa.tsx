@@ -40,39 +40,50 @@ export default function TwoFactor() {
 			<div
 				className={cn(
 					styles.change_block,
-					'border-[#d9d7d7] dark:border-[#3a3a3a]'
+					'border-border'
 				)}
 			>
 				<div>
 					{user?.securitySettings ? (
-						<TextAnimate
-							className={styles.email}
-							animation='slideUp'
-							by='character'
-							duration={0.2}
-						>
-							{user.securitySettings.twoFactorEnabled &&
-							user.securitySettings.telegramId
-								? '2FA включен'
-								: 'Включить 2FA'}
-						</TextAnimate>
+						<>
+							<TextAnimate
+								className={styles.email}
+								animation='slideUp'
+								by='character'
+								duration={0.2}
+							>
+								{user.securitySettings.twoFactorEnabled &&
+								user.securitySettings.telegramId
+									? '2FA включен'
+									: 'Включить 2FA'}
+							</TextAnimate>
+							{user?.securitySettings.twoFactorEnabled &&
+								user?.securitySettings.telegramId && (
+									<p
+										className={cn(
+											styles.user_email,
+											'text-[#696363] dark:text-[#929191]'
+										)}
+									>
+										Ваш telegram id: {user?.securitySettings?.telegramId}
+									</p>
+								)}
+						</>
 					) : null}
 				</div>
-				{user?.securitySettings.twoFactorEnabled &&
-				user.securitySettings.telegramId ? (
-					<div>{user.securitySettings.telegramId}</div>
-				) : (
-					<button
-						onClick={() => mutate()}
-						className={cn(
-							styles.change_btn,
-							'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
-						)}
-						disabled={isPending}
-					>
-						Включить
-					</button>
-				)}
+				<button
+					onClick={() => mutate()}
+					className={cn(
+						styles.change_btn,
+						'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
+					)}
+					disabled={isPending}
+				>
+					{user?.securitySettings.twoFactorEnabled &&
+					user.securitySettings.telegramId
+						? 'Отключить'
+						: 'Включить'}
+				</button>
 			</div>
 
 			{isModalOpen && generatedToken && (
@@ -81,23 +92,54 @@ export default function TwoFactor() {
 					onClose={() => setIsModalOpen(false)}
 					className={styles.modal}
 				>
-					<p className={styles.modal_text}>
-						Скопируйте команду и отправьте её боту телеграм-бота{' '}
-						<a
-							className='transition-all duration-500 border-b dark:text-sky-100 border-b-foreground dark:border-b-white border-dashed hover:text-neutral-700 dark:hover:text-white'
-							href='https://t.me/CoFoundlyBot'
-						>
-							CoFoundly
-						</a>
-					</p>
-					<div
-						onClick={handleCopy}
-						className={cn(styles.copy_block, 'bg-[#d9d7d7] dark:bg-[#111111]')}
-					>
-						<span className='font-mono select-all'>/2fa {generatedToken}</span>
-						<Button variant='ghost' size='icon'>
-							{isCopied ? <Check size={4} /> : <Copy size={4} />}
-						</Button>
+					<div className={styles.modal_inner}>
+						<h2 className={styles.modal_title}>
+							Активация двухфакторной аутентификации
+						</h2>
+
+						<div className={styles.ft_var}>
+							<p className={styles.ft_var_title}>
+								Вариант 1: скопируйте команду и отправьте её боту{' '}
+								<a
+									className='transition-all duration-300 border-b border-dashed border-b-foreground dark:text-sky-100 dark:hover:text-white'
+									href='https://t.me/CoFoundlyBot'
+									target='_blank'
+								>
+									@CoFoundlyBot
+								</a>
+							</p>
+
+							<div
+								onClick={handleCopy}
+								className={cn(
+									styles.copy_block,
+									'bg-[#d9d7d7] dark:bg-[#111111]'
+								)}
+							>
+								<span className='font-mono select-all text-center'>
+									/2fa {generatedToken}
+								</span>
+								<Button variant='ghost' size='icon'>
+									{isCopied ? <Check size={18} /> : <Copy size={18} />}
+								</Button>
+							</div>
+						</div>
+
+						<div className={styles.sc_var}>
+							<p className={styles.sc_var_title}>
+								Вариант 2: нажмите на кнопку ниже — бот автоматически получит
+								команду
+							</p>
+							<a
+								href={`https://t.me/CoFoundlyBot?start=2fa_${generatedToken}`}
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								<Button className='w-full rounded-lg'>
+									Открыть Telegram и активировать
+								</Button>
+							</a>
+						</div>
 					</div>
 				</Modal>
 			)}

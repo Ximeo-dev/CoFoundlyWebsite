@@ -26,7 +26,7 @@ export default function Security() {
 					<div
 						className={cn(
 							styles.change_block,
-							'border-[#d9d7d7] dark:border-[#3a3a3a]'
+							'border-border'
 						)}
 					>
 						<div>
@@ -57,7 +57,7 @@ export default function Security() {
 
 					<TwoFactor />
 
-					<div className={cn(styles.reset_pass, 'border-[#d9d7d7] dark:border-[#3a3a3a]')}>
+					<div className={cn(styles.reset_pass, 'border-border')}>
 						<ResetPassword />
 					</div>
 				</div>

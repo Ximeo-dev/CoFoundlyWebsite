@@ -28,7 +28,7 @@ export default function ProfileSidebar({
 				<button
 					className={
 						!isOpen
-							? 'dark:bg-[#151515] bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] rounded-[15px] w-12 h-12 flex items-center justify-center'
+							? 'bg-background border border-border rounded-[15px] w-12 h-12 flex items-center justify-center'
 							: ''
 					}
 					onClick={toggleSidebar}
@@ -40,7 +40,7 @@ export default function ProfileSidebar({
 			<aside
 				className={cn(
 					styles.sidebar_wrapper,
-					'bg-white dark:bg-[#151515] border-r border-[#d9d7d7] dark:border-[#3a3a3a] z-40 transition-transform duration-300',
+					'bg-background border-r border-border z-40 transition-transform duration-300',
 					isOpen ? 'translate-x-0' : '-translate-x-full',
 					'lg:translate-x-0 lg:static lg:block'
 				)}

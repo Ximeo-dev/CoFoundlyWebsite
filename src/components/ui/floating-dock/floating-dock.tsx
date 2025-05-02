@@ -42,7 +42,7 @@ const FloatingDockMobile = ({
 					<div key={idx} className='flex items-center justify-center'>
 						<div
 							key={item.title}
-							className='h-8 w-8 rounded-full bg-white border border-[#d9d7d7] dark:border-[#3a3a3a] flex items-center justify-center'
+							className='h-8 w-8 rounded-full bg-white border border-border flex items-center justify-center'
 						>
 							<div className='h-4 w-4'>{item.icon}</div>
 						</div>
@@ -66,7 +66,7 @@ const FloatingDockDesktop = ({
 			onMouseMove={e => mouseX.set(e.pageX)}
 			onMouseLeave={() => mouseX.set(Infinity)}
 			className={cn(
-				'hidden md:flex h-16 gap-7 items-end justify-center rounded-2xl bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] px-10 pb-3 max-w-[300px]',
+				'hidden md:flex h-16 gap-7 items-end justify-center rounded-2xl bg-background border border-border px-10 pb-3 max-w-[300px]',
 				className
 			)}
 		>
@@ -131,7 +131,7 @@ function IconContainer({
 				style={{ width, height }}
 				onMouseEnter={() => setHovered(true)}
 				onMouseLeave={() => setHovered(false)}
-				className='aspect-square rounded-full isolate backdrop-blur-[6px] flex border border-[#d9d7d7] dark:border-[#3a3a3a] items-center justify-center relative'
+				className='aspect-square rounded-full isolate backdrop-blur-[6px] flex border border-border items-center justify-center relative'
 			>
 				<AnimatePresence>
 					{hovered && (

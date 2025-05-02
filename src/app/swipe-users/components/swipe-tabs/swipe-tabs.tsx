@@ -30,23 +30,8 @@ export default function SwipeTabs() {
   return (
 		<>
 			<SwipeLinks activeTab={activeTab} setActiveTab={setActiveTab} />
-			<div className='w-full rounded-[30px] bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] mt-12'>
+			<div className='w-full rounded-[30px] bg-background border border-border mt-12'>
 				{activeTab === 'specialists' ? <Specialists /> : <p>projects</p>}
-			</div>
-			<div className='hidden lg:flex mt-8 w-full items-center justify-center'>
-			{isShowTooltip && (
-				<ul className='flex items-center justify-center gap-x-12 rounded-[20px] bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] px-4 py-2.5'>
-					<li className='flex items-center gap-x-2'>
-						<ArrowLeft className='w-5 h-5' />
-						<span>Скип</span>
-					</li>
-					<li className='flex items-center gap-x-2'>
-						<ArrowRight className='w-5 h-5' />
-						<span>Мэтч</span>
-					</li>
-				</ul>
-			)}
-				<button className='ml-20 bg-black dark:bg-white text-white dark:text-black rounded-lg px-2.5 py-1.5 cursor-pointer' onClick={() => setIsShowTooltip(!isShowTooltip)}>{isShowTooltip ? 'Скрыть' : 'Управление клавиатурой'}</button>
 			</div>
 		</>
 	)

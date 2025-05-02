@@ -81,7 +81,7 @@ export default function DropdownProfile() {
 							variants={dropdownVariants}
 							className={cn(
 								styles.dropdown_block,
-								'bg-white dark:bg-[#1A1A1A] border border-[#d9d7d7] dark:border-[#3a3a3a] hidden lg:block'
+								'bg-white dark:bg-[#1A1A1A] border border-border hidden lg:block'
 							)}
 							onClick={(event: any) => event.stopPropagation()}
 						>
@@ -163,7 +163,7 @@ export default function DropdownProfile() {
 							exit='hidden'
 							className={cn(
 								styles.dropdown_block_mobile,
-								'bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a]'
+								'bg-background border border-border'
 							)}
 							onClick={(event: any) => event.stopPropagation()}
 						>

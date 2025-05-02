@@ -159,7 +159,7 @@ export default function RegisterForm() {
 					variants={slideUp}
 					className={cn(
 						styles.register_wrapper,
-						'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] shadow-lg'
+						'bg-background border border-border shadow-lg'
 					)}
 				>
 					<h1 className={styles.title}>
@@ -172,7 +172,7 @@ export default function RegisterForm() {
 						<label
 							className={cn(
 								styles.field,
-								'mb-2 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'mb-2 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div
@@ -217,7 +217,7 @@ export default function RegisterForm() {
 						<label
 							className={cn(
 								styles.field,
-								'mt-4 mb-1 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'mt-4 mb-1 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div
@@ -260,7 +260,7 @@ export default function RegisterForm() {
 						<label
 							className={cn(
 								styles.field,
-								'mb-1 mt-5 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'mb-1 mt-5 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div
@@ -318,7 +318,7 @@ export default function RegisterForm() {
 						<label
 							className={cn(
 								styles.field,
-								'mt-5 mb-2 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'mt-5 mb-2 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div
@@ -392,7 +392,7 @@ export default function RegisterForm() {
 											(errors.email || errors.name || errors.password)
 										),
 									},
-									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white dark:border-[#3a3a3a] rounded-full px-6 py-2.5 text-sm font-medium transition-colors duration-300 cursor-pointer'
+									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white border-border rounded-full px-6 py-2.5 text-sm font-medium transition-colors duration-300 cursor-pointer'
 								)}
 							>
 								СОЗДАТЬ АККАУНТ

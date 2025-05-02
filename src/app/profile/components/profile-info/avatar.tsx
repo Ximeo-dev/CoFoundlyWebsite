@@ -82,7 +82,7 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 			) : (
 				<span
 					className={cn(
-						'flex items-center justify-center rounded-[30px] bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] text-black dark:text-white uppercase select-none',
+						'flex items-center justify-center rounded-[30px] bg-background border text-black dark:text-white uppercase select-none',
 						size === 64
 							? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
 							: size === 128

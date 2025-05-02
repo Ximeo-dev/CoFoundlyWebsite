@@ -67,7 +67,7 @@ export default function RecoveryForm() {
 					variants={slideUp}
 					className={cn(
 						styles.login_wrapper,
-						'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] shadow-lg w-[340px] sm:w-[420px] md:w-[450px] lg:w-[500px]'
+						'bg-background border border-border shadow-lg w-[340px] sm:w-[420px] md:w-[450px] lg:w-[500px]'
 					)}
 				>
 					<h1 className={styles.title}>Сброс пароля</h1>
@@ -75,7 +75,7 @@ export default function RecoveryForm() {
 						<label
 							className={cn(
 								styles.field,
-								'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div className={styles.icon}>
@@ -120,7 +120,7 @@ export default function RecoveryForm() {
 										[styles.buttonError]: isButtonClicked && errors.email,
 										[styles.form_btn]: !(isButtonClicked && errors.email),
 									},
-									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white dark:border-[#3a3a3a] transition-colors duration-300'
+									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white border-border transition-colors duration-300'
 								)}
 							>
 								СБРОСИТЬ

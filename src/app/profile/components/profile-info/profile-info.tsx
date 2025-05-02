@@ -48,7 +48,7 @@ export default function ProfileInfo() {
 					<div
 						className={cn(
 							styles.list_block,
-							'border-[#d9d7d7] dark:border-[#3a3a3a]'
+							'border-border'
 						)}
 					>
 						<div>
@@ -79,7 +79,7 @@ export default function ProfileInfo() {
 						</button>
 					</div>
 					<div
-						className={cn(styles.age, 'border-[#d9d7d7] dark:border-[#3a3a3a]')}
+						className={cn(styles.age, 'border-border')}
 					>
 						<div>
 							<TextAnimate

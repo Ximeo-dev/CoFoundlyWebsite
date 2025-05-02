@@ -28,7 +28,7 @@ export function EmailConfirmationNotification() {
 	}
 
 	return (
-		<div className='fixed bottom-5 right-5 z-50 flex w-80 items-start gap-4 rounded-xl border p-4 animate-fade-in dark:border-[#3a3a3a] dark:bg-[#151515] dark:text-slate-300 border-slate-300 bg-white text-slate-800'>
+		<div className='fixed bottom-5 right-5 z-50 flex w-80 items-start gap-4 rounded-xl border p-4 animate-fade-in dark:border-[#3a3a3a] bg-background dark:text-slate-300 border-slate-300 text-slate-800'>
 			<div className='p-2 bg-black dark:bg-white rounded-full'>
 				<MailCheck size={28} className='text-white dark:text-black' />
 			</div>
