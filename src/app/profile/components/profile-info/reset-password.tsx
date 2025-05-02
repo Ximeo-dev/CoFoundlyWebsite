@@ -1,12 +1,12 @@
 'use client'
 
-import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import styles from '../security/security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
+import FadeIn from 'react-fade-in'
 
 export default function ResetPassword() {
   const { user } = useAuth()
@@ -30,17 +30,15 @@ export default function ResetPassword() {
 
   return (
 		<div className={styles.reset_block}>
-			<TextAnimate
-				animation='slideUp'
-				className={styles.reset_text}
-				by='character'
-				duration={0.2}
-			>
+			<FadeIn className={styles.reset_text}>
 				Пароль
-			</TextAnimate>
+			</FadeIn>
 			<button
 				onClick={handleClick}
-				className={cn(styles.pass_change, 'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700')}
+				className={cn(
+					styles.pass_change,
+					'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
+				)}
 			>
 				Поменять
 			</button>
