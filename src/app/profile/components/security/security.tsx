@@ -6,6 +6,7 @@ import ResetPassword from '../profile-info/reset-password'
 import styles from './security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
+import TwoFactor from './2fa'
 
 export default function Security() {
   const { user } = useAuth()
@@ -53,6 +54,8 @@ export default function Security() {
 							Поменять
 						</button>
 					</div>
+
+					<TwoFactor />
 
 					<div className={cn(styles.reset_pass, 'border-[#d9d7d7] dark:border-[#3a3a3a]')}>
 						<ResetPassword />

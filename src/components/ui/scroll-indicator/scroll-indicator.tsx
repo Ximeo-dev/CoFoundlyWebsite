@@ -1,6 +1,6 @@
 export default function ScrollIndicator() {
   return (
-    <div className='absolute bottom-3 right-1 z-10' id='scroll-indicator'>
+    <div className='hidden sm:block absolute bottom-3 right-1 z-10' id='scroll-indicator'>
 			<div className='w-7 h-7 rounded-full border border-[#d9d7d7] dark:border-zinc-700 flex items-center justify-center'>
 				<svg
           xmlns='http://www.w3.org/2000/svg'

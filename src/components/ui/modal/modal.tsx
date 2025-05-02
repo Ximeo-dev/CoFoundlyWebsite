@@ -69,7 +69,7 @@ export default function Modal({
 		<LazyMotion features={domAnimation}>
 			<div
 				onClick={handleClickOutside}
-				className='bg-[rgba(0,0,0,0.7)] w-full h-screen flex items-center justify-center fixed inset-0 z-[20] overflow-hidden'
+				className='bg-[rgba(0,0,0,0.7)] w-full h-screen flex items-center justify-center fixed inset-0 z-50 overflow-hidden'
 			>
 				<m.div
 					ref={modalRef}

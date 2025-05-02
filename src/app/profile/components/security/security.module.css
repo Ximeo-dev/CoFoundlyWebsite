@@ -29,6 +29,18 @@
         }
       }
 
+      .modal {
+        @apply p-4 max-w-[600px];
+
+        .modal_text {
+          @apply text-center text-sm md:text-lg max-w-[300px] md:max-w-[550px];
+        }
+
+        .copy_block {
+          @apply mt-7 flex items-center justify-center gap-2 px-4 py-2 rounded-[15px] cursor-pointer;
+        }
+      }
+
       .reset_pass {
         @apply flex justify-between items-center border-b pb-6;
 

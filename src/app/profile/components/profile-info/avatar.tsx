@@ -72,9 +72,9 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 						size === 64
 							? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
 							: size === 128
-							? 'object-cover w-44 h-44 rounded-[15px]'
+							? 'object-cover w-36 h-36 rounded-[15px]'
 							: size === 512
-							? 'object-cover w-90 h-64 rounded-[30px]'
+							? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[30px]'
 							: styles.avatar,
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}
@@ -82,13 +82,18 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 			) : (
 				<span
 					className={cn(
-						'flex items-center justify-center rounded-[30px] bg-muted text-white font-semibold uppercase select-none',
+						'flex items-center justify-center rounded-[30px] bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] text-black dark:text-white uppercase select-none',
+						size === 64
+							? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
+							: size === 128
+							? 'object-cover w-44 h-44 rounded-[15px]'
+							: size === 512
+							? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[30px]'
+							: styles.avatar,
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}
 					style={{
-						width: size,
-						height: size,
-						fontSize: size ? size / 2.5 : 24,
+						fontSize: size ? size / 3 : 24,
 					}}
 				>
 					{user?.name?.[0]}
@@ -114,7 +119,7 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 						type='button'
 						onClick={handleClick}
 						disabled={isPending}
-						className='absolute -bottom-3 -right-8 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/70 text-white text-[13px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
+						className='absolute -bottom-3 right-0 md:-bottom-3 md:-right-8 flex items-center gap-1 px-2 py-1 md:px-2.5 md:py-1.5 rounded-[15px] bg-black/70 text-white text-[13px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
 					>
 						<Pencil size={14} /> Изменить
 					</button>

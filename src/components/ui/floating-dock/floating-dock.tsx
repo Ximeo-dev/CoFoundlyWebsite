@@ -37,7 +37,7 @@ const FloatingDockMobile = ({
 }) => {
 	return (
 		<div className={cn('block md:hidden', className)}>
-			<div className='flex gap-x-8'>
+			<div className='flex gap-x-4'>
 				{items.map((item, idx) => (
 					<div key={idx} className='flex items-center justify-center'>
 						<div

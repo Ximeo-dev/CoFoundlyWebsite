@@ -91,12 +91,9 @@ class AuthService {
 		return response
 	}
 
-	async twoFactorBind(token: string) {
+	async twoFactorBind() {
 		const response = await axiosWithAuth.post(
 			`${this.BASE_URL}/2fa-bind`,
-			{
-				params: { token }
-			}
 		)
 
 		return response
