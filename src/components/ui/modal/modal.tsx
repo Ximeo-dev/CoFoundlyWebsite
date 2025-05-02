@@ -69,7 +69,7 @@ export default function Modal({
 		<LazyMotion features={domAnimation}>
 			<div
 				onClick={handleClickOutside}
-				className='bg-[rgba(0,0,0,0.7)] w-full h-screen flex items-center justify-center fixed inset-0 z-[20] overflow-hidden'
+				className='bg-[rgba(0,0,0,0.7)] w-full h-screen flex items-center justify-center fixed inset-0 z-50 overflow-hidden'
 			>
 				<m.div
 					ref={modalRef}
@@ -78,7 +78,7 @@ export default function Modal({
 					exit={{ opacity: 0, scale: 0.9 }}
 					transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
 					className={cn(
-						'bg-white border border-[#D9D7D7] dark:bg-[#151515] dark:border-[#3a3a3a] h-auto min-w-[300px] rounded-lg overflow-hidden',
+						'border border-border bg-background h-auto min-w-[300px] rounded-lg overflow-hidden',
 						className
 					)}
 				>

@@ -74,7 +74,7 @@ export default function LoginForm() {
 					variants={slideUp}
 					className={cn(
 						styles.login_wrapper,
-						'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] shadow-lg'
+						'bg-background border border-border shadow-lg'
 					)}
 				>
 					<h1 className={styles.title}>
@@ -87,7 +87,7 @@ export default function LoginForm() {
 						<label
 							className={cn(
 								styles.field,
-								'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div
@@ -120,7 +120,7 @@ export default function LoginForm() {
 						<label
 							className={cn(
 								styles.field,
-								'mb-2 mt-6 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'mb-2 mt-6 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div
@@ -172,7 +172,7 @@ export default function LoginForm() {
 											(errors.email || errors.password)
 										),
 									},
-									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white dark:border-[#3a3a3a] transition-colors duration-300'
+									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white border-border transition-colors duration-300'
 								)}
 							>
 								ВОЙТИ

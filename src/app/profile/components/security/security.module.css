@@ -29,6 +29,38 @@
         }
       }
 
+      .modal {
+        @apply p-4 max-w-[350px] md:max-w-[600px];
+
+        .modal_inner {
+          @apply space-y-10;
+
+          .modal_title {
+            @apply text-lg md:text-xl font-semibold text-center;
+          }
+
+          .ft_var {
+            @apply space-y-2;
+
+            .ft_var_title {
+              @apply text-sm text-[#a1a1a1];
+            }
+  
+            .copy_block {
+              @apply mt-5 flex items-center gap-4 justify-center px-4 py-2 rounded-[15px] cursor-pointer;
+            }
+          }
+
+          .sc_var {
+            @apply space-y-4;
+
+            .sc_var_title {
+              @apply text-sm text-[#a1a1a1];
+            }
+          }
+        }
+      }
+
       .reset_pass {
         @apply flex justify-between items-center border-b pb-6;
 

@@ -41,10 +41,7 @@ export default function MobileNav() {
 	return (
 		<LazyMotion features={domAnimation}>
 			<div
-				className={cn(
-					styles.menu,
-					'border-t border-t-[#D9D7D7] dark:border-t-[#3a3a3a] bg-white dark:bg-[#151515]'
-				)}
+				className={cn(styles.menu, 'border-t border-t-border bg-background')}
 			>
 				<nav className={styles.menu_nav}>
 					<ul className={styles.menu_list}>
@@ -85,7 +82,7 @@ export default function MobileNav() {
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.3 }}
-							className={cn(styles.open_block, 'bg-white dark:bg-[#151515]')}
+							className={cn(styles.open_block, 'bg-background')}
 						>
 							<div className={styles.open_logo}>
 								<Link href={ENDPOINTS.HOME}>
@@ -130,7 +127,7 @@ export default function MobileNav() {
 											visible: { opacity: 1, x: 0 },
 										}}
 										transition={{ duration: 0.4, ease: 'easeInOut' }}
-										className='border border-[#D9D7D7] dark:border-[#3a3a3a] rounded-[15px] bg-white dark:bg-[#151515] p-3'
+										className='border border-border rounded-[15px] bg-background p-3'
 									>
 										<Link
 											onClick={toggleMenu}

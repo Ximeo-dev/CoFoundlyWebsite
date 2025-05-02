@@ -177,7 +177,7 @@ export function TextAnimate({
   animation = "slideUp",
   ...props
 }: TextAnimateProps) {
-  const MotionComponent = motion.create(Component);
+  const MotionComponent = motion[Component as keyof typeof motion] ?? motion.p;
 
   let segments: string[] = [];
   switch (by) {
@@ -242,7 +242,7 @@ export function TextAnimate({
       : { container: defaultContainerVariants, item: defaultItemVariants };
 
   return (
-    <AnimatePresence mode="popLayout">
+    // <AnimatePresence mode="popLayout">
       <MotionComponent
         variants={finalVariants.container as Variants}
         initial="hidden"
@@ -268,6 +268,6 @@ export function TextAnimate({
           </motion.span>
         ))}
       </MotionComponent>
-    </AnimatePresence>
+    // </AnimatePresence>
   );
 }

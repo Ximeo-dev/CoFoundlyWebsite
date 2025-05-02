@@ -119,7 +119,7 @@ export default function ConfirmForm() {
 					variants={slideUp}
 					className={cn(
 						styles.login_wrapper,
-						'bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] shadow-lg w-[500px]'
+						'bg-background border border-border shadow-lg w-[500px]'
 					)}
 				>
 					<h1 className={styles.title}>Восстановление пароля</h1>
@@ -127,7 +127,7 @@ export default function ConfirmForm() {
 						<label
 							className={cn(
 								styles.field,
-								'mb-1 mt-6 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'mb-1 mt-6 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div
@@ -185,7 +185,7 @@ export default function ConfirmForm() {
 						<label
 							className={cn(
 								styles.field,
-								'mt-6 mb-2 bg-white dark:bg-[#151515] border border-[#D9D7D7] dark:border-[#3a3a3a] focus-within:border focus-within:border-black dark:focus-within:border-white/70'
+								'mt-6 mb-2 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
 							)}
 						>
 							<div

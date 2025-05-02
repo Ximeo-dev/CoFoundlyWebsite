@@ -61,7 +61,7 @@ export default function Home() {
 						key={item.id}
 						className={cn(
 							styles.card_inner,
-							'bg-white border border-[#D9D7D7] dark:bg-[#151515] dark:border-[#3a3a3a] hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300'
+							'border bg-background border-border hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300'
 						)}
 					>
 						<TextAnimate animation='slideUp' className={styles.title}>

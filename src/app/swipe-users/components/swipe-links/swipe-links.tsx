@@ -22,7 +22,7 @@ export default function SwipeLinks({ activeTab, setActiveTab }: ISwipeLinks) {
 					initial={{ opacity: 0, y: -25 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.3 }}
-					className='relative flex rounded-[20px] py-2 bg-white dark:bg-[#1A1A1A] border border-[#d9d7d7] dark:border-[#3a3a3a]'
+					className='relative flex rounded-[20px] py-2 bg-white dark:bg-[#1A1A1A] border border-border'
 				>
 					<div
 						className={clsx(

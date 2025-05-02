@@ -6,6 +6,7 @@ import ResetPassword from '../profile-info/reset-password'
 import styles from './security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
+import TwoFactor from './2fa'
 
 export default function Security() {
   const { user } = useAuth()
@@ -25,7 +26,7 @@ export default function Security() {
 					<div
 						className={cn(
 							styles.change_block,
-							'border-[#d9d7d7] dark:border-[#3a3a3a]'
+							'border-border'
 						)}
 					>
 						<div>
@@ -54,7 +55,9 @@ export default function Security() {
 						</button>
 					</div>
 
-					<div className={cn(styles.reset_pass, 'border-[#d9d7d7] dark:border-[#3a3a3a]')}>
+					<TwoFactor />
+
+					<div className={cn(styles.reset_pass, 'border-border')}>
 						<ResetPassword />
 					</div>
 				</div>

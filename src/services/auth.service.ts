@@ -90,6 +90,14 @@ class AuthService {
 		)
 		return response
 	}
+
+	async twoFactorBind() {
+		const response = await axiosWithAuth.post(
+			`${this.BASE_URL}/2fa-bind`,
+		)
+
+		return response
+	}
 }
 
 export const authService = new AuthService()

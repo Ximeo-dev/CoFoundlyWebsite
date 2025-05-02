@@ -11,7 +11,7 @@ export default function FooterNav() {
 		<div
 			className={cn(
 				styles.footer,
-				'bg-white border border-[#d9d7d7] dark:bg-[#1A1A1A] dark:border-[#3a3a3a]'
+				'bg-white border border-border dark:bg-[#1A1A1A]'
 			)}
 		>
 			<nav className={styles.footer_nav}>

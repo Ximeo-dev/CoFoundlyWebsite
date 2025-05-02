@@ -47,13 +47,13 @@ export const MENU_MORE = [
 	},
 	{
 		id: 3,
-		label: 'Поддержка',
-		href: ENDPOINTS.SUPPORT,
+		label: 'Проекты',
+		href: ENDPOINTS.SWIPE_USERS,
 	},
 	{
 		id: 4,
-		label: 'Конфиденциальность',
-		href: ENDPOINTS.PRIVACY,
+		label: 'Исполнители',
+		href: ENDPOINTS.SWIPE_USERS,
 	},
 ]
 
