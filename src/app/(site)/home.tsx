@@ -1,59 +1,45 @@
 'use client'
 
 import Badge from '@/components/ui/badge/badge'
-import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import { PROJECT_NAME } from '@/constants/seo.constants'
 import styles from './home-page.module.css'
 import { slideUp } from '@/lib/motion-variants'
 import { cn } from '@/lib/utils'
 import { CARD, ICard } from './card.data'
 import { domAnimation, LazyMotion, m } from 'framer-motion'
+import FadeIn from 'react-fade-in'
 
 export default function Home() {
 	return (
 		<LazyMotion features={domAnimation}>
-			<TextAnimate animation='slideUp' className={styles.title}>
+			<FadeIn visible className={styles.title}>
 				{PROJECT_NAME}
-			</TextAnimate>
+			</FadeIn>
 			<div className={styles.text_block}>
-				<TextAnimate
-					animation='slideUp'
+				<FadeIn
+					visible
 					className={cn(styles.sub_text, 'dark:text-[#929191] text-[#696363]')}
 				>
 					Создавай
-				</TextAnimate>
+				</FadeIn>
 				<Badge>Вместе</Badge>
-				<TextAnimate
-					by='word'
-					animation='slideUp'
+				<FadeIn
+					visible
 					className={cn(styles.sub_text, 'dark:text-[#929191] text-[#696363]')}
 				>
 					— достигай быстрее
-				</TextAnimate>
+				</FadeIn>
 			</div>
 			<m.div
 				variants={slideUp}
 				initial='hidden'
 				animate='visible'
 				className={styles.btn_block}
-			>
-				{/* <button
-					className={cn(
-						styles.main_btn,
-						'bg-black text-white dark:bg-white dark:text-black shadow-[-5px_0px_50px_-13px_#805ad5,5px_0px_50px_-13px_#81e6d9] hover:scale-105 transition-transform duration-300' 
-					)}
-				>
-					Начать
-				</button> */}
-			</m.div>
+			></m.div>
 			<div className={styles.sec_text_block}>
-				<TextAnimate
-					by='word'
-					animation='slideRight'
-					className={styles.sec_text}
-				>
+				<FadeIn visible className={styles.sec_text}>
 					Меняем правила игры для стартаперов по всему миру
-				</TextAnimate>
+				</FadeIn>
 			</div>
 			<div className={styles.card_block}>
 				{CARD.map((item: ICard, index: number) => (
@@ -64,15 +50,15 @@ export default function Home() {
 							'border bg-background border-border hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300'
 						)}
 					>
-						<TextAnimate animation='slideUp' className={styles.title}>
+						<FadeIn visible className={styles.title}>
 							{item.title}
-						</TextAnimate>
+						</FadeIn>
 						<div className={styles.icon_block}>
 							<item.icon className={styles.icon} />
 						</div>
-						<TextAnimate animation='slideUp' className={styles.desc}>
+						<FadeIn visible className={styles.desc}>
 							{item.desc}
-						</TextAnimate>
+						</FadeIn>
 					</article>
 				))}
 			</div>

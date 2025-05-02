@@ -2,7 +2,6 @@
 
 import { cn } from '@/lib/utils'
 import styles from './security.module.css'
-import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import { useState } from 'react'
 import Modal from '@/components/ui/modal/modal'
 import { useMutation } from '@tanstack/react-query'
@@ -11,6 +10,7 @@ import { authService } from '@/services/auth.service'
 import { Button } from '@/components/ui/shadcn/button'
 import { toast } from 'sonner'
 import { Check, Copy } from 'lucide-react'
+import FadeIn from 'react-fade-in'
 
 export default function TwoFactor() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -37,26 +37,16 @@ export default function TwoFactor() {
 
   return (
 		<>
-			<div
-				className={cn(
-					styles.change_block,
-					'border-border'
-				)}
-			>
+			<div className={cn(styles.change_block, 'border-border')}>
 				<div>
 					{user?.securitySettings ? (
 						<>
-							<TextAnimate
-								className={styles.email}
-								animation='slideUp'
-								by='character'
-								duration={0.2}
-							>
+							<FadeIn className={styles.email} visible>
 								{user.securitySettings.twoFactorEnabled &&
 								user.securitySettings.telegramId
 									? '2FA включен'
 									: 'Включить 2FA'}
-							</TextAnimate>
+							</FadeIn>
 							{user?.securitySettings.twoFactorEnabled &&
 								user?.securitySettings.telegramId && (
 									<p

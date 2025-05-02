@@ -1,11 +1,11 @@
 'use client'
 
 import maskEmail from '@/utils/maskEmail'
-import { TextAnimate } from '@/components/ui/shadcn/text-animate'
 import styles from './profile-info.module.css'
 import { cn } from '@/lib/utils'
 import Avatar from './avatar'
 import { useAuth } from '@/hooks/useAuth'
+import FadeIn from 'react-fade-in'
 
 export default function ProfileInfo() {
 	const { user } = useAuth()
@@ -15,59 +15,35 @@ export default function ProfileInfo() {
 			<div className={styles.info_block}>
 				<Avatar editable size={512} />
 				<div className={styles.text_block}>
-					<TextAnimate
-						className={styles.name}
-						animation='slideUp'
-						by='character'
-						duration={0.2}
-					>
+					<FadeIn className={styles.name} visible>
 						{user?.name || ''}
-					</TextAnimate>
-					<TextAnimate
-						animation='slideUp'
-						by='character'
-						duration={0.2}
+					</FadeIn>
+					<FadeIn
+						visible
 						className='text-[#696363] dark:text-[#929191] text-sm'
 					>
 						{(user?.email && maskEmail(user.email)) || ''}
-					</TextAnimate>
+					</FadeIn>
 				</div>
 			</div>
 
-			<TextAnimate
-				animation='slideUp'
-				by='character'
-				duration={0.2}
-				className={styles.block_name}
-			>
+			<FadeIn visible className={styles.block_name}>
 				Личные данные
-			</TextAnimate>
+			</FadeIn>
 
 			<div className={styles.change_block}>
 				<div className={styles.list}>
-					<div
-						className={cn(
-							styles.list_block,
-							'border-border'
-						)}
-					>
+					<div className={cn(styles.list_block, 'border-border')}>
 						<div>
-							<TextAnimate
-								animation='slideUp'
-								className={styles.list_item}
-								by='character'
-								duration={0.2}
-							>
+							<FadeIn visible className={styles.list_item}>
 								Имя
-							</TextAnimate>
-							<TextAnimate
-								by='character'
-								duration={0.2}
+							</FadeIn>
+							<FadeIn
+								visible
 								className='text-[#696363] dark:text-[#929191] text-sm'
-								animation='slideUp'
 							>
 								{user?.name || ''}
-							</TextAnimate>
+							</FadeIn>
 						</div>
 						<button
 							className={cn(
@@ -78,26 +54,17 @@ export default function ProfileInfo() {
 							{user && user?.name ? 'Поменять' : 'Указать имя'}
 						</button>
 					</div>
-					<div
-						className={cn(styles.age, 'border-border')}
-					>
+					<div className={cn(styles.age, 'border-border')}>
 						<div>
-							<TextAnimate
-								className={styles.list_item}
-								animation='slideUp'
-								by='character'
-								duration={0.2}
-							>
+							<FadeIn className={styles.list_item} visible>
 								Возраст
-							</TextAnimate>
-							<TextAnimate
+							</FadeIn>
+							<FadeIn
 								className='text-[#696363] dark:text-[#929191] text-sm'
-								animation='slideUp'
-								by='character'
-								duration={0.2}
+								visible
 							>
 								20
-							</TextAnimate>
+							</FadeIn>
 						</div>
 						<button
 							className={cn(
