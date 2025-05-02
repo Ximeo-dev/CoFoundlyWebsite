@@ -14,9 +14,10 @@ import Spinner from '@/components/ui/spinner/spinner'
 interface IAvatarUploader {
 	size: 64 | 128 | 512
 	editable?: boolean
+	className?: string
 }
 
-export default function Avatar({ size, editable = false }: IAvatarUploader) {
+export default function Avatar({ size, editable = false, className }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
 	const { user, avatarVersion, setAvatarVersion } = useAuth()
@@ -60,7 +61,7 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 	}
 
 	return (
-		<div className='relative'>
+		<div className={cn(className, 'relative')}>
 			{user?.avatarUrl ? (
 				<Image
 					src={`${user?.avatarUrl}?v=${avatarVersion}`}
@@ -71,9 +72,9 @@ export default function Avatar({ size, editable = false }: IAvatarUploader) {
 						size === 64
 							? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
 							: size === 128
-							? 'object-cover w-32 h-32 rounded-[30px]'
+							? 'object-cover w-44 h-44 rounded-[15px]'
 							: size === 512
-							? 'object-cover w-68 h-68 rounded-[30px]'
+							? 'object-cover w-90 h-64 rounded-[30px]'
 							: styles.avatar,
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}

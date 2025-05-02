@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import SwipeLinks from '../swipe-links/swipe-links'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import Specialists from '../specialists/specialists'
 
 export default function SwipeTabs() {
   const [activeTab, setActiveTab] = useState<'specialists' | 'projects'>('specialists')
@@ -29,8 +30,8 @@ export default function SwipeTabs() {
   return (
 		<>
 			<SwipeLinks activeTab={activeTab} setActiveTab={setActiveTab} />
-			<div className='w-full rounded-[30px] bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] h-[500px] mt-12'>
-				{activeTab === 'specialists' ? <p>specialists</p> : <p>projects</p>}
+			<div className='w-full rounded-[30px] bg-white dark:bg-[#151515] border border-[#d9d7d7] dark:border-[#3a3a3a] mt-12'>
+				{activeTab === 'specialists' ? <Specialists /> : <p>projects</p>}
 			</div>
 			<div className='hidden lg:flex mt-8 w-full items-center justify-center'>
 			{isShowTooltip && (
