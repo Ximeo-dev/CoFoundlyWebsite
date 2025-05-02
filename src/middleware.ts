@@ -25,10 +25,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  if (isSwipePage && !refreshToken) {
-    return NextResponse.redirect(new URL(ENDPOINTS.LOGIN, url))
-  }
-
   console.log(
     `${new Date().toLocaleTimeString()} | Refresh token ${refreshToken}`
   )
@@ -40,5 +36,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/login', '/register', '/profile', '/swipe-users'],
+	matcher: ['/login', '/register', '/profile'],
 }
