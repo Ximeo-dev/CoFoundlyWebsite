@@ -7,6 +7,7 @@ import Settings from './security/security'
 import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
 import AnketPage from './user-anket/anket-page'
+import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
 
 export default function ProfileMain() {
   const [selected, setSelected] = useState('profile')
@@ -35,6 +36,7 @@ export default function ProfileMain() {
 			>
 				{renderContent()}
 			</div>
+      <EmailConfirmationNotification />
 		</div>
 	)
 }

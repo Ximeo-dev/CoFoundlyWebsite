@@ -1,41 +1,42 @@
+'use client'
+
 import { useFormContext } from 'react-hook-form'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function ConfirmPersonalData() {
-	const {
-		register,
-		formState: { errors },
-	} = useFormContext()
 	const { user } = useAuth()
+	const { watch } = useFormContext()
 
 	return (
-		<div>
-			<label className='block mb-2 font-semibold'>Имя</label>
-			<input
-				{...register('name')}
-				defaultValue={user?.name || ''}
-				className='input'
-				placeholder='Введите имя'
-			/>
-			{errors.name && (
-				<p className='text-red-500 text-sm mt-1'>
-					{errors.name.message as string}
+		<div className='space-y-4'>
+			<div>
+				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
+					Проверьте ваши данные
+				</h3>
+				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-6'>
+					Имя и возраст можно заменить в профиле
 				</p>
-			)}
+			</div>
 
-			<label className='block mt-4 mb-2 font-semibold'>Возраст</label>
-			<input
-				type='number'
-				{...register('age', { valueAsNumber: true })}
-				defaultValue={user?.age || ''}
-				className='input'
-				placeholder='Введите возраст'
-			/>
-			{errors.age && (
-				<p className='text-red-500 text-sm mt-1'>
-					{errors.age.message as string}
-				</p>
-			)}
+			<div className='space-y-4'>
+				<div className='border-b border-border pb-4'>
+					<p className='text-sm font-medium text-gray-500 dark:text-neutral-500'>
+						Имя
+					</p>
+					<p className='mt-1 text-lg text-gray-900 dark:text-gray-100'>
+						{user?.name || 'Не указано'}
+					</p>
+				</div>
+
+				<div className=''>
+					<p className='text-sm font-medium text-gray-500 dark:text-neutral-500'>
+						Возраст
+					</p>
+					<p className='mt-1 text-lg text-gray-900 dark:text-gray-100'>
+						{user?.age ? `${user.age} лет` : 20}
+					</p>
+				</div>
+			</div>
 		</div>
 	)
 }

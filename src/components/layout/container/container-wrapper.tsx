@@ -22,7 +22,7 @@ export default function ContainerWrapper({
 				isSwipePage
 					? 'px-5 sm:px-10 md:px-32 lg:px-52 xl:px-96'
 					: isCreateOrEditAnketPage
-					? 'px-5 sm:px-10 md:px-32 lg:px-64 xl:px-72'
+					? 'px-5 sm:px-10 md:px-32 lg:px-52 xl:px-64'
 					: 'px-5 sm:px-10 md:px-14 lg:px-15 xl:px-20'
 			)}
 		>

@@ -5,6 +5,7 @@ import { anketService } from '@/services/anket.service'
 import { useState } from 'react'
 import CreateAnket from './create-anket'
 import AnketView from './anket-view'
+import EditAnket from './edit-anket'
 
 export default function AnketPage() {
 	const queryClient = useQueryClient()
@@ -14,20 +15,32 @@ export default function AnketPage() {
 	})
 
 	const [isEditing, setIsEditing] = useState(false)
+	const [isCreating, setIsCreating] = useState(false)
 
 	if (isLoading) return <p>Загрузка...</p>
 
-	if (anket && !isEditing) {
+	if (anket) {
+		if (isEditing) {
+			return (
+				<EditAnket
+					anket={anket}
+					onCancel={() => setIsEditing(false)}
+					onUpdated={updatedAnket => {
+						queryClient.setQueryData(['anket'], updatedAnket)
+						setIsEditing(false)
+					}}
+				/>
+			)
+		}
 		return <AnketView anket={anket} onEdit={() => setIsEditing(true)} />
 	}
 
 	return (
 		<CreateAnket
-			onCancel={() => setIsEditing(false)}
-			existingAnket={anket}
-			onCreated={(updatedAnket) => {
-				queryClient.setQueryData(['anket'], updatedAnket)
-				setIsEditing(false)
+			onCancel={() => setIsCreating(false)}
+			onCreated={createdAnket => {
+				queryClient.setQueryData(['anket'], createdAnket)
+				setIsCreating(false)
 			}}
 		/>
 	)

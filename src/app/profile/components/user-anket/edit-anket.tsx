@@ -1,107 +1,135 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
+import { IAnketRequest } from '@/types/anket.types'
+import { AnketFormData, AnketSchema } from '@/zod/anket.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { SquareArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { anketService } from '@/services/anket.service'
-import { AnketFormData, AnketSchema } from '@/zod/anket.schema'
 import Avatar from '../profile-info/avatar'
-import { SquareArrowLeft } from 'lucide-react'
+import { Input } from '@/components/ui/shadcn/input'
+import { Textarea } from '@/components/ui/shadcn/textarea'
+import { useState } from 'react'
 
 export default function EditAnket({
-	existingAnket,
+	anket,
 	onCancel,
-	onSaved,
+	onUpdated,
 }: {
-	existingAnket: AnketFormData
+	anket: any
 	onCancel: () => void
-	onSaved: (updated: any) => void
+	onUpdated: (updated: any) => void
 }) {
-	const {
-		register,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<AnketFormData>({
-		defaultValues: existingAnket,
+	const methods = useForm<AnketFormData>({
+		defaultValues: {
+			name: anket?.name || '',
+			age: anket?.age || '',
+			job: anket?.job || '',
+			bio: anket?.bio || '',
+			skills: anket?.skills || [],
+			portfolio: anket?.portfolio ? [anket.portfolio] : [''],
+			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+		},
 		resolver: zodResolver(AnketSchema),
+		mode: 'onChange',
 	})
 
-	const onSubmit = async (data: AnketFormData) => {
+	const [isSubmitting, setIsSubmitting] = useState(false)
+
+	const handleSubmit = async (data: IAnketRequest) => {
+		setIsSubmitting(true)
 		try {
-			const updated = await anketService.editAnket(data)
+			const response = await anketService.editAnket(data)
 			toast.success('Анкета обновлена')
-			onSaved(updated)
-		} catch {
+			onUpdated(response)
+		} catch (e) {
 			toast.error('Ошибка при обновлении анкеты')
+		} finally {
+			setIsSubmitting(false)
 		}
 	}
 
 	return (
-		<div>
-			<div className='border-b border-border py-3'>
-				<div className='flex justify-between w-full items-center px-5'>
-					<button onClick={onCancel} className='text-sm cursor-pointer'>
-						<SquareArrowLeft className='text-[#656565] hover:text-[#828282] transition-colors duration-300 w-5 h-5' />
+		<FormProvider {...methods}>
+			<form onSubmit={methods.handleSubmit(handleSubmit)}>
+				<div className='border-b border-border py-4 px-5 flex justify-between items-center'>
+					<button
+						type='button'
+						onClick={onCancel}
+						className='text-sm cursor-pointer'
+					>
+						<SquareArrowLeft className='text-[#656565] hover:text-[#828282] transition-colors duration-300 w-7 h-7' />
 					</button>
-					<h2 className='text-lg'>Редактирование</h2>
+					<h2 className='text-lg font-semibold'>Редактирование анкеты</h2>
 				</div>
-			</div>
 
-			<div className='flex'>
-				<div className='w-1/2 flex flex-col px-10 border-r border-r-border pb-5 justify-center'>
-					<div className='flex flex-col items-center pt-5'>
-						<Avatar editable size={512} />
+				<div className='flex'>
+					<div className='w-1/2 flex flex-col px-10 border-r border-r-border pb-5'>
+						<div className='flex flex-col items-center pt-5'>
+							<Avatar size={512} />
+							<div className='mt-7 w-full max-w-xs'>
+								<Input
+									{...methods.register('name')}
+									placeholder='Имя'
+									className='text-xl text-center'
+								/>
+								<Input
+									{...methods.register('age')}
+									placeholder='Возраст'
+									className='text-xl text-center mt-2'
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div className='pt-5 flex flex-col px-10 w-1/2'>
+						<h2 className='text-xl'>Информация в анкете</h2>
+						<div className='mt-8 space-y-8'>
+							<div>
+								<p className='text-gray-400'>Род деятельности</p>
+								<Input
+									{...methods.register('job')}
+									placeholder='Род деятельности'
+									className='text-lg mt-1'
+								/>
+							</div>
+
+							<div>
+								<p className='text-gray-400'>О себе</p>
+								<Textarea
+									{...methods.register('bio')}
+									placeholder='Расскажите о себе'
+									className='mt-1'
+								/>
+							</div>
+
+							<div>
+								<p className='text-gray-400'>Навыки</p>
+								<Input
+									{...methods.register('skills')}
+									placeholder='Навыки (через запятую)'
+									className='mt-1'
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
-				<form onSubmit={handleSubmit(onSubmit)} className='space-y-6 px-5 py-6'>
-					<div>
-						<label className='block text-sm'>Имя</label>
-						<input value={existingAnket.name} disabled className='input opacity-50' />
-					</div>
 
-					<div>
-						<label className='block text-sm'>Возраст</label>
-						<input value={existingAnket.age} disabled className='input opacity-50' />
-					</div>
-
-					<div>
-						<label className='block text-sm'>Род деятельности</label>
-						<input {...register('job')} className='input' />
-					</div>
-
-					<div>
-						<label className='block text-sm'>О себе</label>
-						<textarea {...register('bio')} className='input' rows={4} />
-					</div>
-
-					<div>
-						<label className='block text-sm'>Навыки</label>
-						<input
-							{...register('skills')}
-							className='input'
-							placeholder='React, Node.js, Figma'
-						/>
-					</div>
-
-					<div>
-						<label className='block text-sm'>Портфолио (ссылка)</label>
-						<input {...register('portfolio.0')} className='input' />
-					</div>
-
-					<div className='flex justify-end gap-4'>
-						<button type='button' onClick={onCancel} className='text-gray-600'>
-							Отмена
-						</button>
-						<button
-							type='submit'
-							disabled={isSubmitting}
-							className='bg-blue-600 text-white px-6 py-2 rounded'
-						>
-							{isSubmitting ? 'Сохранение...' : 'Сохранить'}
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
+				<div className='flex justify-end px-5 pb-10 mt-5'>
+					<button
+						type='submit'
+						disabled={isSubmitting}
+						className={`px-6 py-3 rounded-full shadow transition ${
+							isSubmitting
+								? 'bg-gray-400 cursor-not-allowed'
+								: 'bg-green-500 hover:bg-green-600 text-white'
+						}`}
+					>
+						{isSubmitting ? 'Сохранение...' : 'Сохранить изменения'}
+					</button>
+				</div>
+			</form>
+		</FormProvider>
 	)
 }

@@ -1,6 +1,23 @@
+'use client'
+
 import { useFormContext } from 'react-hook-form'
 
-const allSkills = ['React', 'Node.js', 'Python', 'Docker', 'Figma', 'SQL']
+const allSkills = [
+	'React',
+	'Node.js',
+	'Python',
+	'Docker',
+	'Figma',
+	'SQL',
+	'TypeScript',
+	'GraphQL',
+	'AWS',
+	'UI/UX',
+	'PostgreSQL',
+	'MongoDB',
+	'Git',
+	'Redux',
+]
 
 export default function SkillsStep() {
 	const {
@@ -19,18 +36,26 @@ export default function SkillsStep() {
 	}
 
 	return (
-		<div>
-			<label className='block mb-4 font-semibold'>Выбери свои навыки</label>
-			<div className='flex flex-wrap gap-2'>
+		<div className='space-y-6'>
+			<div>
+				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
+					Ваши навыки
+				</h3>
+				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-6'>
+					Выберите навыки, которые соответствуют вашей специализации
+				</p>
+			</div>
+
+			<div className='flex flex-wrap gap-3'>
 				{allSkills.map(skill => (
 					<button
 						type='button'
 						key={skill}
 						onClick={() => toggleSkill(skill)}
-						className={`px-3 py-1 rounded-full border ${
+						className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
 							selected.includes(skill)
-								? 'bg-blue-500 text-white'
-								: 'bg-white text-gray-700'
+								? 'bg-black dark:bg-white text-white dark:text-black'
+								: 'bg-background border border-border'
 						}`}
 					>
 						{skill}
@@ -38,7 +63,7 @@ export default function SkillsStep() {
 				))}
 			</div>
 			{errors.skills && (
-				<p className='text-red-500 text-sm mt-2'>
+				<p className='mt-2 text-sm text-red-600 dark:text-red-500'>
 					{errors.skills.message as string}
 				</p>
 			)}
