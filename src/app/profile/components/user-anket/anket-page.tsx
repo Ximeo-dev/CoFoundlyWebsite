@@ -37,7 +37,6 @@ export default function AnketPage() {
 
 	return (
 		<CreateAnket
-			onCancel={() => setIsCreating(false)}
 			onCreated={createdAnket => {
 				queryClient.setQueryData(['anket'], createdAnket)
 				setIsCreating(false)

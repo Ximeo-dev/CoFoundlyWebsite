@@ -11,6 +11,8 @@ import Avatar from '../profile-info/avatar'
 import { Input } from '@/components/ui/shadcn/input'
 import { Textarea } from '@/components/ui/shadcn/textarea'
 import { useState } from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import SkillsModal from './steps/skills-modal'
 
 export default function EditAnket({
 	anket,
@@ -21,10 +23,11 @@ export default function EditAnket({
 	onCancel: () => void
 	onUpdated: (updated: any) => void
 }) {
-	const methods = useForm<AnketFormData>({
+	const { user } = useAuth()
+	const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false)
+
+	const methods = useForm<any>({
 		defaultValues: {
-			name: anket?.name || '',
-			age: anket?.age || '',
 			job: anket?.job || '',
 			bio: anket?.bio || '',
 			skills: anket?.skills || [],
@@ -36,6 +39,7 @@ export default function EditAnket({
 	})
 
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const skills = methods.watch('skills')
 
 	const handleSubmit = async (data: IAnketRequest) => {
 		setIsSubmitting(true)
@@ -67,18 +71,10 @@ export default function EditAnket({
 				<div className='flex'>
 					<div className='w-1/2 flex flex-col px-10 border-r border-r-border pb-5'>
 						<div className='flex flex-col items-center pt-5'>
-							<Avatar size={512} />
+							<Avatar size={512} editable />
 							<div className='mt-7 w-full max-w-xs'>
-								<Input
-									{...methods.register('name')}
-									placeholder='Имя'
-									className='text-xl text-center'
-								/>
-								<Input
-									{...methods.register('age')}
-									placeholder='Возраст'
-									className='text-xl text-center mt-2'
-								/>
+								<h1 className='text-xl text-center'>{user?.name}</h1>
+								<h1 className='text-xl text-center'>{user?.age}</h1>
 							</div>
 						</div>
 					</div>
@@ -106,11 +102,22 @@ export default function EditAnket({
 
 							<div>
 								<p className='text-gray-400'>Навыки</p>
-								<Input
-									{...methods.register('skills')}
-									placeholder='Навыки (через запятую)'
-									className='mt-1'
-								/>
+								<div className='mt-1 flex flex-col gap-2'>
+									<button
+										type='button'
+										onClick={() => setIsSkillsModalOpen(true)}
+										className='w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-left hover:bg-gray-200 dark:hover:bg-gray-700 transition'
+									>
+										{skills.length > 0
+											? skills.join(', ')
+											: 'Выберите навыки...'}
+									</button>
+									{methods.formState.errors.skills && (
+										<p className='text-sm text-red-500'>
+											{methods.formState.errors.skills.message as string}
+										</p>
+									)}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -129,6 +136,11 @@ export default function EditAnket({
 						{isSubmitting ? 'Сохранение...' : 'Сохранить изменения'}
 					</button>
 				</div>
+
+				<SkillsModal
+					isOpen={isSkillsModalOpen}
+					onClose={() => setIsSkillsModalOpen(false)}
+				/>
 			</form>
 		</FormProvider>
 	)

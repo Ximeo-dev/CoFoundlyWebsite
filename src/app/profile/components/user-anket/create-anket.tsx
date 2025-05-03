@@ -15,16 +15,12 @@ import SkillsStep from './steps/skills-step'
 import PortfolioStep from './steps/portfolio-step'
 
 export default function CreateAnket({
-	onCancel,
 	onCreated,
 }: {
-	onCancel: () => void
 	onCreated: (created: any) => void
 }) {
 	const methods = useForm<any>({
 		defaultValues: {
-			name: '',
-			age: '',
 			job: '',
 			bio: '',
 			skills: [],
@@ -47,7 +43,7 @@ export default function CreateAnket({
 	]
 
 	const stepFields: (keyof AnketFormData)[][] = [
-		['name', 'age'],
+		[],
 		['job'],
 		['bio'],
 		['skills'],
@@ -58,14 +54,17 @@ export default function CreateAnket({
 	const progress = (currentStep / (totalSteps - 1)) * 100
 
 	const nextStep = async () => {
-		const fieldsToValidate = stepFields[currentStep]
-		const result = await methods.trigger(fieldsToValidate)
+		if (currentStep !== 0) {
+			const fieldsToValidate = stepFields[currentStep]
+			const result = await methods.trigger(fieldsToValidate)
 
-		if (result) {
-			setCurrentStep(prev => prev + 1)
-		} else {
-			toast.error('Пожалуйста, заполните все обязательные поля')
+			if (!result) {
+				// toast.error('Пожалуйста, заполните все обязательные поля')
+				return
+			}
 		}
+
+		setCurrentStep(prev => prev + 1)
 	}
 
 	const prevStep = () => {
@@ -87,10 +86,7 @@ export default function CreateAnket({
 
 	return (
 		<FormProvider {...methods}>
-			<form
-				onSubmit={methods.handleSubmit(handleSubmit)}
-				className='max-w-4xl mx-auto'
-			>
+			<form onSubmit={methods.handleSubmit(handleSubmit)}>
 				<div className='py-4 px-6 flex justify-between items-center'>
 					<div className='flex flex-col items-center'>
 						<h2 className='text-xl font-semibold text-gray-800 dark:text-white'>
@@ -144,7 +140,7 @@ export default function CreateAnket({
 							<button
 								type='button'
 								onClick={prevStep}
-								className='px-4 py-2 rounded-lg bg-black text-white hover:bg-neutral-700 dark:bg-white dark:text-black dark:hover:bg-white/80 transition-colors duration-300 flex items-center gap-1 cursor-pointer'
+								className='px-4 py-2 rounded-lg bg-black text-white hover:bg-neutral-700 dark:bg-[#EDEDED] dark:text-black dark:hover:bg-white/80 transition-colors duration-300 flex items-center gap-1 cursor-pointer'
 							>
 								<ArrowLeft size={18} />
 								Назад
@@ -157,7 +153,7 @@ export default function CreateAnket({
 							<button
 								type='button'
 								onClick={nextStep}
-								className='px-4 py-2 rounded-lg bg-black text-white hover:bg-neutral-700 dark:bg-white dark:text-black dark:hover:bg-white/80 transition-colors duration-300 flex items-center gap-1 cursor-pointer ml-auto'
+								className='px-4 py-2 rounded-lg bg-black text-white hover:bg-neutral-700 dark:bg-[#EDEDED] dark:text-black dark:hover:bg-white/80 transition-colors duration-300 flex items-center gap-1 cursor-pointer ml-auto'
 							>
 								Далее
 								<ArrowRight size={18} />

@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/useAuth'
 
 export default function ConfirmPersonalData() {
 	const { user } = useAuth()
-	const { watch } = useFormContext()
 
 	return (
 		<div className='space-y-4'>

@@ -1,39 +1,16 @@
 'use client'
 
+import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-
-const allSkills = [
-	'React',
-	'Node.js',
-	'Python',
-	'Docker',
-	'Figma',
-	'SQL',
-	'TypeScript',
-	'GraphQL',
-	'AWS',
-	'UI/UX',
-	'PostgreSQL',
-	'MongoDB',
-	'Git',
-	'Redux',
-]
+import SkillsModal from './skills-modal'
 
 export default function SkillsStep() {
 	const {
-		setValue,
 		watch,
 		formState: { errors },
 	} = useFormContext()
-
-	const selected = watch('skills', [])
-
-	const toggleSkill = (skill: string) => {
-		const updated = selected.includes(skill)
-			? selected.filter((s: string) => s !== skill)
-			: [...selected, skill]
-		setValue('skills', updated, { shouldValidate: true })
-	}
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const skills = watch('skills', [])
 
 	return (
 		<div className='space-y-6'>
@@ -46,27 +23,24 @@ export default function SkillsStep() {
 				</p>
 			</div>
 
-			<div className='flex flex-wrap gap-3'>
-				{allSkills.map(skill => (
-					<button
-						type='button'
-						key={skill}
-						onClick={() => toggleSkill(skill)}
-						className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-							selected.includes(skill)
-								? 'bg-black dark:bg-white text-white dark:text-black'
-								: 'bg-background border border-border'
-						}`}
-					>
-						{skill}
-					</button>
-				))}
+			<div className='flex flex-col gap-2'>
+				<button
+					type='button'
+					onClick={() => setIsModalOpen(true)}
+					className='w-full px-4 py-3 rounded-lg text-left border bg-background border-border hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300 cursor-pointer'
+				>
+					{skills.length > 0
+						? skills.join(', ')
+						: 'Нажмите для выбора навыков...'}
+				</button>
+				{errors.skills && (
+					<p className='text-sm text-red-600 dark:text-red-500'>
+						{errors.skills.message as string}
+					</p>
+				)}
 			</div>
-			{errors.skills && (
-				<p className='mt-2 text-sm text-red-600 dark:text-red-500'>
-					{errors.skills.message as string}
-				</p>
-			)}
+
+			<SkillsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 		</div>
 	)
 }
