@@ -6,7 +6,6 @@ import ProfileInfo from './profile-info/profile-info'
 import Settings from './security/security'
 import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
-import CreateAnket from './user-anket/create-anket'
 import AnketPage from './user-anket/anket-page'
 
 export default function ProfileMain() {

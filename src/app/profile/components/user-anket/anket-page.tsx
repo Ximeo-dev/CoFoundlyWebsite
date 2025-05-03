@@ -23,6 +23,7 @@ export default function AnketPage() {
 
 	return (
 		<CreateAnket
+			onCancel={() => setIsEditing(false)}
 			existingAnket={anket}
 			onCreated={(updatedAnket) => {
 				queryClient.setQueryData(['anket'], updatedAnket)
