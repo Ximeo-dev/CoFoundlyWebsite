@@ -39,7 +39,7 @@ export default function Security() {
 								'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
 							)}
 						>
-							Поменять
+							Изменить
 						</button>
 					</div>
 

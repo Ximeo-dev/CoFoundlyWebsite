@@ -180,5 +180,30 @@
 }
 
 .animate-scroll {
-  animation: scrollAnimation 1.3s 12;
+  animation: scrollAnimation 1.3s infinite;
+}
+
+::-webkit-scrollbar {
+  width: 0.7rem;
+  background-color: #1A1A1A;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #45434A;
+  border-radius: 12px;
+}
+
+.step-content {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

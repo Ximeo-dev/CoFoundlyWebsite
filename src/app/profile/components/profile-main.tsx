@@ -6,7 +6,8 @@ import ProfileInfo from './profile-info/profile-info'
 import Settings from './security/security'
 import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
-import Anket from './anket/my-anket/anket'
+import AnketPage from './user-anket/anket-page'
+import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
 
 export default function ProfileMain() {
   const [selected, setSelected] = useState('profile')
@@ -16,7 +17,7 @@ export default function ProfileMain() {
       case 'security':
         return <Settings />
       case 'my-form':
-        return <Anket />
+        return <AnketPage />
       case 'project-form':
         return <div>project-form</div>
       default:
@@ -35,6 +36,7 @@ export default function ProfileMain() {
 			>
 				{renderContent()}
 			</div>
+      <EmailConfirmationNotification />
 		</div>
 	)
 }

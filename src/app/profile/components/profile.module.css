@@ -4,6 +4,6 @@
   @apply pb-14 pt-24 lg:pb-[70px] lg:pt-[160px] w-full min-h-screen;
 
   .profile_section {
-    @apply lg:ml-[242px] rounded-[15px] py-8 flex justify-center items-center;
+    @apply lg:ml-[242px] rounded-[15px];
   }
 }

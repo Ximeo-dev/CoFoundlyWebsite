@@ -7,25 +7,6 @@ import Specialists from '../specialists/specialists'
 
 export default function SwipeTabs() {
   const [activeTab, setActiveTab] = useState<'specialists' | 'projects'>('specialists')
-	const [isShowTooltip, setIsShowTooltip] = useState<boolean>(true)
-
-	useEffect(() => {
-		const handleKeyDown = (e: KeyboardEvent) => {
-			switch (e.key) {
-				case 'ArrowLeft':
-					console.log('skip')
-					break
-				case 'ArrowRight':
-					console.log('match')
-					break
-			}
-		}
-
-		window.addEventListener('keydown', handleKeyDown)
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown)
-		}
-	}, [])
 
   return (
 		<>

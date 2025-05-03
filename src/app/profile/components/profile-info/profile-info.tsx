@@ -51,7 +51,7 @@ export default function ProfileInfo() {
 								'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
 							)}
 						>
-							{user && user?.name ? 'Поменять' : 'Указать имя'}
+							{user && user?.name ? 'Изменить' : 'Указать имя'}
 						</button>
 					</div>
 					<div className={cn(styles.age, 'border-border')}>
@@ -72,7 +72,7 @@ export default function ProfileInfo() {
 								'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
 							)}
 						>
-							Поменять
+							Изменить
 						</button>
 					</div>
 				</div>

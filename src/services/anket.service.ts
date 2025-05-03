@@ -7,7 +7,7 @@ class AnketService {
 		return response.data
 	}
 
-	async getAnket(): Promise<IAnket | null> {
+	async getAnket(): Promise<any | null> {
 		const response = await axiosWithAuth.get<IAnket | null>('/profile')
 		return response.data
 	}

@@ -11,66 +11,52 @@ export default function Modal({
 	className,
 }: {
 	isOpen: boolean
-	onClose: any
+	onClose: () => void
 	children?: React.ReactNode
-	header?: any
 	className?: string
 }) {
-	useEffect(() => {
-		if (isOpen) {
-			document.body.classList.add('overflow-hidden')
-		} else {
-			document.body.classList.remove('overflow-hidden')
-		}
-
-		return () => {
-			document.body.classList.remove('overflow-hidden')
-		}
-	}, [isOpen])
-
-	if (!isOpen) return null
-
 	const modalRef = useRef<HTMLDivElement>(null)
 	const isMouseDownInside = useRef(false)
 
-	const handleClickOutside = (e: any) => {
-		handleMouseUp(e)
-	}
-
-	const handleMouseDown = (e: MouseEvent) => {
-		if (modalRef.current && modalRef.current.contains(e.target as Node)) {
-			isMouseDownInside.current = true
-		} else {
-			isMouseDownInside.current = false
-		}
-	}
-
-	const handleMouseUp = (e: MouseEvent) => {
-		if (
-			!isMouseDownInside.current &&
-			modalRef.current &&
-			!modalRef.current.contains(e.target as Node)
-		) {
-			onClose(false)
-		}
-	}
-
 	useEffect(() => {
-		document.addEventListener('mousedown', handleMouseDown)
-		document.addEventListener('mouseup', handleMouseUp)
+		const handleMouseDown = (e: MouseEvent) => {
+			if (modalRef.current && modalRef.current.contains(e.target as Node)) {
+				isMouseDownInside.current = true
+			} else {
+				isMouseDownInside.current = false
+			}
+		}
+
+		const handleMouseUp = (e: MouseEvent) => {
+			if (
+				!isMouseDownInside.current &&
+				modalRef.current &&
+				!modalRef.current.contains(e.target as Node)
+			) {
+				onClose()
+			}
+		}
+
+		if (isOpen) {
+			document.body.classList.add('overflow-hidden')
+			document.addEventListener('mousedown', handleMouseDown)
+			document.addEventListener('mouseup', handleMouseUp)
+		} else {
+			document.body.classList.remove('overflow-hidden')
+		}
 
 		return () => {
+			document.body.classList.remove('overflow-hidden')
 			document.removeEventListener('mousedown', handleMouseDown)
 			document.removeEventListener('mouseup', handleMouseUp)
 		}
-	}, [])
+	}, [isOpen, onClose])
+
+	if (!isOpen) return null
 
 	return (
 		<LazyMotion features={domAnimation}>
-			<div
-				onClick={handleClickOutside}
-				className='bg-[rgba(0,0,0,0.7)] w-full h-screen flex items-center justify-center fixed inset-0 z-50 overflow-hidden'
-			>
+			<div className='bg-[rgba(0,0,0,0.7)] w-full h-screen flex items-center justify-center fixed inset-0 z-50 overflow-hidden'>
 				<m.div
 					ref={modalRef}
 					initial={{ opacity: 0, scale: 0.9 }}
