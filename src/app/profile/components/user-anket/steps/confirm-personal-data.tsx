@@ -1,7 +1,5 @@
-'use client'
-
-import { useAuth } from '@/hooks/useAuth'
 import { useFormContext } from 'react-hook-form'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function ConfirmPersonalData() {
 	const {
@@ -14,30 +12,30 @@ export default function ConfirmPersonalData() {
 		<div>
 			<label className='block mb-2 font-semibold'>Имя</label>
 			<input
-				{...register('name', { required: 'Имя обязательно' })}
+				{...register('name')}
 				defaultValue={user?.name || ''}
 				className='input'
 				placeholder='Введите имя'
 			/>
-			{/* {errors.name && (
-				<p className='text-red-500 text-sm mt-1'>{errors.name.message}</p>
-			)} */}
+			{errors.name && (
+				<p className='text-red-500 text-sm mt-1'>
+					{errors.name.message as string}
+				</p>
+			)}
 
 			<label className='block mt-4 mb-2 font-semibold'>Возраст</label>
 			<input
 				type='number'
-				{...register('age', {
-					required: 'Возраст обязателен',
-					min: { value: 14, message: 'Минимум 14 лет' },
-					max: { value: 100, message: 'Максимум 100 лет' },
-				})}
+				{...register('age', { valueAsNumber: true })}
 				defaultValue={user?.age || ''}
 				className='input'
 				placeholder='Введите возраст'
 			/>
-			{/* {errors.age && (
-				<p className='text-red-500 text-sm mt-1'>{errors.age.message}</p>
-			)} */}
+			{errors.age && (
+				<p className='text-red-500 text-sm mt-1'>
+					{errors.age.message as string}
+				</p>
+			)}
 		</div>
 	)
 }

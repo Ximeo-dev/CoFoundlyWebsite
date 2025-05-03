@@ -3,14 +3,19 @@ import { useFormContext } from 'react-hook-form'
 const allSkills = ['React', 'Node.js', 'Python', 'Docker', 'Figma', 'SQL']
 
 export default function SkillsStep() {
-	const { setValue, watch } = useFormContext()
+	const {
+		setValue,
+		watch,
+		formState: { errors },
+	} = useFormContext()
+
 	const selected = watch('skills', [])
 
 	const toggleSkill = (skill: string) => {
 		const updated = selected.includes(skill)
 			? selected.filter((s: string) => s !== skill)
 			: [...selected, skill]
-		setValue('skills', updated)
+		setValue('skills', updated, { shouldValidate: true })
 	}
 
 	return (
@@ -32,6 +37,11 @@ export default function SkillsStep() {
 					</button>
 				))}
 			</div>
+			{errors.skills && (
+				<p className='text-red-500 text-sm mt-2'>
+					{errors.skills.message as string}
+				</p>
+			)}
 		</div>
 	)
 }

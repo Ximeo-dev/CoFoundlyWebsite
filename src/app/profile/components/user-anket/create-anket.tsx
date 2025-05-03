@@ -8,15 +8,17 @@ import BioStep from './steps/bio-step'
 import SkillsStep from './steps/skills-step'
 import PortfolioStep from './steps/portfolio-step'
 import { toast } from 'sonner'
+import { AnketFormData, AnketSchema } from '@/zod/anket.schema'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 export default function CreateAnket({
 	existingAnket,
 	onCreated,
 }: {
 	existingAnket?: any | null
-	onCreated: () => void
+	onCreated: (updated: any) => void
 }) {
-	const methods = useForm<any>({
+	const methods = useForm<AnketFormData>({
 		defaultValues: {
 			name: existingAnket?.name || '',
 			age: existingAnket?.age || '',
@@ -26,6 +28,7 @@ export default function CreateAnket({
 			portfolio: existingAnket?.portfolio ? [existingAnket.portfolio] : [''],
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		},
+		resolver: zodResolver(AnketSchema),
 	})
 
 	const [currentStep, setCurrentStep] = useState(0)
@@ -58,11 +61,11 @@ export default function CreateAnket({
 		setIsSubmitting(true)
 		try {
 			if (existingAnket) {
-				await anketService.editAnket(data)
-				onCreated()
+				const updated = await anketService.editAnket(data)
+				onCreated(updated)
 			} else {
-				await anketService.createAnket(data)
-				onCreated()
+				const created = await anketService.createAnket(data)
+				onCreated(created)
 			}
 		} catch (error) {
 			console.error('Ошибка при сохранении анкеты:', error)
@@ -108,7 +111,7 @@ export default function CreateAnket({
 					<div className='flex gap-4'>
 						{currentStep < totalSteps - 1 ? (
 							<button
-								type='button'
+								type='submit'
 								onClick={nextStep}
 								className='px-6 py-3 bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 transition-all duration-200'
 							>
