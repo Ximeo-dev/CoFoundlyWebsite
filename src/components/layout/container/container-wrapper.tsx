@@ -20,7 +20,7 @@ export default function ContainerWrapper({
 			className={cn(
 				styles.container_wrapper,
 				isSwipePage
-					? 'px-5 sm:px-10 md:px-24 lg:px-32 xl:px-44'
+					? 'px-5 sm:px-10 md:px-20 lg:px-44 xl:px-72'
 					: isCreateOrEditAnketPage
 					? 'px-5 sm:px-10 md:px-24 lg:px-32 xl:px-44'
 					: 'px-5 sm:px-10 md:px-14 lg:px-15 xl:px-20'

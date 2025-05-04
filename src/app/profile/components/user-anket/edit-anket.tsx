@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/shadcn/textarea'
 import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import SkillsModal from './steps/skills-modal'
+import { Button } from '@/components/ui/shadcn/button'
 
 export default function EditAnket({
 	anket,
@@ -83,34 +84,32 @@ export default function EditAnket({
 						<h2 className='text-xl'>Информация в анкете</h2>
 						<div className='mt-8 space-y-8'>
 							<div>
-								<p className='text-gray-400'>Род деятельности</p>
-								<Input
-									{...methods.register('job')}
-									placeholder='Род деятельности'
-									className='text-lg mt-1'
-								/>
+								<p className='text-gray-500 dark:text-neutral-500'>
+									Род деятельности
+								</p>
+								<Input {...methods.register('job')} className='text-lg mt-1' />
 							</div>
 
 							<div>
-								<p className='text-gray-400'>О себе</p>
+								<p className='text-gray-500 dark:text-neutral-500'>О себе</p>
 								<Textarea
 									{...methods.register('bio')}
-									placeholder='Расскажите о себе'
 									className='mt-1'
+									placeholder='Расскажите о себе'
 								/>
 							</div>
 
 							<div>
-								<p className='text-gray-400'>Навыки</p>
+								<p className='text-gray-500 dark:text-neutral-500'>Навыки</p>
 								<div className='mt-1 flex flex-col gap-2'>
 									<button
 										type='button'
 										onClick={() => setIsSkillsModalOpen(true)}
-										className='w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-left hover:bg-gray-200 dark:hover:bg-gray-700 transition'
+										className='w-full px-4 py-3 rounded-lg text-left border dark:bg-input/30 border-border hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300 cursor-pointer text-muted-foreground text-sm'
 									>
 										{skills.length > 0
 											? skills.join(', ')
-											: 'Выберите навыки...'}
+											: 'Нажмите для выбора навыков...'}
 									</button>
 									{methods.formState.errors.skills && (
 										<p className='text-sm text-red-500'>
@@ -123,18 +122,15 @@ export default function EditAnket({
 					</div>
 				</div>
 
-				<div className='flex justify-end px-5 pb-10 mt-5'>
-					<button
+				<div className='flex justify-end px-10 pb-10 mt-10'>
+					<Button
 						type='submit'
 						disabled={isSubmitting}
-						className={`px-6 py-3 rounded-full shadow transition ${
-							isSubmitting
-								? 'bg-gray-400 cursor-not-allowed'
-								: 'bg-green-500 hover:bg-green-600 text-white'
-						}`}
+						size={'lg'}
+						className={`px-6 py-3 rounded-lg transition-colors duration-300`}
 					>
 						{isSubmitting ? 'Сохранение...' : 'Сохранить изменения'}
-					</button>
+					</Button>
 				</div>
 
 				<SkillsModal

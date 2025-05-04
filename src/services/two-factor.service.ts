@@ -9,6 +9,12 @@ class TwoFactorService {
 
 		return response
 	}
+
+	async twoFactorUnbind() {
+		const response = await axiosWithAuth.post(`${this.BASE_URL}/unbind`)
+
+		return response
+	}
 }
 
 export const twoFactorService = new TwoFactorService()

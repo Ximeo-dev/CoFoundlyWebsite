@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import SwipeLinks from '../swipe-links/swipe-links'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
-import Specialists from '../specialists/specialists'
+import Specialists from '../users-swipe/users-swipe'
 
 export default function SwipeTabs() {
   const [activeTab, setActiveTab] = useState<'specialists' | 'projects'>('specialists')
