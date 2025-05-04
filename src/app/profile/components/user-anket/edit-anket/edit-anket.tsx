@@ -7,13 +7,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SquareArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { anketService } from '@/services/anket.service'
-import Avatar from '../profile-info/avatar'
+import Avatar from '../../profile-info/avatar'
 import { Input } from '@/components/ui/shadcn/input'
 import { Textarea } from '@/components/ui/shadcn/textarea'
 import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-import SkillsModal from './steps/skills-modal'
+import SkillsModal from '../steps/skills-modal'
 import { Button } from '@/components/ui/shadcn/button'
+import styles from './edit-anket.module.css'
+import { cn } from '@/lib/utils'
 
 export default function EditAnket({
 	anket,
@@ -58,31 +60,31 @@ export default function EditAnket({
 	return (
 		<FormProvider {...methods}>
 			<form onSubmit={methods.handleSubmit(handleSubmit)}>
-				<div className='border-b border-border py-4 px-5 flex justify-between items-center'>
+				<div className={cn(styles.edit_top, 'border-b border-border')}>
 					<button
 						type='button'
 						onClick={onCancel}
-						className='text-sm cursor-pointer'
+						className={styles.cancel_btn}
 					>
-						<SquareArrowLeft className='text-[#656565] hover:text-[#828282] transition-colors duration-300 w-7 h-7' />
+						<SquareArrowLeft className='text-[#656565] hover:text-[#828282] transition-colors duration-300 w-6 h-6' />
 					</button>
-					<h2 className='text-lg font-semibold'>Редактирование анкеты</h2>
+					<h2 className={styles.edit_title}>Редактирование анкеты</h2>
 				</div>
 
-				<div className='flex'>
-					<div className='w-1/2 flex flex-col px-10 border-r border-r-border pb-5'>
-						<div className='flex flex-col items-center pt-5'>
+				<div className={styles.edit_block}>
+					<div className={cn(styles.edit_left, 'border-r border-r-border')}>
+						<div className={styles.edit_inner}>
 							<Avatar size={512} editable />
-							<div className='mt-7 w-full max-w-xs'>
-								<h1 className='text-xl text-center'>{user?.name}</h1>
-								<h1 className='text-xl text-center'>{user?.age}</h1>
+							<div className={styles.personal_data}>
+								<h1 className={styles.personal_data_text}>{user?.name}</h1>
+								<h1 className={styles.personal_data_text}>{user?.age}</h1>
 							</div>
 						</div>
 					</div>
 
-					<div className='pt-5 flex flex-col px-10 w-1/2'>
-						<h2 className='text-xl'>Информация в анкете</h2>
-						<div className='mt-8 space-y-8'>
+					<div className={styles.edit_right}>
+						<h2 className={styles.edit_right_title}>Информация в анкете</h2>
+						<div className={styles.edit_right_block}>
 							<div>
 								<p className='text-gray-500 dark:text-neutral-500'>
 									Род деятельности
@@ -101,7 +103,7 @@ export default function EditAnket({
 
 							<div>
 								<p className='text-gray-500 dark:text-neutral-500'>Навыки</p>
-								<div className='mt-1 flex flex-col gap-2'>
+								<div className={styles.edit_skills}>
 									<button
 										type='button'
 										onClick={() => setIsSkillsModalOpen(true)}
@@ -122,12 +124,12 @@ export default function EditAnket({
 					</div>
 				</div>
 
-				<div className='flex justify-end px-10 pb-10 mt-10'>
+				<div className={styles.edit_btn_block}>
 					<Button
 						type='submit'
 						disabled={isSubmitting}
 						size={'lg'}
-						className={`px-6 py-3 rounded-lg transition-colors duration-300`}
+						className={styles.edit_btn}
 					>
 						{isSubmitting ? 'Сохранение...' : 'Сохранить изменения'}
 					</Button>

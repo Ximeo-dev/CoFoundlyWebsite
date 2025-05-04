@@ -1,0 +1,53 @@
+@reference "tailwindcss";
+
+.view_block {
+  @apply overflow-hidden;
+
+  .view_inner {
+    @apply p-4 md:p-5;
+
+    .view_top {
+      @apply flex flex-col md:flex-row md:items-center md:justify-between gap-3;
+
+      .view_top_text {
+        @apply text-lg font-medium;
+      }
+
+      .view_top_block {
+        @apply flex items-center gap-4;
+
+        .percent_block {
+          @apply w-32 md:w-44;
+        }
+      }
+    }
+  }
+
+  .info_block {
+    @apply flex flex-col md:flex-row;
+
+    .info_block_left {
+      @apply w-full md:w-1/2 p-4 md:p-6;
+
+      .left_block_inner {
+        @apply flex flex-col items-center;
+
+        .personal_data {
+          @apply text-xl font-medium mt-4 text-center;
+        }
+      }
+    }
+
+    .info_block_right {
+      @apply w-full md:w-2/3 p-4 md:p-6;
+
+      .right_title {
+        @apply text-lg font-medium mb-6;
+      }
+
+      .right_inner {
+        @apply space-y-6;
+      }
+    }
+  }
+}

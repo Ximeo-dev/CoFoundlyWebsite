@@ -74,7 +74,7 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 							: size === 128
 							? 'object-cover w-36 h-36 rounded-[15px]'
 							: size === 512
-							? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[30px]'
+							? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[15px]'
 							: styles.avatar,
 						isPending ? 'opacity-50' : 'opacity-100'
 					)}
