@@ -9,8 +9,8 @@ import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/shadcn/button'
 import { toast } from 'sonner'
 import { Check, Copy } from 'lucide-react'
-import FadeIn from 'react-fade-in'
 import { twoFactorService } from '@/services/two-factor.service'
+import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 
 export default function TwoFactor() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -51,22 +51,22 @@ export default function TwoFactor() {
 				<div>
 					{user?.securitySettings ? (
 						<>
-							<FadeIn className={styles.email} visible>
+							<FadeInUp className={styles.email}>
 								{user.securitySettings.twoFactorEnabled &&
 								user.securitySettings.telegramId
 									? '2FA включен'
 									: 'Включить 2FA'}
-							</FadeIn>
+							</FadeInUp>
 							{user?.securitySettings.twoFactorEnabled &&
 								user?.securitySettings.telegramId && (
-									<p
+									<FadeInUp
 										className={cn(
 											styles.user_email,
-											'text-[#696363] dark:text-[#929191]'
+											'text-[#696363] dark:text-[#929191] text-nowrap'
 										)}
 									>
 										Ваш telegram id: {user?.securitySettings?.telegramId}
-									</p>
+									</FadeInUp>
 								)}
 						</>
 					) : null}

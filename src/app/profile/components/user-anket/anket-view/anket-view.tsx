@@ -66,7 +66,6 @@ export default function AnketView({
 					<div className={styles.left_block_inner}>
 						<Avatar
 							size={512}
-							editable={editable}
 						/>
 						<h1 className={styles.personal_data}>
 							{user?.name}, {user?.age}

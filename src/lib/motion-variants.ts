@@ -2,7 +2,7 @@ import { Variants } from 'framer-motion'
 
 export const slideUp: Variants = {
 	hidden: {
-		y: 30,
+		y: 20,
 		opacity: 0,
 	},
 	visible: (custom: number = 0) => ({
@@ -10,7 +10,7 @@ export const slideUp: Variants = {
 		opacity: 1,
 		transition: {
 			delay: custom * 0.15,
-			duration: 0.3,
+			duration: 0.45,
 			ease: 'easeInOut',
 		},
 	}),

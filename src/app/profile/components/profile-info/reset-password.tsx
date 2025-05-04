@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import styles from '../security/security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
-import FadeIn from 'react-fade-in'
+import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 
 export default function ResetPassword() {
   const { user } = useAuth()
@@ -30,9 +30,9 @@ export default function ResetPassword() {
 
   return (
 		<div className={styles.reset_block}>
-			<FadeIn className={styles.reset_text}>
+			<FadeInUp className={styles.reset_text}>
 				Пароль
-			</FadeIn>
+			</FadeInUp>
 			<button
 				onClick={handleClick}
 				className={cn(
