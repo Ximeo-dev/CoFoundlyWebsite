@@ -6,32 +6,31 @@ import styles from './security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import TwoFactor from './2fa'
-import FadeIn from 'react-fade-in'
+import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 
 export default function Security() {
   const { user } = useAuth()
 
   return (
 		<div className={styles.sec_block}>
-			<FadeIn visible className={styles.sec_title}>
+			<FadeInUp className={styles.sec_title}>
 				Безопасность
-			</FadeIn>
+			</FadeInUp>
 			<div className={styles.sec_inner}>
 				<div className={styles.sec}>
 					<div className={cn(styles.change_block, 'border-border')}>
 						<div>
-							<FadeIn className={styles.email} visible>
+							<FadeInUp className={styles.email}>
 								Электронная почта
-							</FadeIn>
-							<FadeIn
+							</FadeInUp>
+							<FadeInUp
 								className={cn(
 									styles.user_email,
 									'text-[#696363] dark:text-[#929191]'
 								)}
-								visible
 							>
 								{(user?.email && maskEmail(user.email)) || ''}
-							</FadeIn>
+							</FadeInUp>
 						</div>
 						<button
 							className={cn(

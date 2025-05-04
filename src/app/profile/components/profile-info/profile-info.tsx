@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import Avatar from './avatar'
 import { useAuth } from '@/hooks/useAuth'
 import FadeIn from 'react-fade-in'
+import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 
 export default function ProfileInfo() {
 	const { user } = useAuth()
@@ -15,35 +16,33 @@ export default function ProfileInfo() {
 			<div className={styles.info_block}>
 				<Avatar editable size={512} />
 				<div className={styles.text_block}>
-					<FadeIn className={styles.name} visible>
+					<FadeInUp className={styles.name}>
 						{user?.name || ''}
-					</FadeIn>
-					<FadeIn
-						visible
+					</FadeInUp>
+					<FadeInUp
 						className='text-[#696363] dark:text-[#929191] text-sm'
 					>
 						{(user?.email && maskEmail(user.email)) || ''}
-					</FadeIn>
+					</FadeInUp>
 				</div>
 			</div>
 
-			<FadeIn visible className={styles.block_name}>
+			<FadeInUp className={styles.block_name}>
 				Личные данные
-			</FadeIn>
+			</FadeInUp>
 
 			<div className={styles.change_block}>
 				<div className={styles.list}>
 					<div className={cn(styles.list_block, 'border-border')}>
 						<div>
-							<FadeIn visible className={styles.list_item}>
+							<FadeInUp className={styles.list_item}>
 								Имя
-							</FadeIn>
-							<FadeIn
-								visible
+							</FadeInUp>
+							<FadeInUp
 								className='text-[#696363] dark:text-[#929191] text-sm'
 							>
 								{user?.name || ''}
-							</FadeIn>
+							</FadeInUp>
 						</div>
 						<button
 							className={cn(
@@ -56,15 +55,14 @@ export default function ProfileInfo() {
 					</div>
 					<div className={cn(styles.age, 'border-border')}>
 						<div>
-							<FadeIn className={styles.list_item} visible>
+							<FadeInUp className={styles.list_item}>
 								Возраст
-							</FadeIn>
-							<FadeIn
+							</FadeInUp>
+							<FadeInUp
 								className='text-[#696363] dark:text-[#929191] text-sm'
-								visible
 							>
 								20
-							</FadeIn>
+							</FadeInUp>
 						</div>
 						<button
 							className={cn(
