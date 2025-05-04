@@ -6,11 +6,11 @@ import { useState } from 'react'
 import Modal from '@/components/ui/modal/modal'
 import { useMutation } from '@tanstack/react-query'
 import { useAuth } from '@/hooks/useAuth'
-import { authService } from '@/services/auth.service'
 import { Button } from '@/components/ui/shadcn/button'
 import { toast } from 'sonner'
 import { Check, Copy } from 'lucide-react'
 import FadeIn from 'react-fade-in'
+import { twoFactorService } from '@/services/two-factor.service'
 
 export default function TwoFactor() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -19,13 +19,23 @@ export default function TwoFactor() {
 
   const { user } = useAuth()
   
-  const { mutate, isPending } = useMutation({
+  const { mutate: bind, isPending } = useMutation({
 		mutationKey: ['twoFactor-bind'],
-		mutationFn: () => authService.twoFactorBind(),
+		mutationFn: () => twoFactorService.twoFactorBind(),
 		onSuccess: data => {
 			setGeneratedToken(data.data)
 			setIsModalOpen(true)
 		},
+	})
+
+	const { mutate: unbind } = useMutation({
+		mutationKey: ['twoFactor-unbind'],
+		mutationFn: () => twoFactorService.twoFactorUnbind(),
+		onError: (error: any) => {
+			if (error && error.status === 403) {
+				toast.success('Подтверждение отправлено в телеграм')
+			}
+		}
 	})
 
   const handleCopy = () => {
@@ -61,19 +71,30 @@ export default function TwoFactor() {
 						</>
 					) : null}
 				</div>
-				<button
-					onClick={() => mutate()}
-					className={cn(
-						styles.change_btn,
-						'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
-					)}
-					disabled={isPending}
-				>
-					{user?.securitySettings.twoFactorEnabled &&
-					user.securitySettings.telegramId
-						? 'Отключить'
-						: 'Включить'}
-				</button>
+				{user?.securitySettings?.twoFactorEnabled &&
+				user?.securitySettings?.telegramId ? (
+					<button
+						onClick={() => unbind()}
+						className={cn(
+							styles.change_btn,
+							'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
+						)}
+						disabled={isPending}
+					>
+						Отключить
+					</button>
+				) : (
+					<button
+						onClick={() => bind()}
+						className={cn(
+							styles.change_btn,
+							'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
+						)}
+						disabled={isPending}
+					>
+						Включить
+					</button>
+				)}
 			</div>
 
 			{isModalOpen && generatedToken && (
