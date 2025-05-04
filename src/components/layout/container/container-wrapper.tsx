@@ -38,7 +38,7 @@ export default function ContainerWrapper({
 				className='absolute inset-0 -z-10 opacity-100 dark:hidden'
 				style={{
 					backgroundImage:
-						'radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px)',
+						'radial-gradient(circle, rgba(0, 0, 0, 0.15) 1px, transparent 1px)',
 					backgroundSize: '25px 25px',
 				}}
 			/>

@@ -20,7 +20,7 @@ export default function FadeInUp({ children, className = '' }: FadeInUpProps) {
 					observer.unobserve(entry.target)
 				}
 			},
-			{ threshold: 0.2 }
+			{ threshold: 0.44 }
 		)
 
 		if (ref.current) observer.observe(ref.current)
