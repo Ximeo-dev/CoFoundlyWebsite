@@ -1,6 +1,6 @@
 'use client'
 
-import AnketView from '@/app/profile/components/user-anket/anket-view'
+import AnketView from '@/app/profile/components/user-anket/anket-view/anket-view'
 import { anketService } from '@/services/anket.service'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'

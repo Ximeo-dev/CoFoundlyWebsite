@@ -3,9 +3,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { anketService } from '@/services/anket.service'
 import { useState } from 'react'
-import CreateAnket from './create-anket'
-import AnketView from './anket-view'
-import EditAnket from './edit-anket'
+import AnketView from './anket-view/anket-view'
+import EditAnket from './edit-anket/edit-anket'
+import CreateAnket from './create-anket/create-anket'
 
 export default function AnketPage() {
 	const queryClient = useQueryClient()

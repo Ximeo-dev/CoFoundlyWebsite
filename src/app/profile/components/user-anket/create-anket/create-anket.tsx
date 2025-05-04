@@ -7,12 +7,12 @@ import { IAnketRequest } from '@/types/anket.types'
 import { toast } from 'sonner'
 import { AnketFormData, AnketSchema } from '@/zod/anket.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowLeft, ArrowRight, SquareArrowLeft } from 'lucide-react'
-import ConfirmPersonalData from './steps/confirm-personal-data'
-import JobStep from './steps/job-step'
-import BioStep from './steps/bio-step'
-import SkillsStep from './steps/skills-step'
-import PortfolioStep from './steps/portfolio-step'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import ConfirmPersonalData from '../steps/confirm-personal-data'
+import JobStep from '../steps/job-step'
+import BioStep from '../steps/bio-step'
+import SkillsStep from '../steps/skills-step'
+import PortfolioStep from '../steps/portfolio-step'
 
 export default function CreateAnket({
 	onCreated,
@@ -98,15 +98,17 @@ export default function CreateAnket({
 					</div>
 
 					<div className='flex flex-col items-end w-44'>
-						<div className='w-full bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
-							<div
-								className='bg-cyan-300 dark:bg-pink-200 h-2 rounded-full transition-all duration-500'
-								style={{ width: `${progress}%` }}
-							/>
+						<div className='w-32 md:w-44'>
+							<span className='text-xs text-muted-foreground block mb-1'>
+								Заполнено на {progress}%
+							</span>
+							<div className='w-full bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
+								<div
+									className='bg-primary h-2 rounded-full transition-all duration-500'
+									style={{ width: `${progress}%` }}
+								/>
+							</div>
 						</div>
-						<span className='text-xs text-gray-500 dark:text-neutral-500 mt-1'>
-							Заполнено на {Math.round(progress)}%
-						</span>
 					</div>
 				</div>
 
