@@ -13,7 +13,7 @@ export default function ConfirmPersonalData() {
 					Проверьте ваши данные
 				</h3>
 				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-6'>
-					Имя и возраст можно заменить в профиле
+					Имя и возраст можно изменить в профиле
 				</p>
 			</div>
 
