@@ -1,7 +1,7 @@
 'use client'
 
 import { ENDPOINTS } from '@/config/endpoints.config'
-import { ISettingsItem, SETTINGS_MENU } from '@/constants/menu.constants'
+import { ISettingsItem, PROFILE_MENU } from '@/constants/menu.constants'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -18,7 +18,6 @@ export default function ProfileSidebar({
 	onSelect,
 }: IProfileSidebar) {
 	const [isOpen, setIsOpen] = useState(false)
-	const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
 	const toggleSidebar = () => setIsOpen(!isOpen)
 
@@ -52,27 +51,15 @@ export default function ProfileSidebar({
 				</div>
 
 				<ul className={styles.sidebar_list}>
-					{SETTINGS_MENU.map(
+					{PROFILE_MENU.map(
 						(item: any & { children?: ISettingsItem[] }) => {
-							const hasChildren = item.children && item.children.length > 0
-							const isDropdownOpen = openDropdown === item.id
 							const isActive =
 								selected === item.id ||
 								item.children?.some((child: any) => child.id === selected)
 
 							const handleClick = () => {
-								if (hasChildren) {
-									if (openDropdown === item.id) {
-										setOpenDropdown(null)
-									} else {
-										setOpenDropdown(item.id)
-										onSelect(item.children?.[0]?.id || '')
-										setIsOpen(false)
-									}
-								} else {
-									onSelect(item.id)
-									setIsOpen(false)
-								}
+								onSelect(item.id)
+								setIsOpen(false)
 							}
 
 
@@ -88,45 +75,7 @@ export default function ProfileSidebar({
 										<div className='flex items-center gap-x-3'>
 											<item.icon size={18} /> {item.label}
 										</div>
-										{hasChildren && (
-											<ChevronDown
-												size={18}
-												className={cn(
-													'transition-transform duration-300',
-													isDropdownOpen ? 'rotate-180' : 'rotate-0'
-												)}
-											/>
-										)}
 									</div>
-
-									{hasChildren && (
-										<ul
-											className={cn(
-												'ml-10 overflow-hidden transition-all duration-500',
-												isDropdownOpen
-													? 'max-h-40 opacity-100'
-													: 'max-h-0 opacity-0'
-											)}
-										>
-											{item.children.map((child: any) => (
-												<li
-													key={child.id}
-													className={cn(
-														'py-1.5 text-sm cursor-pointer text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white transition-colors duration-300',
-														selected === child.id
-															? 'text-black dark:text-white font-medium'
-															: ''
-													)}
-													onClick={() => {
-														onSelect(child.id)
-														setIsOpen(false)
-													}}
-												>
-													{child.label}
-												</li>
-											))}
-										</ul>
-									)}
 								</li>
 							)
 						}
