@@ -49,7 +49,8 @@ class UserService {
 	}
 
 	async getAvatarUrl(userId: string, size: 64 | 128 | 512) {
-		return `${this.BASE_URL}/images/avatar/${userId}/${size}`
+		const response = await axiosClassic.get(`/images/avatar/${userId}/${size}`)
+		return response.data
 	}
 }
 

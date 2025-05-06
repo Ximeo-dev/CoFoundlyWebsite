@@ -26,7 +26,6 @@ export default function EditAnket({ initialData, onUpdated }: EditAnketProps) {
 		<AnketForm
 			initialValues={initialData}
 			onSubmit={handleSubmit}
-			isEdit
 			submitButtonText='Сохранить изменения'
 		/>
 	)

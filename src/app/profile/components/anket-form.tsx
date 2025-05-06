@@ -8,17 +8,19 @@ import JobStep from './user-anket/steps/job-step'
 import BioStep from './user-anket/steps/bio-step'
 import SkillsStep from './user-anket/steps/skills-step'
 import PortfolioStep from './user-anket/steps/portfolio-step'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { AnketFormSchema, AnketFormType } from '@/zod/anket.schema'
 import { Button } from '@/components/ui/shadcn/button'
 import { LanguagesStep } from './user-anket/steps/languages-step'
+import Tooltip from '@/components/ui/tooltip/tooltip'
 
 interface IAnketForm {
 	initialValues?: Partial<IAnketRequest>
 	onSubmit: (data: IAnketRequest) => Promise<void>
 	mode?: 'create' | 'edit'
 	submitButtonText?: string
+	onCancel?: () => void
 }
 
 export default function AnketForm({
@@ -64,7 +66,6 @@ export default function AnketForm({
 	]
 
 	const totalSteps = steps.length
-	const progress = Math.round(currentStep / (totalSteps - 1)) * 100
 
 	const nextStep = async () => {
 		const fieldsToValidate = stepFields[currentStep]
@@ -91,13 +92,39 @@ export default function AnketForm({
 		}
 	}
 
+	const filledFieldsCount = useMemo(() => {
+		const values = methods.getValues()
+		let filled = 0
+		let total = 0
+
+		stepFields.forEach(fields => {
+			fields.forEach(field => {
+				total++
+				const value = values[field]
+
+				if (
+					(typeof value === 'string' && value.trim() !== '') ||
+					(Array.isArray(value) && value.length > 0)
+				) {
+					filled++
+				}
+			})
+		})
+
+		return { filled, total }
+	}, [methods.watch()])
+
+	const progress = Math.round(
+		(filledFieldsCount.filled / filledFieldsCount.total) * 100
+	)
+
 	return (
 		<FormProvider {...methods}>
 			<form
 				onSubmit={methods.handleSubmit(submitHandler)}
 				className='space-y-6'
 			>
-				<div className='py-4 px-6 flex justify-between items-center'>
+				<div className='py-4 px-6 flex justify-between items-center mb-0'>
 					<div className='flex flex-col'>
 						<h2 className='text-xl font-semibold text-gray-800 dark:text-white'>
 							{mode === 'edit' ? 'Редактирование анкеты' : 'Создание анкеты'}
@@ -124,22 +151,23 @@ export default function AnketForm({
 
 				<div className='flex justify-center py-4 border-t border-border rounded-tl-[15px] rounded-tr-[15px]'>
 					<div className='flex space-x-4'>
-						{steps.map((_, index) => (
-							<button
-								key={index}
-								type='button'
-								onClick={() => setCurrentStep(index)}
-								disabled={index > currentStep}
-								className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors ${
-									index === currentStep
-										? 'bg-black text-white dark:bg-white dark:text-black'
-										: index < currentStep
-										? 'bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400'
-										: 'bg-white dark:bg-[#111111] border-border border text-black dark:text-gray-400'
-								}`}
-							>
-								{index + 1}
-							</button>
+						{steps.map((step, index) => (
+							<Tooltip key={index} text={step.title}>
+								<button
+									type='button'
+									onClick={() => setCurrentStep(index)}
+									disabled={mode !== 'edit' && index > currentStep}
+									className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+										index === currentStep
+											? 'bg-black text-white dark:bg-white dark:text-black'
+											: index < currentStep
+											? 'bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400'
+											: 'bg-white dark:bg-[#111111] border-border border text-black dark:text-gray-400'
+									}`}
+								>
+									{index + 1}
+								</button>
+							</Tooltip>
 						))}
 					</div>
 				</div>

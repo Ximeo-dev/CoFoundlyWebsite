@@ -27,7 +27,7 @@ export default function SkillsStep() {
 				<button
 					type='button'
 					onClick={() => setIsModalOpen(true)}
-					className='w-full px-4 py-3 rounded-lg text-left border bg-background border-border hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300 cursor-pointer'
+					className='w-full px-4 py-3 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent selection:bg-primary dark:bg-input/30 transition-colors duration-300 cursor-pointer'
 				>
 					{skills.length > 0
 						? skills.join(', ')

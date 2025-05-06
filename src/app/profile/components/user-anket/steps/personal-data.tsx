@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormContext } from 'react-hook-form'
-import { useAuth } from '@/hooks/useAuth'
+import Avatar from '../../profile-info/avatar'
 
 export default function PersonalData() {
 	const {
@@ -11,6 +11,10 @@ export default function PersonalData() {
 
 	return (
 		<div className='space-y-6'>
+			<div className='flex items-center justify-center'>
+
+				<Avatar size={512} editable className='w-fit' />
+			</div>
 			<div>
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
 					Личные данные
@@ -25,7 +29,7 @@ export default function PersonalData() {
 					{...register('name')}
 					className={`w-full px-4 py-3 rounded-lg border placeholder:text-[#585654] ${
 						errors.name ? 'border-red-500 focus:ring-red-500' : 'border-border'
-					} focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700`}
+					} focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent selection:bg-primary dark:bg-input/30`}
 					placeholder='Имя'
 				/>
 				{errors.name && (
@@ -49,7 +53,7 @@ export default function PersonalData() {
 						errors.birthDate
 							? 'border-red-500 focus:ring-red-500'
 							: 'border-border'
-					} focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700`}
+					} focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent selection:bg-primary dark:bg-input/30`}
 				/>
 				{errors.birthDate && (
 					<p className='mt-2 text-sm text-red-600 dark:text-red-500'>
