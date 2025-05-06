@@ -4,42 +4,44 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { anketService } from '@/services/anket.service'
 import { useState } from 'react'
 import AnketView from './anket-view/anket-view'
-import EditAnket from './edit-anket/edit-anket'
-import CreateAnket from './create-anket/create-anket'
+import AnketEditor from './anket-editor'
 
 export default function AnketPage() {
 	const queryClient = useQueryClient()
+	const [isEditing, setIsEditing] = useState(false)
+
 	const { data: anket, isLoading } = useQuery({
 		queryKey: ['anket'],
 		queryFn: () => anketService.getAnket(),
 	})
 
-	const [isEditing, setIsEditing] = useState(false)
-	const [isCreating, setIsCreating] = useState(false)
-
 	if (isLoading) return <p>Загрузка...</p>
 
+	if (anket && isEditing) {
+		return (
+			<AnketEditor
+				mode='edit'
+				initialData={anket}
+				onSuccess={updatedAnket => {
+					queryClient.setQueryData(['anket'], updatedAnket)
+					setIsEditing(false)
+				}}
+			/>
+		)
+	}
+
 	if (anket) {
-		if (isEditing) {
-			return (
-				<EditAnket
-					anket={anket}
-					onCancel={() => setIsEditing(false)}
-					onUpdated={updatedAnket => {
-						queryClient.setQueryData(['anket'], updatedAnket)
-						setIsEditing(false)
-					}}
-				/>
-			)
-		}
-		return <AnketView editable anket={anket} onEdit={() => setIsEditing(true)} />
+		return (
+			<AnketView editable onEdit={() => setIsEditing(true)} anket={anket} />
+		)
 	}
 
 	return (
-		<CreateAnket
-			onCreated={createdAnket => {
+		<AnketEditor
+			mode='create'
+			onSuccess={createdAnket => {
 				queryClient.setQueryData(['anket'], createdAnket)
-				setIsCreating(false)
+				setIsEditing(false)
 			}}
 		/>
 	)

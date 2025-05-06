@@ -2,9 +2,9 @@
 
 import { Pencil } from 'lucide-react'
 import Avatar from '../../profile-info/avatar'
-import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 import styles from './anket-view.module.css'
+import { differenceInYears } from 'date-fns'
 
 export default function AnketView({
 	anket,
@@ -15,8 +15,6 @@ export default function AnketView({
 	onEdit?: () => void
 	editable?: boolean
 }) {
-	const { user } = useAuth()
-
 	const filledFields = [
 		anket?.bio,
 		anket?.skills?.length,
@@ -51,7 +49,7 @@ export default function AnketView({
 						{editable && (
 							<button
 								onClick={onEdit}
-								className='text-muted-foreground hover:text-foreground transition-colors'
+								className='text-muted-foreground hover:text-foreground transition-colors cursor-pointer'
 								aria-label='Редактировать'
 							>
 								<Pencil className='w-5 h-5' />
@@ -62,13 +60,19 @@ export default function AnketView({
 			</div>
 
 			<div className={styles.info_block}>
-				<div className={cn(styles.info_block_left, 'border-b md:border-b-0 md:border-r border-border')}>
+				<div
+					className={cn(
+						styles.info_block_left,
+						'border-b md:border-b-0 md:border-r border-border'
+					)}
+				>
 					<div className={styles.left_block_inner}>
-						<Avatar
-							size={512}
-						/>
+						<Avatar size={512} />
 						<h1 className={styles.personal_data}>
-							{user?.name}, {user?.age}
+							{anket.name},{' '}
+							{anket.birthDate
+								? differenceInYears(new Date(), new Date(anket.birthDate))
+								: '—'}
 						</h1>
 					</div>
 				</div>
@@ -110,15 +114,6 @@ export default function AnketView({
 								)}
 							</div>
 						</div>
-
-						{editable && (
-							<button
-								onClick={onEdit}
-								className='mt-6 w-full md:w-auto px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-300 cursor-pointer'
-							>
-								Редактировать анкету
-							</button>
-						)}
 					</div>
 				</div>
 			</div>
