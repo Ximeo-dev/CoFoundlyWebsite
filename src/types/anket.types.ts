@@ -1,17 +1,16 @@
 export interface IAnketRequest {
-	bio: string
-	job: string
-	skills: string[]
-	portfolio: string[]
-	timezone: string
+	name: string
+	birthDate: string
+	bio?: string
+	job?: string
+	skills?: string[]
+	languages?: string[]
+	portfolio?: string[]
 }
 
-export interface IAnket {
-	id: number
+export interface IAnket extends IAnketRequest {
+	id: string
 	userId: string
-	bio: string
-	timezone: string
-	portfolio: string
-	job: string
-	likes: string
+	createdAt: string
+	updatedAt: string
 }

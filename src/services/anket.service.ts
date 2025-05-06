@@ -16,6 +16,18 @@ class AnketService {
 		const response = await axiosWithAuth.patch<IAnket>('/profile', data)
 		return response.data
 	}
+
+	async deleteAnket(): Promise<{ message: string }> {
+		const response = await axiosWithAuth.delete<{ message: string }>('/profile')
+		return response.data
+	}
+
+	async getOtherAnket(userId: string): Promise<IAnket | null> {
+		const response = await axiosWithAuth.get<IAnket | null>(
+			`/profile/${userId}`
+		)
+		return response.data
+	}
 }
 
 export const anketService = new AnketService()
