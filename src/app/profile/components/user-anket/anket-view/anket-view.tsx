@@ -22,16 +22,24 @@ export default function AnketView({
 	onEdit?: () => void
 	editable?: boolean
 }) {
-	const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-	const filledFields = [
+	const fields = [
+		anket?.name,
+		anket?.birthDate,
+		anket?.job,
 		anket?.bio,
 		anket?.skills?.length,
+		anket?.languages?.length,
 		anket?.portfolio?.length,
 	]
 
-	const filledCount = filledFields.filter(Boolean).length
-	const totalCount = filledFields.length
+	const filledCount = fields.filter(field => {
+		if (typeof field === 'string') return field.trim() !== ''
+		if (typeof field === 'number') return field > 0
+		return false
+	}).length
+	const totalCount = fields.length
 	const progress = Math.round((filledCount / totalCount) * 100)
 
 	const { mutate: deleteAnket } = useMutation({
@@ -40,7 +48,7 @@ export default function AnketView({
 		onSuccess: () => {
 			toast.success('Анкета успешно удалена')
 			setIsModalOpen(false)
-		}
+		},
 	})
 
 	return (
@@ -99,9 +107,9 @@ export default function AnketView({
 						<div className={styles.left_block_inner}>
 							<Avatar size={512} />
 							<h1 className={styles.personal_data}>
-								{anket.name},{' '}
-								{anket.birthDate
-									? differenceInYears(new Date(), new Date(anket.birthDate))
+								{anket?.name},{' '}
+								{anket?.birthDate
+									? differenceInYears(new Date(), new Date(anket?.birthDate))
 									: '—'}
 							</h1>
 						</div>

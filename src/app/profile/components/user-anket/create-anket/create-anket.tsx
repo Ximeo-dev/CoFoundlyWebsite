@@ -22,5 +22,5 @@ export default function CreateAnket({
     }
   }
 
-	return <AnketForm onSubmit={handleSubmit} isEdit={false} />
+	return <AnketForm onSubmit={handleSubmit} />
 }
