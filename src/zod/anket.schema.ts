@@ -17,10 +17,12 @@ export const AnketFormSchema = z.object({
 		),
 	bio: z.string().min(10, 'Должно быть больше 10 символов'),
 	job: z.string().min(2, 'Должно быть больше 2 символов'),
-	skills: z.array(z.string()).optional(),
-	languages: z
+	skills: z
 		.array(z.string())
 		.max(20, 'Максимум можно выбрать 20 навыков')
+		.optional(),
+	languages: z
+		.array(z.string())
 		.optional(),
 	portfolio: z
 		.array(z.string().url('Некорректная ссылка'))

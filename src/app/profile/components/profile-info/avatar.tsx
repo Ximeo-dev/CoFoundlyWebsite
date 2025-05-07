@@ -3,13 +3,14 @@
 import { cn } from '@/lib/utils'
 import styles from './profile-info.module.css'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { userService } from '@/services/user.service'
 import { toast } from 'sonner'
 import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { Pencil } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import Spinner from '@/components/ui/spinner/spinner'
+import { anketService } from '@/services/anket.service'
+import { API_URL } from '@/constants/api.constants'
 
 interface IAvatarUploader {
 	size: 64 | 128 | 512
@@ -24,7 +25,7 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 	
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['user-avatar'],
-		mutationFn: (file: File) => userService.uploadAvatar(file),
+		mutationFn: (file: File) => anketService.uploadAvatar(file),
 		onSuccess: () => {
 			setAvatarVersion(Date.now())
 			queryClient.invalidateQueries({
@@ -60,14 +61,11 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 		}
 	}
 
-	const avatarUrl = `/images/avatar/${user?.id}/${size}?v=${avatarVersion}`
-
-
 	return (
 		<div className={cn(className, 'relative')}>
 			{user?.avatarUrl ? (
 				<Image
-					src={`/images/avatar/${user.id}/${size}`}
+					src={`${API_URL}/images/avatar/${user.id}/${size}`}
 					alt='avatar'
 					width={size}
 					height={size}
