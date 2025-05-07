@@ -17,7 +17,7 @@ export const AnketFormSchema = z.object({
 		),
 	bio: z.string().min(10, 'Минимум 10 символов'),
 	job: z.string().min(2, 'Минимум 2 символа'),
-	skills: z.array(z.string()).min(1, 'Минимум 1 навык'),
+	skills: z.array(z.string()).optional(),
 	languages: z.array(z.string()).optional(),
 	portfolio: z.array(z.string()).optional(),
 })

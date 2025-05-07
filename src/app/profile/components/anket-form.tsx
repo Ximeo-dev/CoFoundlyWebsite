@@ -81,10 +81,17 @@ export default function AnketForm({
 	}
 
 	const submitHandler = async (data: AnketFormType) => {
-		console.log('Form data:', data)
+		console.log('Form data before transform:', data)
 		setIsFormSubmitting(true)
+
 		try {
-			await onSubmit(data as IAnketRequest)
+			const transformedData: IAnketRequest = {
+				...data,
+				skills: data?.skills?.map((skill: any) => skill.id),
+				portfolio: data?.portfolio?.map(link => link.trim()),
+			}
+
+			await onSubmit(transformedData)
 		} catch (error) {
 			console.error('Ошибка при отправке формы:', error)
 		} finally {
