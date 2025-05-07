@@ -70,26 +70,16 @@ export const MOBILE_MENU = [
 	},
 ]
 
-export const SETTINGS_MENU = [
+export const PROFILE_MENU = [
 	{
-		id: 'profile',
+		id: 'my-anket',
 		icon: User,
-		label: 'Личные данные',
+		label: 'Моя анкета',
 	},
 	{
-		id: 'forms',
+		id: 'project-anket',
 		icon: CircleUser,
-		label: 'Анкеты',
-		children: [
-			{
-				id: 'my-form',
-				label: 'Моя анкета',
-			},
-			{
-				id: 'project-form',
-				label: 'Анкета проекта',
-			},
-		],
+		label: 'Анкета проекта',
 	},
 	{
 		id: 'security',

@@ -1,24 +1,12 @@
 'use client'
 
 import Modal from '@/components/ui/modal/modal'
+import { skillsService } from '@/services/skills.service'
+import { ISkill } from '@/types/skills.types'
+import { SkillsSort } from '@/utils/skillsSort'
+import { useQuery } from '@tanstack/react-query'
+import { useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-
-const allSkills = [
-	'React',
-	'Node.js',
-	'Python',
-	'Docker',
-	'Figma',
-	'SQL',
-	'TypeScript',
-	'GraphQL',
-	'AWS',
-	'UI/UX',
-	'PostgreSQL',
-	'MongoDB',
-	'Git',
-	'Redux',
-]
 
 export default function SkillsModal({
 	isOpen,
@@ -33,34 +21,60 @@ export default function SkillsModal({
 		formState: { errors },
 	} = useFormContext()
 
-	const selected = watch('skills', [])
+	const [searchQuery, setSearchQuery] = useState('')
+	const selected = watch('skills', []) as string[]
 
-	const toggleSkill = (skill: string) => {
-		const updated = selected.includes(skill)
-			? selected.filter((s: string) => s !== skill)
-			: [...selected, skill]
+	const { data: skills, isLoading } = useQuery({
+		queryKey: ['get skills'],
+		queryFn: () => skillsService.getSkills(500),
+	})
+
+	const sortedSkills = useMemo(() => {
+		if (!skills) return []
+		return SkillsSort(skills, searchQuery)
+	}, [skills, searchQuery])
+
+	const toggleSkill = (skillId: string) => {
+		const updated = selected.includes(skillId)
+			? selected.filter(s => s !== skillId)
+			: [...selected, skillId]
 		setValue('skills', updated, { shouldValidate: true })
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} className='max-w-md w-full'>
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			className='w-[350px] sm:w-full sm:max-w-md'
+		>
 			<div className='p-6'>
 				<h3 className='text-xl font-semibold mb-4'>Выберите навыки</h3>
-				<div className='flex flex-wrap gap-2'>
-					{allSkills.map(skill => (
-						<button
-							type='button'
-							key={skill}
-							onClick={() => toggleSkill(skill)}
-							className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-								selected.includes(skill)
-									? 'bg-black dark:bg-white text-white dark:text-black'
-									: 'bg-background border border-border'
-							}`}
-						>
-							{skill}
-						</button>
-					))}
+				<input
+					type='text'
+					value={searchQuery}
+					onChange={e => setSearchQuery(e.target.value)}
+					placeholder='Поиск навыков...'
+					className='w-full p-2 mb-4 border rounded-lg bg-background text-gray-900 dark:text-gray-100'
+				/>
+				<div className='flex flex-wrap gap-2 max-h-96 overflow-y-auto'>
+					{isLoading ? (
+						<div className='text-center'>Загрузка...</div>
+					) : (
+						sortedSkills.map(skill => (
+							<button
+								type='button'
+								key={skill.id}
+								onClick={() => toggleSkill(skill.id)}
+								className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+									selected.includes(skill.id)
+										? 'bg-black dark:bg-white text-white dark:text-black'
+										: 'bg-background border border-border'
+								}`}
+							>
+								{skill.name}
+							</button>
+						))
+					)}
 				</div>
 				{errors.skills && (
 					<p className='mt-3 text-sm text-red-600 dark:text-red-500'>

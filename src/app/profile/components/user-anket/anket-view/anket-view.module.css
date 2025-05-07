@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .view_block {
-  @apply overflow-hidden;
+  @apply overflow-hidden relative;
 
   .view_inner {
     @apply p-4 md:p-5;
@@ -24,10 +24,10 @@
   }
 
   .info_block {
-    @apply flex flex-col md:flex-row;
+      @apply flex flex-col max-h-[500px] md:flex-row overflow-hidden;
 
     .info_block_left {
-      @apply w-full md:w-1/2 p-4 md:p-6;
+      @apply w-full md:w-[400px] flex-shrink-0 overflow-hidden p-4 md:p-6;
 
       .left_block_inner {
         @apply flex flex-col items-center;
@@ -39,7 +39,7 @@
     }
 
     .info_block_right {
-      @apply w-full md:w-2/3 p-4 md:p-6;
+      @apply w-full md:flex-1 overflow-y-auto p-4 md:p-6;
 
       .right_title {
         @apply text-lg font-medium mb-6;

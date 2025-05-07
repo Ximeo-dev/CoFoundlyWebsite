@@ -10,19 +10,19 @@ import AnketPage from './user-anket/anket-page'
 import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
 
 export default function ProfileMain() {
-  const [selected, setSelected] = useState('profile')
+  const [selected, setSelected] = useState('my-anket')
 
   const renderContent = () => {
     switch (selected) {
-      case 'security':
-        return <Settings />
-      case 'my-form':
-        return <AnketPage />
-      case 'project-form':
-        return <div>project-form</div>
-      default:
-        return <ProfileInfo />
-    }
+			case 'security':
+				return <Settings />
+			case 'my-anket':
+				return <AnketPage />
+			case 'project-anket':
+				return <div>project-form</div>
+			default:
+				return <ProfileInfo />
+		}
   }
 
   return (

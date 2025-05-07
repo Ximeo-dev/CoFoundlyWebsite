@@ -60,11 +60,14 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 		}
 	}
 
+	const avatarUrl = `/images/avatar/${user?.id}/${size}?v=${avatarVersion}`
+
+
 	return (
 		<div className={cn(className, 'relative')}>
 			{user?.avatarUrl ? (
 				<Image
-					src={`${user?.avatarUrl}?v=${avatarVersion}`}
+					src={`/images/avatar/${user.id}/${size}`}
 					alt='avatar'
 					width={size}
 					height={size}
