@@ -9,7 +9,7 @@ import BioStep from './user-anket/steps/bio-step'
 import SkillsStep from './user-anket/steps/skills-step'
 import PortfolioStep from './user-anket/steps/portfolio-step'
 import { useMemo, useState } from 'react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Loader } from 'lucide-react'
 import { AnketFormSchema, AnketFormType } from '@/zod/anket.schema'
 import { Button } from '@/components/ui/shadcn/button'
 import { LanguagesStep } from './user-anket/steps/languages-step'
@@ -28,6 +28,7 @@ export default function AnketForm({
 	onSubmit,
 	mode = 'create',
 	submitButtonText = mode === 'edit' ? 'Сохранить изменения' : 'Создать анкету',
+	onCancel
 }: IAnketForm) {
 	const methods = useForm<AnketFormType>({
 		defaultValues: {
@@ -87,8 +88,6 @@ export default function AnketForm({
 	}
 
 	const submitHandler = async (data: AnketFormType) => {
-		console.log('Form data before transform:', JSON.stringify(data, null, 2))
-
 		try {
 			const transformedData = {
 				...data,
@@ -97,11 +96,8 @@ export default function AnketForm({
 				),
 				portfolio: data.portfolio?.map(link => link.trim()),
 			}
-
-			console.log('Data being sent:', JSON.stringify(transformedData, null, 2))
 			await onSubmit(transformedData)
 		} catch (error) {
-			console.error('Full error:', error)
 		}
 	}
 
@@ -130,6 +126,15 @@ export default function AnketForm({
 	const progress = Math.round(
 		(filledFieldsCount.filled / filledFieldsCount.total) * 100
 	)
+
+	const confirm = async () => {
+		const fieldsToValidate = stepFields[currentStep]
+		const isValid = await methods.trigger(fieldsToValidate)
+
+		if (isValid) {
+			methods.handleSubmit(submitHandler)()
+		}
+	}
 
 	return (
 		<FormProvider {...methods}>
@@ -189,19 +194,28 @@ export default function AnketForm({
 					<div className='mb-8'>{steps[currentStep].component}</div>
 
 					<div className='flex justify-between items-center pt-4 border-t border-border'>
-						{currentStep > 0 ? (
-							<Button
-								type='button'
-								onClick={prevStep}
-								variant='outline'
-								className='gap-1'
-							>
-								<ArrowLeft size={18} />
-								Назад
-							</Button>
-						) : (
-							<div />
-						)}
+						<div className='flex gap-2'>
+							{currentStep > 0 ? (
+								<Button
+									type='button'
+									onClick={prevStep}
+									variant='outline'
+									className='gap-1'
+								>
+									<ArrowLeft size={18} />
+									Назад
+								</Button>
+							) : null}
+							{mode === 'edit' && (
+								<Button
+									type='button'
+									onClick={onCancel}
+									className='gap-1'
+								>
+									Отменить изменения
+								</Button>
+							)}
+						</div>
 
 						{currentStep < totalSteps - 1 ? (
 							<Button
@@ -214,33 +228,15 @@ export default function AnketForm({
 							</Button>
 						) : (
 							<Button
-								type='submit'
+								type='button'
+								onClick={confirm}
 								disabled={isFormSubmitting}
 								className='gap-1'
 							>
 								{isFormSubmitting ? (
 									<>
-										<svg
-											className='animate-spin -ml-1 mr-2 h-5 w-5 text-white'
-											xmlns='http://www.w3.org/2000/svg'
-											fill='none'
-											viewBox='0 0 24 24'
-										>
-											<circle
-												className='opacity-25'
-												cx='12'
-												cy='12'
-												r='10'
-												stroke='currentColor'
-												strokeWidth='4'
-											></circle>
-											<path
-												className='opacity-75'
-												fill='currentColor'
-												d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
-											></path>
-										</svg>
 										Обработка...
+										<Loader />
 									</>
 								) : (
 									submitButtonText

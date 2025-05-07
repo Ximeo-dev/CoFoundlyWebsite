@@ -56,7 +56,7 @@ export const LanguagesStep = () => {
 							? 'border-red-500 focus:ring-red-500'
 							: 'border-border'
 					}`}
-					placeholder='Например: Русский, Английский, Французский'
+					placeholder='Русский	'
 				/>
 				{errors.languages && (
 					<p className='mt-2 text-sm text-red-600 dark:text-red-500'>

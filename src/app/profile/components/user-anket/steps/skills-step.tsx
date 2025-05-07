@@ -13,8 +13,6 @@ export default function SkillsStep() {
 		formState: { errors },
 	} = useFormContext()
 
-	console.log('Current skills value:', watch('skills'))
-	console.log('Validation errors:', errors)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const skills = watch('skills', []) as (string | ISkill)[]
 
@@ -48,7 +46,7 @@ export default function SkillsStep() {
         <button
           type='button'
           onClick={() => setIsModalOpen(true)}
-          className='w-full px-4 py-3 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent selection:bg-primary dark:bg-input/30 transition-colors duration-300 cursor-pointer'
+          className='w-full px-4 py-3 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent  dark:bg-input/30 transition-colors duration-300 cursor-pointer'
         >
           {skills.length > 0 ? skillNames : 'Нажмите для выбора навыков...'}
         </button>

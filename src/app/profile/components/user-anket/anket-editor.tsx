@@ -11,12 +11,14 @@ interface IAnketEditor {
 	mode?: AnketEditorMode
 	initialData?: IAnketRequest
 	onSuccess: (data: IAnket) => void
+	onCancel?: () => void
 }
 
 export default function AnketEditor({
 	mode = 'create',
 	initialData,
 	onSuccess,
+	onCancel
 }: IAnketEditor) {
 	const handleSubmit = async (data: IAnketRequest) => {
 		try {
@@ -46,6 +48,7 @@ export default function AnketEditor({
 		<AnketForm
 			initialValues={initialData}
 			onSubmit={handleSubmit}
+			onCancel={onCancel}
 			mode={mode}
 			submitButtonText={
 				mode === 'edit' ? 'Сохранить изменения' : 'Создать анкету'

@@ -1,31 +1,38 @@
 'use client'
 
-import { useFormContext } from 'react-hook-form'
+import { useFieldArray, useFormContext } from 'react-hook-form'
+import { Input } from '@/components/ui/shadcn/input'
+import { Button } from '@/components/ui/shadcn/button'
 
 export default function PortfolioStep() {
-	const {
-		register,
-		formState: { errors },
-	} = useFormContext()
+	const { control, register } = useFormContext()
+	const { fields, append, remove } = useFieldArray({
+		control,
+		name: 'portfolio',
+	})
 
 	return (
-		<div className='space-y-6'>
-			<div>
-				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
-					Портфолио
-				</h3>
-				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-6'>
-					Добавьте ссылку на ваш лучший проект или портфолио
-				</p>
-			</div>
+		<div className='space-y-4'>
+			{fields.map((field, index) => (
+				<div key={field.id} className='flex items-center gap-2'>
+					<Input
+						{...register(`portfolio.${index}`)}
+						placeholder='https://example.com'
+						className='flex-1'
+					/>
+					<Button
+						type='button'
+						variant='destructive'
+						onClick={() => remove(index)}
+					>
+						Удалить
+					</Button>
+				</div>
+			))}
 
-			<div>
-				<input
-					{...register('portfolio')}
-					className={`w-full px-4 py-3 rounded-lg border placeholder:text-[#585654] border-border focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent selection:bg-primary dark:bg-input/30`}
-					placeholder='https://github.com/username'
-				/>
-			</div>
+			<Button type='button' variant='outline' onClick={() => append('')}>
+				Добавить ссылку
+			</Button>
 		</div>
 	)
 }

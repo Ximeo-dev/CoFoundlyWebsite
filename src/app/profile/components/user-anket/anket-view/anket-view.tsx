@@ -12,6 +12,7 @@ import { useState } from 'react'
 import Modal from '@/components/ui/modal/modal'
 import { Button } from '@/components/ui/shadcn/button'
 import Tooltip from '@/components/ui/tooltip/tooltip'
+import ScrollIndicator from '@/components/ui/scroll-indicator/scroll-indicator'
 
 export default function AnketView({
 	anket,
@@ -147,7 +148,7 @@ export default function AnketView({
 											{anket.skills.map((skill: any) => (
 												<span
 													key={skill.id || skill}
-													className='bg-accent text-accent-foreground text-sm px-3 py-1 rounded-full'
+													className='bg-primary text-white dark:text-black text-sm px-3 py-1 rounded-full'
 												>
 													{typeof skill === 'string' ? skill : skill.name}
 												</span>
@@ -185,6 +186,7 @@ export default function AnketView({
 						</div>
 					</div>
 				</div>
+				{!editable && <ScrollIndicator />}
 			</div>
 			{isModalOpen && (
 				<Modal

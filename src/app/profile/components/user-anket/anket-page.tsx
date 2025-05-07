@@ -20,6 +20,7 @@ export default function AnketPage() {
 	if (anket && isEditing) {
 		return (
 			<AnketEditor
+				onCancel={() => setIsEditing(false)}
 				mode='edit'
 				initialData={anket}
 				onSuccess={updatedAnket => {
