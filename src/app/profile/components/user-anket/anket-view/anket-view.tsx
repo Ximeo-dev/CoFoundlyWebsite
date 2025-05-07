@@ -74,9 +74,9 @@ export default function AnketView({
 						<div className='flex items-center gap-x-5'>
 							{editable && (
 								<button
-										onClick={onEdit}
-										className='text-muted-foreground hover:text-foreground transition-colors duration-300 cursor-pointer'
-										aria-label='Редактировать'
+									onClick={onEdit}
+									className='text-muted-foreground hover:text-foreground transition-colors duration-300 cursor-pointer'
+									aria-label='Редактировать'
 								>
 									<Tooltip text='Редактировать' position='bottom'>
 										<Pencil className='w-5 h-5' />
@@ -144,12 +144,12 @@ export default function AnketView({
 								<div className='mt-2'>
 									{anket?.skills?.length ? (
 										<div className='flex flex-wrap gap-2'>
-											{anket.skills.map((skill: string) => (
+											{anket.skills.map((skill: any) => (
 												<span
-													key={skill}
+													key={skill.id || skill}
 													className='bg-accent text-accent-foreground text-sm px-3 py-1 rounded-full'
 												>
-													{skill}
+													{typeof skill === 'string' ? skill : skill.name}
 												</span>
 											))}
 										</div>
@@ -157,6 +157,30 @@ export default function AnketView({
 										<p className='text-muted-foreground'>Нет навыков</p>
 									)}
 								</div>
+							</div>
+							<div>
+								<p className='text-sm text-muted-foreground'>Языки</p>
+								<p
+									className={cn(
+										'mt-1',
+										!anket?.languages && 'text-muted-foreground'
+									)}
+								>
+									{anket?.languages.join(', ') || 'Не выбрано'}
+								</p>
+							</div>
+							<div>
+								<p className='text-sm text-muted-foreground mb-1'>Портфолио</p>
+								<a
+									href={anket?.portfolio}
+									className={cn(
+										'mt-1',
+										!anket?.portfolio &&
+											'text-muted-foreground'
+									)}
+								>
+									{anket?.portfolio || 'Не выбрано'}
+								</a>
 							</div>
 						</div>
 					</div>

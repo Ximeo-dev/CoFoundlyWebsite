@@ -2,6 +2,7 @@
 
 import { useFormContext } from 'react-hook-form'
 import { Input } from '@/components/ui/shadcn/input'
+import { useState, useEffect } from 'react'
 
 export const LanguagesStep = () => {
 	const {
@@ -11,10 +12,21 @@ export const LanguagesStep = () => {
 		formState: { errors },
 	} = useFormContext()
 
-	const languagesValue = watch('languages') || []
+	const languagesArray = watch('languages', [])
+	const [inputValue, setInputValue] = useState('')
+
+	// Синхронизируем inputValue с languagesArray
+	useEffect(() => {
+		setInputValue(languagesArray.join(', '))
+	}, [languagesArray])
 
 	const handleLanguagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const inputValue = e.target.value
+		const value = e.target.value
+		setInputValue(value)
+	}
+
+	const handleBlur = () => {
+		// Преобразуем в массив только когда поле теряет фокус
 		const languagesArray = inputValue
 			.split(',')
 			.map(lang => lang.trim())
@@ -30,20 +42,21 @@ export const LanguagesStep = () => {
 					Языки
 				</h3>
 				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-6'>
-					Укажите языки, которыми владеете (через запятую)
+					Укажите языки, которыми владеете
 				</p>
 			</div>
 
 			<div>
 				<Input
-					value={languagesValue.join(', ')}
+					value={inputValue}
 					onChange={handleLanguagesChange}
+					onBlur={handleBlur}
 					className={`w-full ${
 						errors.languages
 							? 'border-red-500 focus:ring-red-500'
 							: 'border-border'
 					}`}
-					placeholder='Русский'
+					placeholder='Например: Русский, Английский, Французский'
 				/>
 				{errors.languages && (
 					<p className='mt-2 text-sm text-red-600 dark:text-red-500'>

@@ -3,35 +3,38 @@
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import SkillsModal from './skills-modal'
-import { useQuery } from '@tanstack/react-query'
 import { skillsService } from '@/services/skills.service'
+import { useQuery } from '@tanstack/react-query'
 import { ISkill } from '@/types/skills.types'
 
 export default function SkillsStep() {
   const {
-    watch,
-    formState: { errors },
-  } = useFormContext()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const skills = watch('skills', []) as string[] // skills хранит массив id
+		watch,
+		formState: { errors },
+	} = useFormContext()
 
-  // Загружаем все скиллы для сопоставления id с name
-  const { data: allSkills } = useQuery({
-    queryKey: ['get skills'],
-    queryFn: () => skillsService.getSkills(500),
-  })
+	console.log('Current skills value:', watch('skills'))
+	console.log('Validation errors:', errors)
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const skills = watch('skills', []) as (string | ISkill)[]
 
-  // Преобразуем id в name для отображения
-  const skillNames = skills
-    .map((skillId) => {
-      const skill = allSkills?.find((s: ISkill) => s.id === skillId)
-      return skill?.name
-    })
-    .filter(Boolean)
-    .join(', ')
+	const { data: allSkills } = useQuery({
+		queryKey: ['get skills'],
+		queryFn: () => skillsService.getSkills(500),
+	})
 
-  return (
-    <div className='space-y-6'>
+	const skillNames = skills
+		.map(skill => {
+			if (typeof skill === 'string') {
+				return allSkills?.find((s: ISkill) => s.id === skill)?.name || skill
+			}
+			return skill.name
+		})
+		.filter(Boolean)
+		.join(', ')
+
+	return (
+		 <div className='space-y-6'>
       <div>
         <h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
           Ваши навыки
@@ -58,5 +61,5 @@ export default function SkillsStep() {
 
       <SkillsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
-  )
+	)
 }

@@ -38,7 +38,13 @@ export default function AnketForm({
 			skills: [],
 			languages: [],
 			portfolio: [],
-			...initialValues,
+			...(initialValues && {
+				...initialValues,
+				skills:
+					initialValues.skills?.map((skill: any) =>
+						typeof skill === 'object' ? skill.id : skill
+					) || [],
+			}),
 		},
 		resolver: zodResolver(AnketFormSchema),
 		mode: 'onChange',
@@ -81,21 +87,21 @@ export default function AnketForm({
 	}
 
 	const submitHandler = async (data: AnketFormType) => {
-		console.log('Form data before transform:', data)
-		setIsFormSubmitting(true)
+		console.log('Form data before transform:', JSON.stringify(data, null, 2))
 
 		try {
-			const transformedData: IAnketRequest = {
+			const transformedData = {
 				...data,
-				skills: data?.skills?.map((skill: any) => skill.id),
-				portfolio: data?.portfolio?.map(link => link.trim()),
+				skills: data.skills?.map((skill: any) =>
+					typeof skill === 'object' ? skill.id : skill
+				),
+				portfolio: data.portfolio?.map(link => link.trim()),
 			}
 
+			console.log('Data being sent:', JSON.stringify(transformedData, null, 2))
 			await onSubmit(transformedData)
 		} catch (error) {
-			console.error('Ошибка при отправке формы:', error)
-		} finally {
-			setIsFormSubmitting(false)
+			console.error('Full error:', error)
 		}
 	}
 
