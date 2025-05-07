@@ -27,7 +27,7 @@ export default function Tooltip ({ children, text, position = 'top' }: TooltipPr
 			{children}
 			{visible && (
 				<div
-					className={`absolute ${positions[position]} px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-xs rounded-[15px] shadow-md z-10 whitespace-nowrap`}
+					className={`absolute ${positions[position]} hidden md:block px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-xs rounded-[15px] shadow-md z-10 whitespace-nowrap`}
 				>
 					{text}
 				</div>
