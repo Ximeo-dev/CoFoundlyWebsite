@@ -24,7 +24,7 @@ export default function SkillsStep() {
 	const skillNames = skills
 		.map(skill => {
 			if (typeof skill === 'string') {
-				return allSkills?.find((s: ISkill) => s.id === skill)?.name || skill
+				return skill
 			}
 			return skill.name
 		})

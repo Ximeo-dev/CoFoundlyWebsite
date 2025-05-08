@@ -8,7 +8,7 @@ import JobStep from './user-anket/steps/job-step'
 import BioStep from './user-anket/steps/bio-step'
 import SkillsStep from './user-anket/steps/skills-step'
 import PortfolioStep from './user-anket/steps/portfolio-step'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, ArrowRight, Loader } from 'lucide-react'
 import { AnketFormSchema, AnketFormType } from '@/zod/anket.schema'
 import { Button } from '@/components/ui/shadcn/button'
@@ -23,13 +23,34 @@ interface IAnketForm {
 	onCancel?: () => void
 }
 
+const localStorageKey = 'anketFormData'
+const stepStorageKey = 'anketFormStep'
+
 export default function AnketForm({
 	initialValues,
 	onSubmit,
 	mode = 'create',
 	submitButtonText = mode === 'edit' ? 'Сохранить изменения' : 'Создать анкету',
-	onCancel
+	onCancel,
 }: IAnketForm) {
+	const savedData = useMemo(() => {
+		try {
+			const stored = localStorage.getItem(localStorageKey)
+			return stored ? JSON.parse(stored) : undefined
+		} catch {
+			return undefined
+		}
+	}, [])
+
+	const savedStep = useMemo(() => {
+		try {
+			const stored = localStorage.getItem(stepStorageKey)
+			return stored ? parseInt(stored, 10) : 0
+		} catch {
+			return 0
+		}
+	}, [])
+
 	const methods = useForm<AnketFormType>({
 		defaultValues: {
 			name: '',
@@ -39,6 +60,7 @@ export default function AnketForm({
 			skills: [],
 			languages: [],
 			portfolio: [],
+			...(savedData && mode !== 'edit' ? savedData : {}),
 			...(initialValues && {
 				...initialValues,
 				skills:
@@ -51,8 +73,19 @@ export default function AnketForm({
 		mode: 'onChange',
 	})
 
-	const [currentStep, setCurrentStep] = useState(0)
+	const [currentStep, setCurrentStep] = useState(savedStep)
 	const [isFormSubmitting, setIsFormSubmitting] = useState(false)
+
+	useEffect(() => {
+		const subscription = methods.watch(value => {
+			localStorage.setItem(localStorageKey, JSON.stringify(value))
+		})
+		return () => subscription.unsubscribe()
+	}, [methods])
+
+	useEffect(() => {
+		localStorage.setItem(stepStorageKey, currentStep.toString())
+	}, [currentStep])
 
 	const steps = [
 		{ component: <PersonalData key='0' />, title: 'Личные данные' },
@@ -89,6 +122,7 @@ export default function AnketForm({
 
 	const submitHandler = async (data: AnketFormType) => {
 		try {
+			setIsFormSubmitting(true)
 			const transformedData = {
 				...data,
 				skills: data.skills?.map((skill: any) =>
@@ -97,7 +131,20 @@ export default function AnketForm({
 				portfolio: data.portfolio?.map(link => link.trim()),
 			}
 			await onSubmit(transformedData)
+			localStorage.removeItem(localStorageKey)
+			localStorage.removeItem(stepStorageKey)
 		} catch (error) {
+			console.error('Ошибка при отправке формы', error)
+		} finally {
+			setIsFormSubmitting(false)
+		}
+	}
+
+	const handleCancel = () => {
+		localStorage.removeItem(localStorageKey)
+		localStorage.removeItem(stepStorageKey)
+		if (onCancel) {
+			onCancel()
 		}
 	}
 
@@ -173,7 +220,14 @@ export default function AnketForm({
 							<Tooltip key={index} text={step.title}>
 								<button
 									type='button'
-									onClick={() => setCurrentStep(index)}
+									onClick={async () => {
+										const isValid = await methods.trigger(
+											stepFields[currentStep]
+										)
+										if (isValid || index <= currentStep) {
+											setCurrentStep(index)
+										}
+									}}
 									disabled={mode !== 'edit' && index > currentStep}
 									className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors cursor-pointer ${
 										index === currentStep
@@ -209,7 +263,8 @@ export default function AnketForm({
 							{mode === 'edit' && (
 								<Button
 									type='button'
-									onClick={onCancel}
+									onClick={handleCancel}
+									variant='outline'
 									className='gap-1'
 								>
 									Отменить изменения

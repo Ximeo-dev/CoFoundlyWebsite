@@ -63,10 +63,10 @@ export default function SkillsModal({
 						sortedSkills.map(skill => (
 							<button
 								type='button'
-								key={skill.id}
-								onClick={() => toggleSkill(skill.id)}
+								key={skill.name}
+								onClick={() => toggleSkill(skill.name)}
 								className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-									selected.includes(skill.id)
+									selected.includes(skill.name)
 										? 'bg-black dark:bg-white text-white dark:text-black'
 										: 'bg-background border border-border'
 								}`}

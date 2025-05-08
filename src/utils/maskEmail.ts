@@ -1,10 +1,19 @@
 export default function maskEmail(email: string) {
-	const [localPart, domain] = email.split('@')
-	const maskedLocalPart =
-		localPart.length > 2
-			? `${localPart[0]}${'*'.repeat(localPart.length - 2)}${localPart.slice(
-					-1
-			  )}`
-			: localPart
-	return `${maskedLocalPart}@${domain}`
+	if (!email || typeof email !== 'string' || !email.includes('@')) {
+		return ''
+	}
+
+	try {
+		const [localPart, domain] = email.split('@')
+
+		if (localPart.length <= 2) {
+			return `${localPart}@${domain}`
+		}
+		const visibleChars = localPart.slice(0, 2)
+		const maskedChars = '*'.repeat(localPart.length - 2)
+
+		return `${visibleChars}${maskedChars}@${domain}`
+	} catch {
+		return email
+	}
 }
