@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import styles from './profile-info.module.css'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { Pencil } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
@@ -18,16 +18,22 @@ interface IAvatarUploader {
 	className?: string
 }
 
-export default function Avatar({ size, editable = false, className }: IAvatarUploader) {
+export default function Avatar({
+	size,
+	editable = false,
+	className,
+}: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
 	const { user, setAvatarVersion } = useAuth()
-	
+	const [imageError, setImageError] = useState(false)
+
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['user-avatar'],
 		mutationFn: (file: File) => anketService.uploadAvatar(file),
 		onSuccess: () => {
 			setAvatarVersion(Date.now())
+			setImageError(false)
 			queryClient.invalidateQueries({
 				queryKey: ['userProfile'],
 			})
@@ -61,24 +67,42 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 		}
 	}
 
+	const initialLetter = 'U'
+
+	const avatarStyles = cn(
+		size === 64
+			? 'rounded-full w-10 h-10 lg:w-12 lg:h-12'
+			: size === 128
+			? 'w-36 h-36 rounded-[15px]'
+			: size === 512
+			? 'w-72 h-52 md:w-90 md:h-64 rounded-[15px]'
+			: styles.avatar,
+		isPending ? 'opacity-50' : 'opacity-100',
+		'flex items-center justify-center'
+	)
+
 	return (
 		<div className={cn(className, 'relative')}>
-			<Image
-				src={`${API_URL}/images/avatar/${user?.id}/${size}`}
-				alt='avatar'
-				width={size}
-				height={size}
-				className={cn(
-					size === 64
-						? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
-						: size === 128
-						? 'object-cover w-36 h-36 rounded-[15px]'
-						: size === 512
-						? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[15px]'
-						: styles.avatar,
-					isPending ? 'opacity-50' : 'opacity-100'
-				)}
-			/>
+			{imageError || !user?.id ? (
+				<div
+					className={cn(
+						avatarStyles,
+						'bg-gray-200 dark:bg-neutral-800 text-gray-800 dark:text-white text-xl font-semibold'
+					)}
+				>
+					{initialLetter}
+				</div>
+			) : (
+				<Image
+					src={`${API_URL}/images/avatar/${user?.id}/${size}`}
+					alt='avatar'
+					width={size}
+					height={size}
+					className={avatarStyles}
+					onError={() => setImageError(true)}
+				/>
+			)}
+
 			{isPending && (
 				<div className='absolute inset-0 bg-[#111111] flex items-center justify-center z-10 rounded-[30px]'>
 					<Spinner />

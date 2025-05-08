@@ -24,7 +24,6 @@ export default function RegisterForm() {
 	const [isButtonClicked, setIsButtonClicked] = useState(false)
 	const [buttonKey, setButtonKey] = useState(0)
 	const [isChecked, setIsChecked] = useState(false)
-	const [usernameError, setUsernameError] = useState('')
 	const [emailError, setEmailError] = useState('')
 	const [isFormValid, setIsFormValid] = useState(false)
 
@@ -126,7 +125,6 @@ export default function RegisterForm() {
 
 		const hasErrors =
 			!isValid ||
-			usernameError ||
 			emailError ||
 			password !== confirmPassword ||
 			!isChecked
@@ -136,15 +134,12 @@ export default function RegisterForm() {
 
 	useEffect(() => {
 		validateForm()
-	}, [isValid, usernameError, emailError, isChecked, errors.password])
+	}, [isValid, emailError, isChecked, errors.password])
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
 		if (errors.email || errors.name || errors.password) {
 			setButtonKey(prevKey => prevKey + 1)
 			return toast.error('Пожалуйста, заполните все поля')
-		}
-		if (usernameError) {
-			return toast.error('Имя пользователя уже занято')
 		}
 		if (emailError) {
 			return toast.error('Пользователь с таким email уже зарегистрирован')
@@ -169,51 +164,6 @@ export default function RegisterForm() {
 						</span>
 					</h1>
 					<form onSubmit={handleSubmit(onSubmit)} className='mt-12'>
-						<label
-							className={cn(
-								styles.field,
-								'mb-2 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
-							)}
-						>
-							<div
-								className={cn(
-									styles.icon,
-									'focus-within:text-black dark:focus-within:text-white/70'
-								)}
-							>
-								<SquareUserRound />
-							</div>
-							<input
-								className='bg-transparent outline-none'
-								placeholder='Имя'
-								type='text'
-								{...register('name', {
-									required: true,
-									maxLength: {
-										value: 16,
-										message:
-											'Имя пользователя должно содержать не более 16 символов',
-									},
-									// validate: value => {
-									// 	if (!/^[a-zA-Z0-9_-]+$/.test(value)) {
-									// 		return 'Имя пользователя может состоять только из букв английского алфавита, цифр, и символов "_", "-"'
-									// 	}
-									// 	return true
-									// },
-								})}
-							/>
-						</label>
-						{errors.name ? (
-							<p className='text-red-500 text-sm lg:h-1 h-auto'>
-								{errors.name.message}
-							</p>
-						) : usernameError ? (
-							<p className='text-red-500 text-sm lg:h-1 h-auto'>
-								{usernameError}
-							</p>
-						) : (
-							<div className='h-1' />
-						)}
 						<label
 							className={cn(
 								styles.field,
