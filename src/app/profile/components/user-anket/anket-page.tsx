@@ -14,7 +14,8 @@ export default function AnketPage() {
 	const { data: anket, isLoading } = useQuery({
 		queryKey: ['anket'],
 		queryFn: () => anketService.getAnket(),
-		retry: false
+		retry: false,
+		refetchOnWindowFocus: false
 	})
 
 	if (isLoading) return <SkeletonView />

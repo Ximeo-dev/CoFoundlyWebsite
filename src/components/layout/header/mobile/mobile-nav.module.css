@@ -4,7 +4,7 @@
   @apply fixed bottom-0 left-0 w-full z-50 block lg:hidden;
 
   .menu_nav {
-    @apply w-full px-5 sm:px-10 py-2;
+    @apply w-full px-3 sm:px-8 py-2;
 
     .menu_list {
       @apply flex justify-between items-center;
@@ -23,7 +23,7 @@
     }
 
     .open_inner {
-      @apply flex flex-col gap-8 px-5 sm:px-10 mt-40;
+      @apply flex flex-col gap-8 px-3 sm:px-8 mt-40;
 
       .list_item {
         @apply flex items-center gap-3 text-lg p-1 rounded-[15px] transition-colors duration-300;
