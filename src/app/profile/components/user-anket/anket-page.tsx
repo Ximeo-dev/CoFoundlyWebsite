@@ -5,6 +5,7 @@ import { anketService } from '@/services/anket.service'
 import { useState } from 'react'
 import AnketView from './anket-view/anket-view'
 import AnketEditor from './anket-editor'
+import SkeletonView from './anket-view/skeleton-view'
 
 export default function AnketPage() {
 	const queryClient = useQueryClient()
@@ -13,12 +14,13 @@ export default function AnketPage() {
 	const { data: anket, isLoading } = useQuery({
 		queryKey: ['anket'],
 		queryFn: () => anketService.getAnket(),
+		retry: false
 	})
 
-	if (isLoading) return <p>Загрузка...</p>
+	if (isLoading) return <SkeletonView />
 
-	if (anket && isEditing) {
-		return (
+	if (anket) {
+		return isEditing ? (
 			<AnketEditor
 				onCancel={() => setIsEditing(false)}
 				mode='edit'
@@ -28,11 +30,7 @@ export default function AnketPage() {
 					setIsEditing(false)
 				}}
 			/>
-		)
-	}
-
-	if (anket) {
-		return (
+		) : (
 			<AnketView editable onEdit={() => setIsEditing(true)} anket={anket} />
 		)
 	}

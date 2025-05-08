@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import styles from './profile-info.module.css'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
 import { Pencil } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
@@ -21,7 +21,7 @@ interface IAvatarUploader {
 export default function Avatar({ size, editable = false, className }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
-	const { user, avatarVersion, setAvatarVersion } = useAuth()
+	const { user, setAvatarVersion } = useAuth()
 	
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['user-avatar'],
@@ -63,44 +63,22 @@ export default function Avatar({ size, editable = false, className }: IAvatarUpl
 
 	return (
 		<div className={cn(className, 'relative')}>
-			{user?.avatarUrl ? (
-				<Image
-					src={`${API_URL}/images/avatar/${user.id}/${size}`}
-					alt='avatar'
-					width={size}
-					height={size}
-					className={cn(
-						size === 64
-							? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
-							: size === 128
-							? 'object-cover w-36 h-36 rounded-[15px]'
-							: size === 512
-							? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[15px]'
-							: styles.avatar,
-						isPending ? 'opacity-50' : 'opacity-100'
-					)}
-				/>
-			) : (
-				<span
-					className={cn(
-						'flex items-center justify-center rounded-[30px] bg-background border text-black dark:text-white uppercase select-none',
-						size === 64
-							? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
-							: size === 128
-							? 'object-cover w-44 h-44 rounded-[15px]'
-							: size === 512
-							? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[30px]'
-							: styles.avatar,
-						isPending ? 'opacity-50' : 'opacity-100'
-					)}
-					style={{
-						fontSize: size ? size / 3 : 24,
-					}}
-				>
-					{user?.name?.[0]}
-				</span>
-			)}
-
+			<Image
+				src={`${API_URL}/images/avatar/${user?.id}/${size}`}
+				alt='avatar'
+				width={size}
+				height={size}
+				className={cn(
+					size === 64
+						? 'rounded-full object-cover w-10 h-10 lg:w-12 lg:h-12'
+						: size === 128
+						? 'object-cover w-36 h-36 rounded-[15px]'
+						: size === 512
+						? 'object-cover w-72 h-52 md:w-90 md:h-64 rounded-[15px]'
+						: styles.avatar,
+					isPending ? 'opacity-50' : 'opacity-100'
+				)}
+			/>
 			{isPending && (
 				<div className='absolute inset-0 bg-[#111111] flex items-center justify-center z-10 rounded-[30px]'>
 					<Spinner />

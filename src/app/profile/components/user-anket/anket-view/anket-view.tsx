@@ -52,6 +52,12 @@ export default function AnketView({
 		},
 	})
 
+	const handleAnketDelete = () => {
+		() => setIsModalOpen(true)
+		deleteAnket()
+		window.location.reload()
+	}
+
 	return (
 		<>
 			<div className={styles.view_block}>
@@ -176,8 +182,7 @@ export default function AnketView({
 									href={anket?.portfolio}
 									className={cn(
 										'mt-1',
-										!anket?.portfolio &&
-											'text-muted-foreground'
+										!anket?.portfolio && 'text-muted-foreground'
 									)}
 								>
 									{anket?.portfolio || 'Не выбрано'}
@@ -201,7 +206,7 @@ export default function AnketView({
 						<Button onClick={() => setIsModalOpen(false)}>
 							Оставить анкету
 						</Button>
-						<Button variant={'destructive'} onClick={() => deleteAnket()}>
+						<Button variant={'destructive'} onClick={handleAnketDelete}>
 							Удалить
 						</Button>
 					</div>

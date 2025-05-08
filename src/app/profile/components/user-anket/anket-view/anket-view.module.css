@@ -4,7 +4,7 @@
   @apply overflow-hidden relative;
 
   .view_inner {
-    @apply p-4 md:p-5;
+    @apply p-4 md:py-5 md:px-6;
 
     .view_top {
       @apply flex flex-col md:flex-row md:items-center md:justify-between gap-3;
@@ -27,7 +27,7 @@
       @apply flex flex-col max-h-[500px] md:flex-row overflow-hidden;
 
     .info_block_left {
-      @apply w-full md:w-[400px] flex-shrink-0 overflow-hidden p-4 md:p-6;
+      @apply w-full lg:md:w-[400px] xl:w-[550px] flex-shrink-0 overflow-hidden p-4 md:p-6;
 
       .left_block_inner {
         @apply flex flex-col items-center;

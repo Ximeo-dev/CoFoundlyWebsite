@@ -1,10 +1,13 @@
 'use client'
 
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import Avatar from '../../profile-info/avatar'
+import { DatePicker } from '@/components/ui/date-picker/date-picker'
+import { format } from 'date-fns'
 
 export default function PersonalData() {
 	const {
+		control,
 		register,
 		formState: { errors },
 	} = useFormContext()
@@ -12,7 +15,6 @@ export default function PersonalData() {
 	return (
 		<div className='space-y-6'>
 			<div className='flex items-center justify-center'>
-
 				<Avatar size={512} editable className='w-fit' />
 			</div>
 			<div>
@@ -40,20 +42,22 @@ export default function PersonalData() {
 			</div>
 
 			<div>
-				<input
-					{...register('birthDate', {
+				<Controller
+					control={control}
+					name='birthDate'
+					rules={{
 						required: 'Дата рождения обязательна',
-						pattern: {
-							value: /^\d{4}-\d{2}-\d{2}$/,
-							message: 'Дата должна быть в формате ГГГГ-ММ-ДД',
-						},
-					})}
-					type='date'
-					className={`w-full px-4 py-3 rounded-lg border placeholder:text-[#585654] ${
-						errors.birthDate
-							? 'border-red-500 focus:ring-red-500'
-							: 'border-border'
-					} focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent  dark:bg-input/30`}
+					}}
+					render={({ field }) => (
+						<DatePicker
+							value={field.value ? new Date(field.value) : undefined}
+							onChange={(date: any) => {
+								field.onChange(date ? format(date, 'yyyy-MM-dd') : '')
+							}}
+							startYear={1900}
+							endYear={new Date().getFullYear()}
+						/>
+					)}
 				/>
 				{errors.birthDate && (
 					<p className='mt-2 text-sm text-red-600 dark:text-red-500'>
