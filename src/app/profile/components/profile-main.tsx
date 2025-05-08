@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import SettingsSidebar from './profile-sidebar/profile-sidebar'
-import ProfileInfo from './profile-info/profile-info'
 import Settings from './security/security'
 import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
@@ -21,7 +20,7 @@ export default function ProfileMain() {
 			case 'project-anket':
 				return <div>project-form</div>
 			default:
-				return <ProfileInfo />
+				return <AnketPage />
 		}
   }
 
