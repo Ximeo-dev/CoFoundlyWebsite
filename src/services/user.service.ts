@@ -34,24 +34,6 @@ class UserService {
 		const response = await axiosWithAuth.post<IUser>(`/send-confirmation`)
 		return response.data
 	}
-
-	async uploadAvatar(file: File) {
-		const formData = new FormData()
-		formData.append('avatar', file)
-
-		const response = await axiosWithAuth.post('/images/avatar', formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-		})
-
-		return response.data
-	}
-
-	async getAvatarUrl(userId: string, size: 64 | 128 | 512) {
-		const response = await axiosClassic.get(`/images/avatar/${userId}/${size}`)
-		return response.data
-	}
 }
 
 export const userService = new UserService()

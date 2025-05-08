@@ -54,7 +54,7 @@ export default function SkillsModal({
 					value={searchQuery}
 					onChange={e => setSearchQuery(e.target.value)}
 					placeholder='Поиск навыков...'
-					className='w-full p-2 mb-4 border rounded-lg bg-background text-gray-900 dark:text-gray-100'
+					className='w-full p-2 mb-4 border rounded-lg focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30'
 				/>
 				<div className='flex flex-wrap gap-2 max-h-96 overflow-y-auto'>
 					{isLoading ? (
