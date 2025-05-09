@@ -1,6 +1,7 @@
 'use client'
 
 import Modal from '@/components/ui/modal/modal'
+import { Button } from '@/components/ui/shadcn/button'
 import { anketService } from '@/services/anket.service'
 import { searchSort } from '@/utils/searchSort'
 import { useQuery } from '@tanstack/react-query'
@@ -43,6 +44,10 @@ export default function IndustryModal({
 		setValue('industries', updated, { shouldValidate: true })
 	}
 
+	const resetIndustries = () => {
+		setValue('industries', [], { shouldValidate: true })
+	}
+
   return (
 		<Modal
 			isOpen={isOpen}
@@ -83,11 +88,18 @@ export default function IndustryModal({
 						{errors.industries.message as string}
 					</p>
 				)}
-				<div className='mt-8 flex justify-center'>
+				<div className='mt-6 flex justify-center gap-6'>
+					<Button
+						variant={'destructive'}
+						onClick={resetIndustries}
+						className='flex items-center gap-1 cursor-pointer'
+					>
+						Сбросить
+					</Button>
 					<button
 						type='button'
 						onClick={onClose}
-						className='px-4 py-2 bg-black text-white hover:bg-neutral-700 dark:bg-[#EDEDED] dark:text-black dark:hover:bg-white/80 transition-colors duration-300 flex items-center gap-1 cursor-pointer rounded-lg'
+						className='h-9 px-4 py-2 bg-black text-white hover:bg-neutral-700 dark:bg-[#EDEDED] dark:text-black dark:hover:bg-white/80 transition-colors duration-300 flex items-center gap-1 cursor-pointer rounded-lg'
 					>
 						Готово
 					</button>

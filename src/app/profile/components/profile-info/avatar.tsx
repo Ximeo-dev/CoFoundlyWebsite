@@ -53,8 +53,8 @@ export default function Avatar({
 				toast.error('Только изображения форматов PNG, JPEG или WEBP')
 				return
 			}
-			if (file.size > 2 * 1024 * 1024) {
-				toast.error('Размер файла не должен превышать 2 МБ')
+			if (file.size > 3 * 1024 * 1024) {
+				toast.error('Размер файла не должен превышать 3 МБ')
 				return
 			}
 			mutate(file)
