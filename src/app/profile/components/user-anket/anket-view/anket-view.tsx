@@ -18,10 +18,12 @@ export default function AnketView({
 	anket,
 	onEdit,
 	editable = false,
+	showProgress = true
 }: {
 	anket: any
 	onEdit?: () => void
 	editable?: boolean
+	showProgress: boolean
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -68,17 +70,19 @@ export default function AnketView({
 							{editable ? 'Ваша анкета' : 'Анкета'}
 						</h2>
 
-						<div className={styles.percent_block}>
-							<span className='text-xs text-muted-foreground block mb-1'>
-								Заполнено на {progress}%
-							</span>
-							<div className='w-[150px] bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
-								<div
-									className='bg-primary h-2 rounded-full transition-all duration-500'
-									style={{ width: `${progress}%` }}
-								/>
+						{showProgress && (
+							<div className={styles.percent_block}>
+								<span className='text-xs text-muted-foreground block mb-1'>
+									Заполнено на {progress}%
+								</span>
+								<div className='w-[150px] bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
+									<div
+										className='bg-primary h-2 rounded-full transition-all duration-500'
+										style={{ width: `${progress}%` }}
+									/>
+								</div>
 							</div>
-						</div>
+						)}
 						<div className='flex items-center gap-x-5'>
 							{editable && (
 								<button
