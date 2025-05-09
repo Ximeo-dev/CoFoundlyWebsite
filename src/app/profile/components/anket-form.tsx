@@ -23,10 +23,8 @@ interface IAnketForm {
 	mode?: 'create' | 'edit'
 	submitButtonText?: string
 	onCancel?: () => void
+	userId: string | undefined
 }
-
-const localStorageKey = 'anketFormData'
-const stepStorageKey = 'anketFormStep'
 
 export default function AnketForm({
 	initialValues,
@@ -34,7 +32,11 @@ export default function AnketForm({
 	mode = 'create',
 	submitButtonText = mode === 'edit' ? 'Сохранить изменения' : 'Создать анкету',
 	onCancel,
+	userId
 }: IAnketForm) {
+	const localStorageKey = `anketFormData-${userId}`
+	const stepStorageKey = `anketFormStep-${userId}`
+
 	const savedData = useMemo(() => {
 		try {
 			const stored = localStorage.getItem(localStorageKey)

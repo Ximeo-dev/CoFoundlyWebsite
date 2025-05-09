@@ -11,7 +11,7 @@
     @apply absolute left-4 md:left-8 top-16;
 
     .title {
-      @apply text-2xl font-semibold;
+      @apply text-3xl font-semibold;
     }
   }
 }
