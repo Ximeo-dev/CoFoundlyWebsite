@@ -32,6 +32,7 @@ export default function AnketView({
 		anket?.bio,
 		anket?.skills?.length,
 		anket?.languages?.length,
+		anket?.industries?.length,
 		anket?.portfolio?.length,
 	]
 
@@ -133,7 +134,7 @@ export default function AnketView({
 								<p
 									className={cn('mt-1', !anket?.job && 'text-muted-foreground')}
 								>
-									{anket?.job || 'Не указано'}
+									{anket?.job.name || 'Не указано'}
 								</p>
 							</div>
 
@@ -167,14 +168,47 @@ export default function AnketView({
 							</div>
 							<div>
 								<p className='text-sm text-muted-foreground'>Языки</p>
-								<p
-									className={cn(
-										'mt-1',
-										!anket?.languages && 'text-muted-foreground'
+								<div className='mt-2'>
+									{anket?.languages?.length ? (
+										<div className='flex flex-wrap gap-2'>
+											{anket.languages.map((language: any) => (
+												<span
+													key={language.name}
+													className='text-black dark:text-white'
+												>
+													{typeof language === 'string'
+														? language
+														: language.name}
+												</span>
+											))}
+										</div>
+									) : (
+										<p className='text-muted-foreground'>Не выбрано</p>
 									)}
-								>
-									{anket?.languages.join(', ') || 'Не выбрано'}
+								</div>
+							</div>
+							<div>
+								<p className='text-sm text-muted-foreground'>
+									Интересующие ниши
 								</p>
+								<div className='mt-2'>
+									{anket?.industries?.length ? (
+										<div className='flex flex-wrap gap-2'>
+											{anket.industries.map((industry: any) => (
+												<span
+													key={industry.name}
+													className='text-black dark:text-white'
+												>
+													{typeof industry === 'string'
+														? industry
+														: industry.name}
+												</span>
+											))}
+										</div>
+									) : (
+										<p className='text-muted-foreground'>Не выбрано</p>
+									)}
+								</div>
 							</div>
 							<div>
 								<p className='text-sm text-muted-foreground mb-1'>Портфолио</p>

@@ -36,7 +36,7 @@ export function EmailConfirmationNotification() {
 				<div className='flex-1'>
 					<h2 className='text-base font-semibold mb-1'>Подтвердите почту</h2>
 					<p className='text-sm text-black dark:text-white mb-5'>
-						Чтобы получить полный доступ ко всем функциям, подтвердите ваш
+						Чтобы получить полный доступ ко всем функциям, подтвердите Ваш
 						email.
 					</p>
 					<button

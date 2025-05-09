@@ -47,6 +47,14 @@ class AnketService {
 	async getAvatarUrl(userId: string, size: 64 | 128 | 512) {
 		return `${API_URL}/images/avatar/${userId}/${size}`
 	}
+
+	async getProfessional(type: 'language' | 'skill' | 'industry' | 'job', limit?: number) {
+		const response = await axiosWithAuth.get(
+			`${API_URL}/${type}/autocomplete?limit=${limit}`
+		)
+
+		return response.data
+	}
 }
 
 export const anketService = new AnketService()

@@ -27,7 +27,7 @@
       @apply flex flex-col max-h-[500px] md:flex-row overflow-hidden;
 
     .info_block_left {
-      @apply w-full lg:md:w-[400px] xl:w-[550px] flex-shrink-0 overflow-hidden p-4 md:p-6;
+      @apply w-full lg:w-[400px] xl:w-[450px] flex-shrink-0 overflow-hidden p-4 md:p-6;
 
       .left_block_inner {
         @apply flex flex-col items-center;

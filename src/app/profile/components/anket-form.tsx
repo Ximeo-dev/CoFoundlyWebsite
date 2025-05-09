@@ -4,19 +4,17 @@ import { IAnketRequest } from '@/types/anket.types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import PersonalData from './user-anket/steps/personal-data'
-import JobStep from './user-anket/steps/job-step'
 import BioStep from './user-anket/steps/bio-step'
-import SkillsStep from './user-anket/steps/skills-step'
-import PortfolioStep from './user-anket/steps/portfolio-step'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, ArrowRight, Loader } from 'lucide-react'
-import { AnketFormSchema, AnketFormType } from '@/zod/anket.schema'
+import { AnketFormSchema, AnketFormType, AnketFormValues } from '@/zod/anket.schema'
 import { Button } from '@/components/ui/shadcn/button'
-import { LanguagesStep } from './user-anket/steps/languages-step'
 import Tooltip from '@/components/ui/tooltip/tooltip'
+import ProfessioanalStep from './user-anket/steps/professional/professional-step'
+import MoreInfoStep from './user-anket/steps/more-info/more-info-step'
 
 interface IAnketForm {
-	initialValues?: Partial<IAnketRequest>
+	initialValues?: AnketFormValues
 	onSubmit: (data: IAnketRequest) => Promise<void>
 	mode?: 'create' | 'edit'
 	submitButtonText?: string
@@ -58,15 +56,31 @@ export default function AnketForm({
 			bio: '',
 			job: '',
 			skills: [],
+			industries: [],
 			languages: [],
 			portfolio: [],
 			...(savedData && mode !== 'edit' ? savedData : {}),
 			...(initialValues && {
-				...initialValues,
+				name: initialValues.name || '',
+				birthDate: initialValues.birthDate || '',
+				bio: initialValues.bio || '',
+				job:
+					initialValues.job && typeof initialValues.job === 'object'
+						? initialValues.job.name
+						: initialValues.job || '',
 				skills:
 					initialValues.skills?.map((skill: any) =>
-						typeof skill === 'object' ? skill.id : skill
+						typeof skill === 'object' ? skill.name : skill
 					) || [],
+				languages:
+					initialValues.languages?.map((lang: any) =>
+						typeof lang === 'object' ? lang.name : lang
+					) || [],
+				industries:
+					initialValues.industries?.map((industry: any) =>
+						typeof industry === 'object' ? industry.name : industry
+					) || [],
+				portfolio: initialValues.portfolio || [],
 			}),
 		},
 		resolver: zodResolver(AnketFormSchema),
@@ -89,20 +103,16 @@ export default function AnketForm({
 
 	const steps = [
 		{ component: <PersonalData key='0' />, title: 'Личные данные' },
-		{ component: <JobStep key='1' />, title: 'Род деятельности' },
-		{ component: <BioStep key='2' />, title: 'О себе' },
-		{ component: <SkillsStep key='3' />, title: 'Навыки' },
-		{ component: <LanguagesStep key='4' />, title: 'Языки' },
-		{ component: <PortfolioStep key='5' />, title: 'Портфолио' },
+		{ component: <BioStep key='1' />, title: 'О себе' },
+		{ component: <ProfessioanalStep key='2' />, title: 'Профессиональное' },
+		{ component: <MoreInfoStep key='3' />, title: 'Дополнительная информация' },
 	]
 
 	const stepFields: (keyof AnketFormType)[][] = [
 		['name', 'birthDate'],
-		['job'],
 		['bio'],
-		['skills'],
-		['languages'],
-		['portfolio'],
+		['job', 'skills', 'industries'],
+		['languages', 'portfolio'],
 	]
 
 	const totalSteps = steps.length

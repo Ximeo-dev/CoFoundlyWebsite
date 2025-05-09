@@ -1,84 +1,86 @@
 'use client'
 
 import Modal from '@/components/ui/modal/modal'
-import { skillsService } from '@/services/skills.service'
-import { ISkill } from '@/types/skills.types'
-import { SkillsSort } from '@/utils/skillsSort'
+import { anketService } from '@/services/anket.service'
+import { searchSort } from '@/utils/searchSort'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-export default function SkillsModal({
-	isOpen,
-	onClose,
+export default function LanguageModal({
+  isOpen,
+  onClose,
 }: {
-	isOpen: boolean
-	onClose: () => void
+  isOpen: boolean
+  onClose: () => void
 }) {
-	const {
-		setValue,
-		watch,
-		formState: { errors },
-	} = useFormContext()
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext()
 
-	const [searchQuery, setSearchQuery] = useState('')
-	const selected = watch('skills', []) as string[]
+  const [searchQuery, setSearchQuery] = useState('')
+  const selected = watch('languages', []) as string[]
 
-	const { data: skills, isLoading } = useQuery({
-		queryKey: ['get skills'],
-		queryFn: () => skillsService.getSkills(500),
+  const { data: languages, isLoading } = useQuery({
+		queryKey: ['get languages'],
+		queryFn: () => anketService.getProfessional('language', 70),
+		staleTime: 1000 * 60 * 60,
+		gcTime: 1000 * 60 * 60 * 24,
+		enabled: isOpen,
 	})
 
-	const sortedSkills = useMemo(() => {
-		if (!skills) return []
-		return SkillsSort(skills, searchQuery)
-	}, [skills, searchQuery])
+  const sortedLanguages = useMemo(() => {
+		if (!languages) return []
+		return searchSort(languages, searchQuery)
+	}, [languages, searchQuery])
 
-	const toggleSkill = (skillId: string) => {
-		const updated = selected.includes(skillId)
-			? selected.filter(s => s !== skillId)
-			: [...selected, skillId]
-		setValue('skills', updated, { shouldValidate: true })
-	}
+  const toggleLanguages = (languageName: string) => {
+    const updated = selected.includes(languageName)
+			? selected.filter(s => s !== languageName)
+			: [...selected, languageName]
+    setValue('languages', updated, { shouldValidate: true })
+  }
 
-	return (
+  return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
 			className='w-[350px] sm:w-full sm:max-w-md'
 		>
 			<div className='p-6'>
-				<h3 className='text-xl font-semibold mb-4'>Выберите навыки</h3>
+				<h3 className='text-xl font-semibold mb-4'>Выберите языки</h3>
 				<input
 					type='text'
 					value={searchQuery}
 					onChange={e => setSearchQuery(e.target.value)}
-					placeholder='Поиск навыков...'
+					placeholder='Поиск...'
 					className='w-full p-2 mb-4 border rounded-lg focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30'
 				/>
 				<div className='flex flex-wrap gap-2 max-h-96 overflow-y-auto'>
 					{isLoading ? (
 						<div className='text-center'>Загрузка...</div>
 					) : (
-						sortedSkills.map(skill => (
+						sortedLanguages.map(language => (
 							<button
 								type='button'
-								key={skill.name}
-								onClick={() => toggleSkill(skill.name)}
+								key={language.name}
+								onClick={() => toggleLanguages(language.name)}
 								className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
-									selected.includes(skill.name)
+									selected.includes(language.name)
 										? 'bg-black dark:bg-white text-white dark:text-black'
 										: 'bg-background border border-border'
 								}`}
 							>
-								{skill.name}
+								{language.name}
 							</button>
 						))
 					)}
 				</div>
-				{errors.skills && (
+				{errors.languages && (
 					<p className='mt-3 text-sm text-red-600 dark:text-red-500'>
-						{errors.skills.message as string}
+						{errors.languages.message as string}
 					</p>
 				)}
 				<div className='mt-8 flex justify-center'>
