@@ -23,7 +23,7 @@ interface IAnketForm {
 	mode?: 'create' | 'edit'
 	submitButtonText?: string
 	onCancel?: () => void
-	userId: string | undefined
+	userId?: string | undefined
 }
 
 export default function AnketForm({

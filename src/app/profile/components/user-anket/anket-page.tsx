@@ -32,7 +32,7 @@ export default function AnketPage() {
 				}}
 			/>
 		) : (
-			<AnketView editable onEdit={() => setIsEditing(true)} anket={anket} />
+			<AnketView showProgress editable onEdit={() => setIsEditing(true)} anket={anket} />
 		)
 	}
 
