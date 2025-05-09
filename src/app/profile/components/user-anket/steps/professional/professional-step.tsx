@@ -28,12 +28,12 @@ export default function ProfessionalStep() {
 	const industryNames = industries.filter(Boolean).join(', ')
 
 	return (
-		<div className='space-y-8'>
+		<div className='space-y-6 sm:space-y-4'>
 			<div>
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
 					Род деятельности
 				</h3>
-				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-4'>
+				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-3 sm:mb-2'>
 					Укажите Вашу основную специализацию или должность
 				</p>
 			</div>
@@ -42,12 +42,12 @@ export default function ProfessionalStep() {
 				<button
 					type='button'
 					onClick={() => setIsJobModalOpen(true)}
-					className='w-full py-1 px-3 h-9 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer'
+					className='w-full py-2 px-4 h-11 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
 				>
-					{job ? job : 'Нажмите для выбора рода деятельности'}
+					{job ? job : 'Выберите род деятельности'}
 				</button>
 				{errors.job && (
-					<p className='text-sm text-red-600 dark:text-red-500'>
+					<p className='text-sm text-red-600 dark:text-red-500 mt-1'>
 						{errors.job.message as string}
 					</p>
 				)}
@@ -57,7 +57,7 @@ export default function ProfessionalStep() {
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
 					Ваши навыки
 				</h3>
-				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-4'>
+				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-3 sm:mb-2'>
 					Выберите навыки, которые соответствуют Вашей специализации
 				</p>
 			</div>
@@ -66,12 +66,12 @@ export default function ProfessionalStep() {
 				<button
 					type='button'
 					onClick={() => setIsSkillModalOpen(true)}
-					className='w-full py-1 px-3 h-9 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer'
+					className='w-full py-2 px-4 h-11 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
 				>
-					{skills.length > 0 ? skillNames : 'Нажмите для выбора навыков...'}
+					{skills.length > 0 ? skillNames : 'Выберите навыки...'}
 				</button>
 				{errors.skills && (
-					<p className='text-sm text-red-600 dark:text-red-500'>
+					<p className='text-sm text-red-600 dark:text-red-500 mt-1'>
 						{errors.skills.message as string}
 					</p>
 				)}
@@ -81,7 +81,7 @@ export default function ProfessionalStep() {
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
 					Интересующие ниши
 				</h3>
-				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-4'>
+				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-3 sm:mb-2'>
 					Укажите интересующие Вас ниши
 				</p>
 			</div>
@@ -90,14 +90,12 @@ export default function ProfessionalStep() {
 				<button
 					type='button'
 					onClick={() => setIsIndustryModalOpen(true)}
-					className='w-full py-1 px-3 h-9 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer'
+					className='w-full py-2 px-4 h-11 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
 				>
-					{industries.length > 0
-						? industryNames
-						: 'Нажмите для выбора интересующих Вас ниш'}
+					{industries.length > 0 ? industryNames : 'Выберите ниши'}
 				</button>
 				{errors.industries && (
-					<p className='text-sm text-red-600 dark:text-red-500'>
+					<p className='text-sm text-red-600 dark:text-red-500 mt-1'>
 						{errors.industries.message as string}
 					</p>
 				)}

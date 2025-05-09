@@ -25,7 +25,7 @@ export default function LanguageModal({
 
   const { data: languages, isLoading } = useQuery({
 		queryKey: ['get languages'],
-		queryFn: () => anketService.getProfessional('language', 70),
+		queryFn: () => anketService.getProfessional('language', 85),
 		staleTime: 1000 * 60 * 60,
 		gcTime: 1000 * 60 * 60 * 24,
 		enabled: isOpen,

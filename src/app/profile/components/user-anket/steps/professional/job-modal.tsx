@@ -46,7 +46,7 @@ export default function JobModal({
 			onClose={onClose}
 			className='w-[350px] sm:w-full sm:max-w-md'
 		>
-			<div className='p-6'>
+			<div className='py-6 px-3'>
 				<h3 className='text-xl font-semibold mb-4'>Выберите род деятельности</h3>
 				<input
 					type='text'
@@ -59,10 +59,10 @@ export default function JobModal({
 					{isLoading ? (
 						<div className='text-center'>Загрузка...</div>
 					) : (
-						sortedJobs.map(job => (
+						sortedJobs.map((job, i) => (
 							<button
 								type='button'
-								key={job.name}
+								key={job.name || i}
 								onClick={() => selectJob(job.name)}
 								className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
 									selectedJob === job.name

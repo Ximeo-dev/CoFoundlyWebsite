@@ -7,10 +7,14 @@ import PersonalData from './user-anket/steps/personal-data'
 import BioStep from './user-anket/steps/bio-step'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, ArrowRight, Loader } from 'lucide-react'
-import { AnketFormSchema, AnketFormType, AnketFormValues } from '@/zod/anket.schema'
+import {
+	AnketFormSchema,
+	AnketFormType,
+	AnketFormValues,
+} from '@/zod/anket.schema'
 import { Button } from '@/components/ui/shadcn/button'
 import Tooltip from '@/components/ui/tooltip/tooltip'
-import ProfessioanalStep from './user-anket/steps/professional/professional-step'
+import ProfessionalStep from './user-anket/steps/professional/professional-step'
 import MoreInfoStep from './user-anket/steps/more-info/more-info-step'
 
 interface IAnketForm {
@@ -104,7 +108,7 @@ export default function AnketForm({
 	const steps = [
 		{ component: <PersonalData key='0' />, title: 'Личные данные' },
 		{ component: <BioStep key='1' />, title: 'О себе' },
-		{ component: <ProfessioanalStep key='2' />, title: 'Профессиональное' },
+		{ component: <ProfessionalStep key='2' />, title: 'Профессиональное' },
 		{ component: <MoreInfoStep key='3' />, title: 'Дополнительная информация' },
 	]
 
@@ -197,11 +201,11 @@ export default function AnketForm({
 		<FormProvider {...methods}>
 			<form
 				onSubmit={methods.handleSubmit(submitHandler)}
-				className='space-y-6'
+				className='space-y-4 sm:space-y-3'
 			>
-				<div className='py-4 px-6 flex justify-between items-center mb-0'>
+				<div className='py-3 px-4 sm:py-4 sm:px-6 flex flex-col sm:flex-row sm:justify-between sm:items-center mb-0 gap-4 sm:gap-0'>
 					<div className='flex flex-col'>
-						<h2 className='text-xl font-semibold text-gray-800 dark:text-white'>
+						<h2 className='text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white'>
 							{mode === 'edit' ? 'Редактирование анкеты' : 'Создание анкеты'}
 						</h2>
 						<p className='text-sm text-gray-500 dark:text-neutral-500 mt-1'>
@@ -209,23 +213,21 @@ export default function AnketForm({
 						</p>
 					</div>
 
-					<div className='flex flex-col items-end w-44'>
-						<div className='w-32 md:w-44'>
-							<span className='text-xs text-muted-foreground block mb-1'>
-								Заполнено на {progress}%
-							</span>
-							<div className='w-full bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
-								<div
-									className='bg-primary h-2 rounded-full transition-all duration-500'
-									style={{ width: `${progress}%` }}
-								/>
-							</div>
+					<div className='flex flex-col items-end w-full sm:w-32'>
+						<span className='text-xs text-muted-foreground block mb-1'>
+							Заполнено на {progress}%
+						</span>
+						<div className='w-full sm:w-28 bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
+							<div
+								className='bg-primary h-2 rounded-full transition-all duration-500'
+								style={{ width: `${progress}%` }}
+							/>
 						</div>
 					</div>
 				</div>
 
-				<div className='flex justify-center py-4 border-t border-border rounded-tl-[15px] rounded-tr-[15px]'>
-					<div className='flex space-x-4'>
+				<div className='flex justify-center py-3 sm:py-4 border-t border-border rounded-tl-[15px] rounded-tr-[15px]'>
+					<div className='flex space-x-2 sm:space-x-4'>
 						{steps.map((step, index) => (
 							<Tooltip key={index} text={step.title}>
 								<button
@@ -254,17 +256,17 @@ export default function AnketForm({
 					</div>
 				</div>
 
-				<div className='px-6 pb-6 pt-4'>
-					<div className='mb-8'>{steps[currentStep].component}</div>
+				<div className='px-4 sm:px-6 pb-6 pt-3 sm:pt-4'>
+					<div className='mb-6 sm:mb-8'>{steps[currentStep].component}</div>
 
-					<div className='flex justify-between items-center pt-4 border-t border-border'>
-						<div className='flex gap-2'>
+					<div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-2 pt-3 sm:pt-4 border-t border-border'>
+						<div className='flex flex-col sm:flex-row gap-2'>
 							{currentStep > 0 ? (
 								<Button
 									type='button'
 									onClick={prevStep}
 									variant='outline'
-									className='gap-1'
+									className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
 								>
 									<ArrowLeft size={18} />
 									Назад
@@ -275,7 +277,7 @@ export default function AnketForm({
 									type='button'
 									onClick={handleCancel}
 									variant='outline'
-									className='gap-1'
+									className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
 								>
 									Отменить изменения
 								</Button>
@@ -286,7 +288,7 @@ export default function AnketForm({
 							<Button
 								type='button'
 								onClick={nextStep}
-								className='gap-1 ml-auto'
+								className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
 							>
 								Далее
 								<ArrowRight size={18} />
@@ -296,7 +298,7 @@ export default function AnketForm({
 								type='button'
 								onClick={confirm}
 								disabled={isFormSubmitting}
-								className='gap-1'
+								className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
 							>
 								{isFormSubmitting ? (
 									<>

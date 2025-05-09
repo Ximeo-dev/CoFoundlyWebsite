@@ -5,7 +5,7 @@ export function searchSort(
 	query: string
 ): ISkill[] {
 	const trimmedQuery = query.trim().toLowerCase()
-	if (!trimmedQuery) return skills.slice(0, 50)
+	if (!trimmedQuery) return skills.slice(0, 80)
 
 	return skills
 		.filter(skill => skill.name.toLowerCase().includes(trimmedQuery))
