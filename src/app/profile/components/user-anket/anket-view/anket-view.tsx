@@ -13,6 +13,7 @@ import Modal from '@/components/ui/modal/modal'
 import { Button } from '@/components/ui/shadcn/button'
 import Tooltip from '@/components/ui/tooltip/tooltip'
 import ScrollIndicator from '@/components/ui/scroll-indicator/scroll-indicator'
+import { calculateProgress } from '@/utils/calculateProgress'
 
 export default function AnketView({
 	anket,
@@ -38,13 +39,16 @@ export default function AnketView({
 		anket?.portfolio?.length,
 	]
 
-	const filledCount = fields.filter(field => {
-		if (typeof field === 'string') return field.trim() !== ''
-		if (typeof field === 'number') return field > 0
-		return false
-	}).length
-	const totalCount = fields.length
-	const progress = Math.round((filledCount / totalCount) * 100)
+	const progress = calculateProgress({
+		name: anket?.name,
+		birthDate: anket?.birthDate,
+		bio: anket?.bio,
+		job: anket?.job,
+		skills: anket?.skills,
+		languages: anket?.languages,
+		industries: anket?.industries,
+		portfolio: anket?.portfolio,
+	})
 
 	const { mutate: deleteAnket } = useMutation({
 		mutationKey: ['anket delete'],
@@ -87,7 +91,7 @@ export default function AnketView({
 							{editable && (
 								<button
 									onClick={onEdit}
-									className='text-muted-foreground hover:text-foreground transition-colors duration-300 cursor-pointer'
+									className='text-muted-foreground hover:text-foreground transition-colors duration-300 cursor-pointer inline-flex items-center'
 									aria-label='Редактировать'
 								>
 									<Tooltip text='Редактировать' position='bottom'>
@@ -98,7 +102,7 @@ export default function AnketView({
 							{editable && (
 								<button
 									onClick={() => setIsModalOpen(true)}
-									className='text-muted-foreground hover:text-rose-500 transition-colors duration-300 cursor-pointer'
+									className='text-muted-foreground hover:text-rose-500 transition-colors duration-300 cursor-pointer inline-flex items-center'
 								>
 									<Tooltip text='Удалить' position='bottom'>
 										<Trash className='w-5 h-5' />
@@ -155,7 +159,7 @@ export default function AnketView({
 								<p className='text-sm text-muted-foreground'>Навыки</p>
 								<div className='mt-2'>
 									{anket?.skills?.length ? (
-										<div className='flex flex-wrap gap-2'>
+										<div className='flex flex-wrap gap-x-2 gap-y-3'>
 											{anket.skills.map((skill: any) => (
 												<span
 													key={skill.id || skill}
@@ -219,7 +223,7 @@ export default function AnketView({
 								<a
 									href={anket?.portfolio}
 									className={cn(
-										'mt-1',
+										'mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white',
 										!anket?.portfolio && 'text-muted-foreground'
 									)}
 								>

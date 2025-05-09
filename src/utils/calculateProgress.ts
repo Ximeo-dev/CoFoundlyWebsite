@@ -1,39 +1,44 @@
-// import { AnketFormType } from '@/zod/anket.schema'
+export interface AnketProgressData {
+	name?: string
+	birthDate?: string
+	bio?: string
+	job?: string | { name: string }
+	skills?: any[]
+	industries?: any[]
+	languages?: any[]
+	portfolio?: string | string[]
+}
 
-// export function calculateProgress(data: Partial<AnketFormType>): number {
-// 	const fields: (keyof AnketFormType)[] = [
-// 		'name',
-// 		'birthDate',
-// 		'bio',
-// 		'job',
-// 		'skills',
-// 		'languages',
-// 		'industries',
-// 		'portfolio',
-// 	]
+const fieldWeights: Record<keyof AnketProgressData, number> = {
+	name: 18,
+	birthDate: 7,
+	bio: 18,
+	job: 18,
+	skills: 18,
+	industries: 8,
+	languages: 8,
+	portfolio: 5,
+}
 
-// 	let filled = 0
-// 	const total = fields.length
+export function calculateProgress(data: AnketProgressData): number {
+	let filledWeight = 0
+	const totalWeight = 100
 
-// 	fields.forEach(field => {
-// 		const value = data[field]
+	Object.keys(fieldWeights).forEach(field => {
+		const value = data[field as keyof AnketProgressData]
+		const isFilled =
+			(typeof value === 'string' && value.trim() !== '') ||
+			(Array.isArray(value) && value.length > 0) ||
+			(typeof value === 'object' &&
+				value !== null &&
+				'name' in value &&
+				value.name?.trim() !== '')
 
-// 		if (field === 'job') {
-// 			if (typeof value === 'string' && value.trim() !== '') {
-// 				filled++
-// 			} else if (typeof value === 'object' && value?.name?.trim()) {
-// 				filled++
-// 			}
-// 		} else if (typeof value === 'string') {
-// 			if (value.trim() !== '') {
-// 				filled++
-// 			}
-// 		} else if (Array.isArray(value)) {
-// 			if (value.length > 0) {
-// 				filled++
-// 			}
-// 		}
-// 	})
+		if (isFilled) {
+			filledWeight += fieldWeights[field as keyof AnketProgressData]
+		}
+	})
 
-// 	return Math.round((filled / total) * 100)
-// }
+	const progress = Math.round((filledWeight / totalWeight) * 100)
+	return progress
+}

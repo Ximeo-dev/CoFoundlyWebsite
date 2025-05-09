@@ -16,6 +16,9 @@ import { Button } from '@/components/ui/shadcn/button'
 import Tooltip from '@/components/ui/tooltip/tooltip'
 import ProfessionalStep from './user-anket/steps/professional/professional-step'
 import MoreInfoStep from './user-anket/steps/more-info/more-info-step'
+import { calculateProgress } from '@/utils/calculateProgress'
+import styles from './profile.module.css'
+import { cn } from '@/lib/utils'
 
 interface IAnketForm {
 	initialValues?: AnketFormValues
@@ -120,9 +123,7 @@ export default function AnketForm({
 		['job', 'skills', 'industries'],
 		['languages', 'portfolio'],
 	]
-
-	const totalSteps = steps.length
-
+	
 	const nextStep = async () => {
 		const fieldsToValidate = stepFields[currentStep]
 		const isValid = await methods.trigger(fieldsToValidate)
@@ -150,7 +151,6 @@ export default function AnketForm({
 			localStorage.removeItem(localStorageKey)
 			localStorage.removeItem(stepStorageKey)
 		} catch (error) {
-			console.error('Ошибка при отправке формы', error)
 		} finally {
 			setIsFormSubmitting(false)
 		}
@@ -164,31 +164,12 @@ export default function AnketForm({
 		}
 	}
 
-	const filledFieldsCount = useMemo(() => {
+	const totalSteps = steps.length
+
+	const progress = useMemo(() => {
 		const values = methods.getValues()
-		let filled = 0
-		let total = 0
-
-		stepFields.forEach(fields => {
-			fields.forEach(field => {
-				total++
-				const value = values[field]
-
-				if (
-					(typeof value === 'string' && value.trim() !== '') ||
-					(Array.isArray(value) && value.length > 0)
-				) {
-					filled++
-				}
-			})
-		})
-
-		return { filled, total }
+		return calculateProgress(values)
 	}, [methods.watch()])
-
-	const progress = Math.round(
-		(filledFieldsCount.filled / filledFieldsCount.total) * 100
-	)
 
 	const confirm = async () => {
 		const fieldsToValidate = stepFields[currentStep]
@@ -203,10 +184,10 @@ export default function AnketForm({
 		<FormProvider {...methods}>
 			<form
 				onSubmit={methods.handleSubmit(submitHandler)}
-				className='space-y-4 sm:space-y-3'
+				className={styles.anket_form}
 			>
-				<div className='py-3 px-4 sm:py-4 sm:px-6 flex flex-col sm:flex-row sm:justify-between sm:items-center mb-0 gap-4 sm:gap-0'>
-					<div className='flex flex-col'>
+				<div className={styles.form_top}>
+					<div className={styles.form_block}>
 						<h2 className='text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white'>
 							{mode === 'edit' ? 'Редактирование анкеты' : 'Создание анкеты'}
 						</h2>
@@ -215,11 +196,16 @@ export default function AnketForm({
 						</p>
 					</div>
 
-					<div className='flex flex-col items-end w-full sm:w-32'>
+					<div className={styles.progress_block}>
 						<span className='text-xs text-muted-foreground block mb-1'>
 							Заполнено на {progress}%
 						</span>
-						<div className='w-full sm:w-28 bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
+						<div
+							className={cn(
+								styles.progress_inner,
+								'bg-gray-200 dark:bg-neutral-800'
+							)}
+						>
 							<div
 								className='bg-primary h-2 rounded-full transition-all duration-500'
 								style={{ width: `${progress}%` }}
@@ -228,8 +214,8 @@ export default function AnketForm({
 					</div>
 				</div>
 
-				<div className='flex justify-center py-3 sm:py-4 border-t border-border rounded-tl-[15px] rounded-tr-[15px]'>
-					<div className='flex space-x-2 sm:space-x-4'>
+				<div className={cn(styles.steps, 'border-t border-border')}>
+					<div className={styles.steps_block}>
 						{steps.map((step, index) => (
 							<Tooltip key={index} text={step.title}>
 								<button
@@ -258,17 +244,19 @@ export default function AnketForm({
 					</div>
 				</div>
 
-				<div className='px-4 sm:px-6 pb-6 pt-3 sm:pt-4'>
-					<div className='mb-6 sm:mb-8'>{steps[currentStep].component}</div>
+				<div className={styles.content_block}>
+					<div className={styles.content_inner}>
+						{steps[currentStep].component}
+					</div>
 
-					<div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-2 pt-3 sm:pt-4 border-t border-border'>
-						<div className='flex flex-col sm:flex-row gap-2'>
+					<div className={cn(styles.step_buttons, 'border-t border-border')}>
+						<div className={styles.buttons_block}>
 							{currentStep > 0 ? (
 								<Button
 									type='button'
 									onClick={prevStep}
 									variant='outline'
-									className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
+									className={styles.back_btn}
 								>
 									<ArrowLeft size={18} />
 									Назад
@@ -279,7 +267,7 @@ export default function AnketForm({
 									type='button'
 									onClick={handleCancel}
 									variant='outline'
-									className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
+									className={styles.back_btn}
 								>
 									Отменить изменения
 								</Button>
@@ -290,7 +278,7 @@ export default function AnketForm({
 							<Button
 								type='button'
 								onClick={nextStep}
-								className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
+								className={styles.back_btn}
 							>
 								Далее
 								<ArrowRight size={18} />
@@ -300,7 +288,7 @@ export default function AnketForm({
 								type='button'
 								onClick={confirm}
 								disabled={isFormSubmitting}
-								className='h-11 w-full sm:w-auto gap-1 text-base sm:text-sm'
+								className={styles.back_btn}
 							>
 								{isFormSubmitting ? (
 									<>
