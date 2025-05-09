@@ -4,6 +4,7 @@ import { anketService } from '@/services/anket.service'
 import { IAnketRequest, IAnket } from '@/types/anket.types'
 import { toast } from 'sonner'
 import AnketForm from '../anket-form'
+import { useAuth } from '@/hooks/useAuth'
 
 type AnketEditorMode = 'create' | 'edit'
 
@@ -20,6 +21,8 @@ export default function AnketEditor({
 	onSuccess,
 	onCancel
 }: IAnketEditor) {
+	const { user } = useAuth()
+
 	const handleSubmit = async (data: IAnketRequest) => {
 		try {
 			let response: IAnket
@@ -46,6 +49,7 @@ export default function AnketEditor({
 
 	return (
 		<AnketForm
+			userId={user?.id}
 			initialValues={initialData}
 			onSubmit={handleSubmit}
 			onCancel={onCancel}

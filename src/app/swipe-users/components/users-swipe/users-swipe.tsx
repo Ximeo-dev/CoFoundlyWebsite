@@ -13,5 +13,5 @@ export default function UsersSwipe() {
 		queryFn: () => anketService.getAnket()
 	})
 
-	return <AnketView anket={anket} onEdit={() => setIsEditing(false)} />
+	return <AnketView showProgress={false} anket={anket} onEdit={() => setIsEditing(false)} />
 }
