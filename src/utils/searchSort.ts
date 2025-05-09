@@ -1,6 +1,6 @@
 import { ISkill } from '@/types/skills.types'
 
-export function SkillsSort(
+export function searchSort(
 	skills: ISkill[],
 	query: string
 ): ISkill[] {

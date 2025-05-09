@@ -14,9 +14,9 @@ export default function BioStep() {
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
 					О себе
 				</h3>
-				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-6'>
+				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-4'>
 					Расскажите о своем опыте, навыках и целях. Это поможет другим лучше
-					понять вашу специализацию.
+					понять Вашу специализацию.
 				</p>
 			</div>
 

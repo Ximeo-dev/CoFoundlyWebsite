@@ -21,8 +21,8 @@ export default function PersonalData() {
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
 					Личные данные
 				</h3>
-				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-6'>
-					Укажите ваше имя и дату рождения
+				<p className='text-sm text-gray-500 dark:text-neutral-500 mb-4'>
+					Укажите Ваше имя и дату рождения
 				</p>
 			</div>
 

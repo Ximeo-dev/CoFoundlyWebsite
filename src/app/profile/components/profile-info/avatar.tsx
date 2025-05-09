@@ -71,11 +71,11 @@ export default function Avatar({
 
 	const avatarStyles = cn(
 		size === 64
-			? 'rounded-full w-10 h-10 lg:w-12 lg:h-12'
+			? 'rounded-full w-10 h-10 lg:w-12 lg:h-12 object-cover'
 			: size === 128
-			? 'w-36 h-36 rounded-[15px]'
+			? 'w-36 h-36 rounded-[15px] object-cover'
 			: size === 512
-			? 'w-72 h-52 md:w-90 md:h-64 rounded-[15px]'
+			? 'w-72 h-52 md:w-90 md:h-64 rounded-[15px] object-cover'
 			: styles.avatar,
 		isPending ? 'opacity-50' : 'opacity-100',
 		'flex items-center justify-center'
