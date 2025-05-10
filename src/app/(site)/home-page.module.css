@@ -12,14 +12,6 @@
   }
 }
 
-/* .btn_block {
-  @apply mt-12 xl:mt-14 flex items-center justify-center;
-
-  .main_btn {
-    @apply cursor-pointer py-2.5 px-8 lg:py-3 lg:px-10 xl:py-4 xl:px-12 text-lg lg:text-xl xl:text-2xl rounded-[18px];
-  }
-} */
-
 .sec_text_block {
   @apply flex items-center justify-center mt-12 xl:mt-20;
 

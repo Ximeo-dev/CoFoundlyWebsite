@@ -12,19 +12,17 @@ export default function ContainerWrapper({
 }) {
 	const pathname = usePathname()
 
-	const isSwipePage = pathname === '/swipe-users'
-	const isCreateOrEditAnketPage = pathname === '/profile'
+	const paddingClasses = cn(
+		pathname === '/swipe-users'
+			? 'px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32'
+			: pathname === '/profile'
+			? 'px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24'
+			: 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'
+	)
 
 	return (
 		<div
-			className={cn(
-				styles.container_wrapper,
-				isSwipePage
-					? 'px-3 sm:px-8 md:px-20 lg:px-44 xl:px-72'
-					: isCreateOrEditAnketPage
-					? 'px-3 sm:px-8 md:px-24 lg:px-32 xl:px-44'
-					: 'px-3 sm:px-8 md:px-14 lg:px-15 xl:px-20'
-			)}
+			className={cn(styles.container_wrapper, paddingClasses)}
 		>
 			<div className={styles.container_bg}>
 				<div
@@ -35,29 +33,37 @@ export default function ContainerWrapper({
 				/>
 			</div>
 			<div
+				className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 block dark:hidden'
+				style={{
+					backgroundImage:
+						'linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)',
+					backgroundSize: '35px 35px',
+				}}
+			/>
+			<div
+				className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 hidden dark:block'
+				style={{
+					backgroundImage:
+						'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
+					backgroundSize: '35px 35px',
+				}}
+			/>
+			{/* <div
 				className='absolute inset-0 -z-10 opacity-100 dark:hidden'
 				style={{
 					backgroundImage:
 						'radial-gradient(circle, rgba(0, 0, 0, 0.15) 1px, transparent 1px)',
 					backgroundSize: '25px 25px',
 				}}
-			/>
-			<div
+			/> */}
+			{/* <div
 				className='absolute inset-0 -z-10 opacity-100 hiiden dark:block'
 				style={{
 					backgroundImage:
 						'radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
 					backgroundSize: '25px 25px',
 				}}
-			/>
-			{/* <div
-					className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 hidden dark:block'
-					style={{
-						backgroundImage:
-							'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
-						backgroundSize: '40px 40px',
-					}}
-				/> */}
+			/> */}
 			{children}
 		</div>
 	)

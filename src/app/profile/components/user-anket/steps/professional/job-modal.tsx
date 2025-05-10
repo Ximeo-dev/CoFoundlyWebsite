@@ -43,6 +43,7 @@ export default function JobModal({
 
 	const resetJob = () => {
 		setValue('job', '', { shouldValidate: true })
+		onClose()
 	}
 
 	return (
