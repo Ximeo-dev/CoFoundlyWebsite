@@ -78,7 +78,7 @@ export default function ProfileSidebar({
 							<li key={item.id}>
 								<div
 									className={cn(
-										'flex items-center gap-x-3 py-3 rounded-lg text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white cursor-pointer transition-all duration-200',
+										'flex items-center gap-x-3 py-3 rounded-lg text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white cursor-pointer transition-all duration-300',
 										isActive ? 'text-black dark:text-white font-medium' : ''
 									)}
 									onClick={handleClick}

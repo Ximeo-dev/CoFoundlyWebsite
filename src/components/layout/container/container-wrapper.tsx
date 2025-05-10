@@ -16,7 +16,7 @@ export default function ContainerWrapper({
 	const isCreateOrEditAnketPage = pathname === '/profile'
 
 	return (
-		<section
+		<div
 			className={cn(
 				styles.container_wrapper,
 				isSwipePage
@@ -59,6 +59,6 @@ export default function ContainerWrapper({
 					}}
 				/> */}
 			{children}
-		</section>
+		</div>
 	)
 }
