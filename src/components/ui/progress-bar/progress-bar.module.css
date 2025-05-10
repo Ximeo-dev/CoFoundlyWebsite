@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.percent_block {
+  @apply w-32 md:w-44;
+}

@@ -46,6 +46,7 @@ export default function IndustryModal({
 
 	const resetIndustries = () => {
 		setValue('industries', [], { shouldValidate: true })
+		onClose()
 	}
 
   return (

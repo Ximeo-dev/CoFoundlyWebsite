@@ -15,7 +15,7 @@ export default function ResetPassword() {
 		mutationKey: ['reset-password'],
 		mutationFn: (email: any) => authService.resetPasswordRequest(email),
 		onSuccess: () => {
-			toast.success('Запрос на сброс пароля отправлен')
+			toast.success('Запрос на изменение пароля отправлен')
 		},
 		onError: (error: any) => {
 			const errorMessage =

@@ -46,6 +46,7 @@ export default function SkillsModal({
 
 	const resetSkills = () => {
 		setValue('skills', [], { shouldValidate: true })
+		onClose()
 	}
 
 	return (
