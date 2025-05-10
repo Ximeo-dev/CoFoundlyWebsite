@@ -14,9 +14,9 @@ export default function ContainerWrapper({
 
 	const paddingClasses = cn(
 		pathname === '/swipe-users'
-			? 'px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32'
+			? 'px-4 sm:px-6 md:px-10 lg:px-20 2xl:px-96'
 			: pathname === '/profile'
-			? 'px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24'
+			? 'px-4 sm:px-6 md:px-10 lg:px-16 2xl:px-60'
 			: 'px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16'
 	)
 
@@ -44,7 +44,7 @@ export default function ContainerWrapper({
 				className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 hidden dark:block'
 				style={{
 					backgroundImage:
-						'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px)',
+						'linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
 					backgroundSize: '35px 35px',
 				}}
 			/>

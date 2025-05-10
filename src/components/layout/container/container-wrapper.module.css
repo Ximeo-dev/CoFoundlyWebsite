@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .container_wrapper {
-  @apply relative mx-auto isolate w-full max-w-[1440px];
+  @apply relative mx-auto isolate w-full;
 
   .container_bg {
     @apply absolute inset-0 -z-10;

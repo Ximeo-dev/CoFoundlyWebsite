@@ -23,7 +23,7 @@
       @apply flex flex-col md:max-h-[500px] md:flex-row overflow-hidden;
 
     .info_block_left {
-      @apply w-full md:w-[300px] xl:w-[300px] 2xl:w-[420px] md:flex-shrink-0 md:overflow-hidden p-4 md:p-6;
+      @apply w-full md:w-[300px] xl:w-[300px] 2xl:w-[450px] md:flex-shrink-0 md:overflow-hidden p-4 md:p-6;
 
       .left_block_inner {
         @apply flex flex-col items-center;

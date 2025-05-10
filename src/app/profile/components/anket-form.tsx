@@ -242,7 +242,7 @@ export default function AnketForm({
 									type='button'
 									onClick={prevStep}
 									variant='outline'
-									className={styles.back_btn}
+									className={styles.actions_btn}
 								>
 									<ArrowLeft size={18} />
 									Назад
@@ -253,7 +253,7 @@ export default function AnketForm({
 									type='button'
 									onClick={handleCancel}
 									variant='outline'
-									className={styles.back_btn}
+									className={styles.actions_btn}
 								>
 									Отменить изменения
 								</Button>
@@ -264,7 +264,7 @@ export default function AnketForm({
 							<Button
 								type='button'
 								onClick={nextStep}
-								className={styles.back_btn}
+								className={styles.actions_btn}
 							>
 								Далее
 								<ArrowRight size={18} />
@@ -274,7 +274,7 @@ export default function AnketForm({
 								type='button'
 								onClick={confirm}
 								disabled={isFormSubmitting}
-								className={styles.back_btn}
+								className={styles.actions_btn}
 							>
 								{isFormSubmitting ? (
 									<>
