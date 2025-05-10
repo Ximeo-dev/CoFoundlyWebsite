@@ -19,6 +19,7 @@ import MoreInfoStep from './user-anket/steps/more-info/more-info-step'
 import { calculateProgress } from '@/utils/calculateProgress'
 import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
+import ProgressBar from '@/components/ui/progress-bar/progress-bar'
 
 interface IAnketForm {
 	initialValues?: AnketFormValues
@@ -196,22 +197,7 @@ export default function AnketForm({
 						</p>
 					</div>
 
-					<div className={styles.progress_block}>
-						<span className='text-xs text-muted-foreground block mb-1'>
-							Заполнено на {progress}%
-						</span>
-						<div
-							className={cn(
-								styles.progress_inner,
-								'bg-gray-200 dark:bg-neutral-800'
-							)}
-						>
-							<div
-								className='bg-primary h-2 rounded-full transition-all duration-500'
-								style={{ width: `${progress}%` }}
-							/>
-						</div>
-					</div>
+					<ProgressBar progress={progress} />
 				</div>
 
 				<div className={cn(styles.steps, 'border-t border-border')}>

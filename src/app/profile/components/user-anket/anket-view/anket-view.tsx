@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/shadcn/button'
 import Tooltip from '@/components/ui/tooltip/tooltip'
 import ScrollIndicator from '@/components/ui/scroll-indicator/scroll-indicator'
 import { calculateProgress } from '@/utils/calculateProgress'
+import ProgressBar from '@/components/ui/progress-bar/progress-bar'
 
 export default function AnketView({
 	anket,
@@ -75,17 +76,7 @@ export default function AnketView({
 						</h2>
 
 						{showProgress && (
-							<div className={styles.percent_block}>
-								<span className='text-xs text-muted-foreground block mb-1'>
-									Заполнено на {progress}%
-								</span>
-								<div className='w-[150px] bg-gray-200 dark:bg-neutral-800 rounded-full h-2'>
-									<div
-										className='bg-primary h-2 rounded-full transition-all duration-500'
-										style={{ width: `${progress}%` }}
-									/>
-								</div>
-							</div>
+							<ProgressBar progress={progress} /> 
 						)}
 						<div className='flex items-center gap-x-5'>
 							{editable && (

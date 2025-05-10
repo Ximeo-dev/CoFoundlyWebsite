@@ -1,6 +1,7 @@
 'use client'
 
 import Modal from '@/components/ui/modal/modal'
+import { Button } from '@/components/ui/shadcn/button'
 import { anketService } from '@/services/anket.service'
 import { searchSort } from '@/utils/searchSort'
 import { useQuery } from '@tanstack/react-query'
@@ -43,6 +44,11 @@ export default function LanguageModal({
     setValue('languages', updated, { shouldValidate: true })
   }
 
+	const resetLanguages = () => {
+		setValue('languages', [], { shouldValidate: true })
+		onClose()
+	}
+
   return (
 		<Modal
 			isOpen={isOpen}
@@ -83,7 +89,14 @@ export default function LanguageModal({
 						{errors.languages.message as string}
 					</p>
 				)}
-				<div className='mt-8 flex justify-center'>
+				<div className='mt-6 flex justify-center gap-6'>
+					<Button
+						variant={'destructive'}
+						onClick={resetLanguages}
+						className='flex items-center gap-1 cursor-pointer'
+					>
+						Сбросить
+					</Button>
 					<button
 						type='button'
 						onClick={onClose}

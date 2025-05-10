@@ -15,10 +15,6 @@
 
       .view_top_block {
         @apply flex items-center gap-4;
-
-        .percent_block {
-          @apply w-32 md:w-44;
-        }
       }
     }
   }
