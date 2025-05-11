@@ -2,7 +2,7 @@ export interface IAnketRequest {
 	name: string
 	birthDate: string
 	bio?: string
-	job?: string
+	job: string
 	skills?: string[]
 	industries?: string[]
 	languages?: string[]
