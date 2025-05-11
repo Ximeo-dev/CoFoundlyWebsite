@@ -118,12 +118,8 @@
     @apply border-border outline-ring/50;
   }
 
-  html {
-    @apply h-screen;
-  }
-
   body {
-    @apply overflow-x-auto bg-background text-foreground h-full;
+    @apply overflow-x-auto bg-background text-foreground;
   }
 }
 

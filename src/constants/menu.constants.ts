@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@/config/endpoints.config'
-import { CircleUser, Fingerprint, House, LucideIcon, MessageSquare, MessagesSquare, Settings, User, Users2 } from 'lucide-react'
+import { BriefcaseBusiness, CircleUser, Fingerprint, House, LucideIcon, MessageSquare, MessagesSquare, Settings, User, Users2 } from 'lucide-react'
 import { ReactNode } from 'react'
 
 export interface IMenuItem {
@@ -95,15 +95,15 @@ export const TABS = [
 
 export const SIDEBAR_MENU = [
 	{
-		icon: Users2,
-		id: 'friends',
+		icon: MessagesSquare,
+		url: '/chats',
 	},
 	{
-		icon: MessagesSquare,
-		id: 'chat',
+		icon: BriefcaseBusiness,
+		url: '/projects-chats',
 	},
 	{
 		icon: Settings,
-		id: 'settings',
+		url: '/settings',
 	},
 ]

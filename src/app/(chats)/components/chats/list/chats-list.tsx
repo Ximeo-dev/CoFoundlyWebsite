@@ -14,7 +14,7 @@ export default function ChatsList() {
 				<input value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className='outline-none' placeholder='Поиск...' />
 			</div>
 			<div className=''>
-				{Array.from({ length: 10 }).map((item, i) => (
+				{Array.from({ length: 7 }).map((item, i) => (
 					<ChatListItem key={i} />
 				))}
 			</div>

@@ -4,63 +4,58 @@ import { ENDPOINTS } from '@/config/endpoints.config'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
-import styles from './sidebar.module.css'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { ModeToggle } from '@/components/ui/theme-toggle/theme-toggle'
 import { SIDEBAR_MENU } from '@/constants/menu.constants'
 import { usePathname } from 'next/navigation'
 import { Moon } from 'lucide-react'
 
-interface ISidebar {
-  selected: string
-  onSelect: (id: string) => void
-}
+export default function Sidebar() {
+	const { resolvedTheme, setTheme } = useTheme()
+	const [isMounted, setIsMounted] = useState(false)
+	const pathname = usePathname()
 
-export default function Sidebar({
-  selected,
-  onSelect
-}: ISidebar) {
-  const { resolvedTheme } = useTheme()
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
 
-  const [isMounted, setIsMounted] = useState(false)
-  
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  return (
-		<aside className={cn('border-r border-border bg-background', styles.sidebar)}>
-			<Link href={ENDPOINTS.HOME} className={styles.logo}>
-        {isMounted && (
-          <Image
-            priority
-            src={resolvedTheme === 'dark' ? '/logo.svg' : '/logo-light.svg'}
-            alt='logo'
-            width={50}
-            height={50}
-          />
-        )}
+	return (
+		<aside className='flex flex-col items-center justify-between py-5 border-r border-border w-full'>
+			<Link href={ENDPOINTS.HOME} className='mb-8'>
+				{isMounted && (
+					<Image
+						priority
+						src={resolvedTheme === 'dark' ? '/logo.svg' : '/logo-light.svg'}
+						alt='logo'
+						width={50}
+						height={50}
+					/>
+				)}
 			</Link>
-      <ul>
-        {SIDEBAR_MENU.map((item) => {
-          const handleClick = () => {
-            onSelect(item.id)
-          }
-
-          const isActive = selected === item.id
-
-          return (
-						<li
-							key={item.id}
-							onClick={handleClick}
-						>
-							<item.icon size={27} />
-						</li>
-					)
-        })}
-      </ul>
-      <Moon />
+			<div className='flex flex-col items-center gap-6'>
+				{SIDEBAR_MENU.map(item => (
+					<Link
+						key={item.url}
+						href={item.url}
+						className={cn(
+							'text-[#7C7275] hover:text-white transition-colors duration-300',
+							{
+								'text-white': pathname === item.url,
+							}
+						)}
+					>
+						<item.icon size={27} />
+					</Link>
+				))}
+			</div>
+			<button
+				onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+			>
+				<Moon
+					className='text-[#7C7275] hover:text-white transition-colors duration-300'
+					size={27}
+				/>
+			</button>
 		</aside>
 	)
 }

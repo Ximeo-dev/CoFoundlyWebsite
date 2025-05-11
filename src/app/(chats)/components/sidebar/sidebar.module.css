@@ -1,10 +1,14 @@
 @reference "tailwindcss";
 
 .sidebar {
-  @apply flex flex-col items-center justify-between py-5 px-0;
+  @apply flex flex-col items-center justify-between py-5;
 
-  li {
-    @apply mb-8 block cursor-pointer;
+  a {
+    @apply mb-8 block;
+
+    &.active {
+      @apply text-white;
+    }
   }
 
   svg {
