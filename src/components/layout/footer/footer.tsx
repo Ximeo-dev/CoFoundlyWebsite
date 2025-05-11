@@ -10,7 +10,8 @@ export default function Footer() {
 	if (
 		pathname === '/login' ||
 		pathname === '/register' ||
-		pathname === '/reset-password'
+		pathname === '/reset-password' ||
+		pathname === '/chats'
 	)
 		return null
 

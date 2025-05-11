@@ -84,7 +84,8 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);;
+  --ring: oklch(0.556 0 0);
+  ;
 }
 
 @layer base {
@@ -115,6 +116,10 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply h-screen;
   }
 
   body {
@@ -171,5 +176,24 @@
 
   to {
     opacity: 1;
+  }
+}
+
+input:-webkit-autofill {
+  transition-delay: 9999s;
+  transition-property: background-color;
+}
+
+.animation-slide-fade {
+  animation: slideFade .4s
+}
+
+@keyframes slideFade {
+  from {
+    transform: translateY(-22px);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateY(0);
   }
 }

@@ -215,7 +215,7 @@ export default function AnketForm({
 										}
 									}}
 									disabled={mode !== 'edit' && index > currentStep}
-									className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors cursor-pointer ${
+									className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors ease-linear cursor-pointer ${
 										index === currentStep
 											? 'bg-black text-white dark:bg-white dark:text-black'
 											: index < currentStep

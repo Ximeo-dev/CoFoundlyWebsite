@@ -28,6 +28,7 @@ export default function HeaderNav() {
 				<Link href={ENDPOINTS.HOME} className={styles.logo}>
 					{isMounted && (
 						<Image
+							priority
 							src={resolvedTheme === 'dark' ? '/logo.svg' : '/logo-light.svg'}
 							alt='logo'
 							width={50}

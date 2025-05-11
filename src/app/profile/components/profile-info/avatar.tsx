@@ -100,6 +100,7 @@ export default function Avatar({
 					height={size}
 					className={avatarStyles}
 					onError={() => setImageError(true)}
+					priority
 				/>
 			)}
 

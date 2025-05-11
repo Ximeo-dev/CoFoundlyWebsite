@@ -7,9 +7,7 @@ import { PROJECT_DESCRIPTION, PROJECT_NAME } from '@/constants/seo.constants'
 import Header from '@/components/layout/header/header'
 import { Toaster } from 'sonner'
 import { AuthProvider } from '@/providers/auth-provider'
-import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
 import Footer from '@/components/layout/footer/footer'
-import ContainerWrapper from '@/components/layout/container/container-wrapper'
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic']
@@ -41,12 +39,10 @@ export default function RootLayout({
 				>
 					<QueryProvider>
 						<AuthProvider>
-							<ContainerWrapper>
-								<Toaster duration={3000} />
-								<Header />
-								<main>{children}</main>
-								<Footer />
-							</ContainerWrapper>
+							<Toaster duration={3000} />
+							<Header />
+							<main className='h-full'>{children}</main>
+							{/* <Footer /> */}
 						</AuthProvider>
 					</QueryProvider>
 				</ThemeProvider>

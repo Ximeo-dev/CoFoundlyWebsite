@@ -1,7 +1,10 @@
+import ContainerWrapper from '@/components/layout/container/container-wrapper'
 import Home from './home'
 
 export default function HomePage() {
 	return (
-		<Home />
+		<ContainerWrapper>
+			<Home />
+		</ContainerWrapper>
 	)
 }
