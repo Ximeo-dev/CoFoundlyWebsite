@@ -7,6 +7,8 @@ export interface IAnketRequest {
 	industries?: string[]
 	languages?: string[]
 	portfolio?: string[]
+	hasAvatar?: boolean
+	likes?: number
 }
 
 export interface IAnket extends IAnketRequest {

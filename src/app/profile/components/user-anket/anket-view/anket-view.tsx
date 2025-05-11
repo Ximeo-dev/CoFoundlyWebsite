@@ -5,7 +5,7 @@ import Avatar from '../../profile-info/avatar'
 import { cn } from '@/lib/utils'
 import styles from './anket-view.module.css'
 import { differenceInYears } from 'date-fns'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { anketService } from '@/services/anket.service'
 import { toast } from 'sonner'
 import { useState } from 'react'
@@ -20,25 +20,14 @@ export default function AnketView({
 	anket,
 	onEdit,
 	editable = false,
-	showProgress = true
+	showProgress = true,
 }: {
 	anket: any
 	onEdit?: () => void
 	editable?: boolean
 	showProgress: boolean
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-	const fields = [
-		anket?.name,
-		anket?.birthDate,
-		anket?.job,
-		anket?.bio,
-		anket?.skills?.length,
-		anket?.languages?.length,
-		anket?.industries?.length,
-		anket?.portfolio?.length,
-	]
+	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const progress = calculateProgress({
 		name: anket?.name,
@@ -61,11 +50,10 @@ export default function AnketView({
 	})
 
 	const handleAnketDelete = () => {
-		() => setIsModalOpen(true)
 		deleteAnket()
 		window.location.reload()
 	}
-
+	
 	return (
 		<>
 			<div className={styles.view_block}>
@@ -75,11 +63,10 @@ export default function AnketView({
 							{editable ? 'Ваша анкета' : 'Анкета'}
 						</h2>
 
-						{showProgress && (
-							<ProgressBar progress={progress} /> 
-						)}
-						<div className='flex items-center gap-x-5'>
-							{editable && (
+						{showProgress && <ProgressBar progress={progress} />}
+
+						{editable && (
+							<div className='flex items-center gap-x-5'>
 								<button
 									onClick={onEdit}
 									className='text-muted-foreground hover:text-foreground transition-colors duration-300 cursor-pointer inline-flex items-center'
@@ -89,8 +76,6 @@ export default function AnketView({
 										<Pencil className='w-5 h-5' />
 									</Tooltip>
 								</button>
-							)}
-							{editable && (
 								<button
 									onClick={() => setIsModalOpen(true)}
 									className='text-muted-foreground hover:text-rose-500 transition-colors duration-300 cursor-pointer inline-flex items-center'
@@ -99,8 +84,8 @@ export default function AnketView({
 										<Trash className='w-5 h-5' />
 									</Tooltip>
 								</button>
-							)}
-						</div>
+							</div>
+						)}
 					</div>
 				</div>
 
@@ -133,7 +118,9 @@ export default function AnketView({
 								<p
 									className={cn('mt-1', !anket?.job && 'text-muted-foreground')}
 								>
-									{anket?.job.name || 'Не указано'}
+									{typeof anket?.job === 'string'
+										? anket?.job
+										: anket?.job?.name || 'Не указано'}
 								</p>
 							</div>
 

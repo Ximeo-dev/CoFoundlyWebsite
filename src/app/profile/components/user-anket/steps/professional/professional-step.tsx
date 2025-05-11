@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 import SkillsModal from './skills-modal'
 import { ISkill } from '@/types/skills.types'
 import JobModal from './job-modal'
@@ -17,7 +17,7 @@ export default function ProfessionalStep() {
 	const [isJobModalOpen, setIsJobModalOpen] = useState(false)
 	const [isIndustryModalOpen, setIsIndustryModalOpen] = useState(false)
 	const skills = watch('skills', []) as (string | ISkill)[]
-	const job = watch('job', '') as string
+	const job = useWatch({ name: 'job' })
 	const industries = watch('industries', []) as string[]
 
 	const skillNames = skills
