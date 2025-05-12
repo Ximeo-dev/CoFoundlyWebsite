@@ -11,9 +11,7 @@ import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 export default function Home() {
 	return (
 		<>
-			<FadeInUp className={styles.title}>
-				{PROJECT_NAME}
-			</FadeInUp>
+			<FadeInUp className={styles.title}>{PROJECT_NAME}</FadeInUp>
 			<div className={styles.text_block}>
 				<FadeInUp
 					className={cn(styles.sub_text, 'dark:text-[#929191] text-[#696363]')}
@@ -38,18 +36,14 @@ export default function Home() {
 						key={item.id}
 						className={cn(
 							styles.card_inner,
-							'border bg-background border-border hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors duration-300'
+							'border bg-background border-border hover:border-[#999999] dark:hover:bg-[#171717] dark:hover:border-[#444444] transition-colors ease-linear duration-300'
 						)}
 					>
-						<FadeInUp className={styles.title}>
-							{item.title}
-						</FadeInUp>
+						<FadeInUp className={styles.title}>{item.title}</FadeInUp>
 						<div className={styles.icon_block}>
 							<item.icon className={styles.icon} />
 						</div>
-						<FadeInUp className={styles.desc}>
-							{item.desc}
-						</FadeInUp>
+						<FadeInUp className={styles.desc}>{item.desc}</FadeInUp>
 					</article>
 				))}
 			</div>

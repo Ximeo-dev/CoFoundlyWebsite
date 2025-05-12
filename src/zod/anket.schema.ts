@@ -21,7 +21,7 @@ export interface AnketFormValues {
 	name?: string
 	birthDate?: string
 	bio?: string
-	job?: string | Job
+	job: string | any
 	skills?: Array<string | Skill>
 	languages?: Array<string | Language>
 	industries?: Array<string | Industry>

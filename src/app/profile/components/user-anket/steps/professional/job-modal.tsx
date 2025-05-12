@@ -38,7 +38,9 @@ export default function JobModal({
 	}, [jobs, searchQuery])
 
 	const selectJob = (jobName: string) => {
+		console.log('Выбранная работа:', jobName)
 		setValue('job', jobName, { shouldValidate: true })
+
 	}
 
 	const resetJob = () => {

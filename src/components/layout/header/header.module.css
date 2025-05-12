@@ -10,7 +10,7 @@
       @apply flex items-center gap-x-6 pl-5 pr-7;
 
       .list_item {
-        @apply font-medium transition-colors duration-300;
+        @apply font-medium transition-colors duration-300 ease-linear;
       }
 
       .nav_more {

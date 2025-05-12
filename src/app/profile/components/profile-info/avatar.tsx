@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useRef, useState } from 'react'
 import Image from 'next/image'
-import { Pencil } from 'lucide-react'
+import { Pencil, Trash } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import Spinner from '@/components/ui/spinner/spinner'
 import { anketService } from '@/services/anket.service'
@@ -16,12 +16,14 @@ interface IAvatarUploader {
 	size: 64 | 128 | 512
 	editable?: boolean
 	className?: string
+	id?: string
 }
 
 export default function Avatar({
 	size,
 	editable = false,
 	className,
+	id
 }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
@@ -35,13 +37,31 @@ export default function Avatar({
 			setAvatarVersion(Date.now())
 			setImageError(false)
 			queryClient.invalidateQueries({
-				queryKey: ['userProfile'],
+				queryKey: ['anket'],
 			})
 			toast.success('Аватар обновлён')
 		},
 		onError: (error: any) => {
 			toast.error(
 				error?.response?.data?.message || 'Ошибка при загрузке аватара'
+			)
+		},
+	})
+
+	const { mutate: deleteAvatar } = useMutation({
+		mutationKey: ['delete avatar'],
+		mutationFn: () => anketService.deleteAvatar(),
+		onSuccess: () => {
+			setAvatarVersion(Date.now())
+			setImageError(true)
+			queryClient.invalidateQueries({
+				queryKey: ['anket'],
+			})
+			toast.success('Аватар удалён')
+		},
+		onError: (error: any) => {
+			toast.error(
+				error?.response?.data?.message || 'Ошибка при удалении аватара'
 			)
 		},
 	})
@@ -81,9 +101,11 @@ export default function Avatar({
 		'flex items-center justify-center'
 	)
 
+	const avatarUserId = id || user?.id
+
 	return (
 		<div className={cn(className, 'relative')}>
-			{imageError || !user?.id ? (
+			{imageError || !avatarUserId ? (
 				<div
 					className={cn(
 						avatarStyles,
@@ -94,12 +116,13 @@ export default function Avatar({
 				</div>
 			) : (
 				<Image
-					src={`${API_URL}/images/avatar/${user?.id}/${size}`}
+					src={`${API_URL}/images/avatar/${avatarUserId}/${size}`}
 					alt='avatar'
 					width={size}
 					height={size}
 					className={avatarStyles}
 					onError={() => setImageError(true)}
+					priority
 				/>
 			)}
 
@@ -122,9 +145,17 @@ export default function Avatar({
 						type='button'
 						onClick={handleClick}
 						disabled={isPending}
-						className='absolute -bottom-3 right-0 md:-bottom-3 md:-right-8 flex items-center gap-1 px-2 py-1 md:px-2.5 md:py-1.5 rounded-[15px] bg-black/70 text-white text-[13px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
+						className='cursor-pointer absolute -bottom-8 right-8 md:-bottom-2 md:right-7 flex items-center w-8 h-8 flex items-center justify-center rounded-full bg-black/70 text-white text-[13px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
 					>
-						<Pencil size={14} /> Изменить
+						<Pencil size={16} />
+					</button>
+					<button
+						type='button'
+						onClick={() => deleteAvatar()}
+						disabled={isPending}
+						className='cursor-pointer absolute -bottom-8 -right-1 md:-bottom-2 md:-right-2 flex items-center w-8 h-8 flex items-center justify-center rounded-full bg-black/70 text-white text-[13px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
+					>
+						<Trash size={16} />
 					</button>
 				</>
 			)}

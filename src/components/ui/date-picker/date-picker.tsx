@@ -43,20 +43,28 @@ export function DatePicker({
   const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i)
 
   const handleMonthChange = (month: string) => {
-    if (!value) return
-    const newDate = setMonth(value, months.indexOf(month))
-    onChange?.(newDate)
-  }
+		if (!value) {
+			const newDate = setMonth(new Date(), months.indexOf(month))
+			onChange?.(newDate)
+		} else {
+			const newDate = setMonth(value, months.indexOf(month))
+			onChange?.(newDate)
+		}
+	}
 
-  const handleYearChange = (year: string) => {
-    if (!value) return
-    const newDate = setYear(value, parseInt(year))
-    onChange?.(newDate)
-  }
+	const handleYearChange = (year: string) => {
+		if (!value) {
+			const newDate = setYear(new Date(), parseInt(year))
+			onChange?.(newDate)
+		} else {
+			const newDate = setYear(value, parseInt(year))
+			onChange?.(newDate)
+		}
+	}
 
-  const handleSelect = (selectDate: Date | undefined) => {
-    onChange?.(selectDate)
-  }
+	const handleSelect = (selectDate: Date | undefined) => {
+		onChange?.(selectDate)
+	}
 
 	return (
 		<Popover>
@@ -115,7 +123,10 @@ export function DatePicker({
 					onSelect={handleSelect}
 					initialFocus
 					month={value}
-					onMonthChange={onChange}
+					onMonthChange={date => {
+						if (date) onChange?.(date)
+					}}
+					locale={ru}
 				/>
 			</PopoverContent>
 		</Popover>

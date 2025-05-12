@@ -3,7 +3,7 @@ import { API_URL } from '@/constants/api.constants'
 import { IAnketRequest, IAnket } from '@/types/anket.types'
 
 class AnketService {
-	private BASE_URL = '/profile'
+	private BASE_URL = '/profile/user'
 
 	async createAnket(data: IAnketRequest): Promise<IAnket> {
 		const response = await axiosWithAuth.post<IAnket>(this.BASE_URL, data)
@@ -44,15 +44,28 @@ class AnketService {
 		return response.data
 	}
 
+	async deleteAvatar() {
+		const response = await axiosWithAuth.delete('/images/avatar')
+		return response.data
+	}
+
 	async getAvatarUrl(userId: string, size: 64 | 128 | 512) {
 		return `${API_URL}/images/avatar/${userId}/${size}`
 	}
 
-	async getProfessional(type: 'language' | 'skill' | 'industry' | 'job', limit?: number) {
+	async getProfessional(
+		entity: 'language' | 'skill' | 'industry' | 'job',
+		limit?: number
+	) {
 		const response = await axiosWithAuth.get(
-			`${API_URL}/${type}/autocomplete?limit=${limit}`
+			`${API_URL}/entity/${entity}/autocomplete?limit=${limit}`
 		)
 
+		return response.data
+	}
+
+	async swipeUsers(intent: 'similar' | 'complement') {
+		const response = await axiosWithAuth.get(`/swipe?intent=${intent}`)
 		return response.data
 	}
 }

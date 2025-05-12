@@ -6,17 +6,12 @@ import { useState } from 'react'
 import AnketView from './anket-view/anket-view'
 import AnketEditor from './anket-editor'
 import SkeletonView from './anket-view/skeleton-view'
+import { useProfile } from '@/hooks/anket/useProfile'
 
 export default function AnketPage() {
 	const queryClient = useQueryClient()
 	const [isEditing, setIsEditing] = useState(false)
-
-	const { data: anket, isLoading } = useQuery({
-		queryKey: ['anket'],
-		queryFn: () => anketService.getAnket(),
-		retry: false,
-		refetchOnWindowFocus: false
-	})
+	const { anket, isLoading } = useProfile()
 
 	if (isLoading) return <SkeletonView />
 

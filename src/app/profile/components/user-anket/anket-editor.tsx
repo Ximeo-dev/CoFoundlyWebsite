@@ -49,7 +49,6 @@ export default function AnketEditor({
 
 	return (
 		<AnketForm
-			userId={user?.id}
 			initialValues={initialData}
 			onSubmit={handleSubmit}
 			onCancel={onCancel}
