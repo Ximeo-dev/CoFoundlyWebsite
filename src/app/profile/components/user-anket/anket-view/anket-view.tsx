@@ -15,6 +15,7 @@ import Tooltip from '@/components/ui/tooltip/tooltip'
 import ScrollIndicator from '@/components/ui/scroll-indicator/scroll-indicator'
 import { calculateProgress } from '@/utils/calculateProgress'
 import ProgressBar from '@/components/ui/progress-bar/progress-bar'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/shadcn/select'
 
 export default function AnketView({
 	anket,
@@ -22,12 +23,18 @@ export default function AnketView({
 	editable = false,
 	showProgress = true,
 	id,
+	intent,
+	handleIntentChange,
+	handleSwipeAction,
 }: {
 	anket: any
 	onEdit?: () => void
 	editable?: boolean
 	showProgress?: boolean
 	id?: string
+	intent?: 'similar' | 'complement'
+	handleIntentChange?: (value: 'similar' | 'complement') => void
+	handleSwipeAction?: (action: 'skip' | 'like') => void
 }) {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -98,6 +105,26 @@ export default function AnketView({
 								</button>
 							</div>
 						)}
+						{!editable && (
+							<>
+								<Select
+									onValueChange={handleIntentChange}
+									defaultValue={intent}
+								>
+									<SelectTrigger className='w-[200px]'>
+										<SelectValue placeholder='Выберите тип поиска' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem className='cursor-pointer' value='similar'>
+											Схожие
+										</SelectItem>
+										<SelectItem className='cursor-pointer' value='complement'>
+											Дополняющие
+										</SelectItem>
+									</SelectContent>
+								</Select>
+							</>
+						)}
 					</div>
 				</div>
 
@@ -114,6 +141,24 @@ export default function AnketView({
 								{anket?.name}, {displayAge}
 							</h1>
 						</div>
+						{!editable && (
+							<div className='flex justify-between mt-12 md:mt-24'>
+								<Button
+									variant='outline'
+									onClick={() => handleSwipeAction?.('skip')}
+									disabled={!handleSwipeAction}
+								>
+									Skip
+								</Button>
+								<Button
+									variant='default'
+									onClick={() => handleSwipeAction?.('like')}
+									disabled={!handleSwipeAction}
+								>
+									Like
+								</Button>
+							</div>
+						)}
 					</div>
 
 					<div className={styles.info_block_right}>
@@ -154,7 +199,7 @@ export default function AnketView({
 											))}
 										</div>
 									) : (
-										<p className='text-muted-foreground'>Нет навыков</p>
+										<p className='text-muted-foreground'>Не указано</p>
 									)}
 								</div>
 							</div>
@@ -173,7 +218,7 @@ export default function AnketView({
 											))}
 										</div>
 									) : (
-										<p className='text-muted-foreground'>Не выбрано</p>
+										<p className='text-muted-foreground'>Не указано</p>
 									)}
 								</div>
 							</div>
@@ -194,7 +239,7 @@ export default function AnketView({
 											))}
 										</div>
 									) : (
-										<p className='text-muted-foreground'>Не выбрано</p>
+										<p className='text-muted-foreground'>Не указано</p>
 									)}
 								</div>
 							</div>
@@ -212,7 +257,7 @@ export default function AnketView({
 										</a>
 									))
 								) : (
-									<p className='text-muted-foreground'>Не выбрано</p>
+									<p className='text-muted-foreground'>Не указано</p>
 								)}
 							</div>
 						</div>

@@ -13,6 +13,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/shadcn/select'
+import SkeletonView from '@/app/profile/components/user-anket/anket-view/skeleton-view'
 
 export default function UsersSwipe() {
 	const queryClient = useQueryClient()
@@ -82,22 +83,9 @@ export default function UsersSwipe() {
 	}, [currentAnket, remainingAnkets, isLoading, refetch])
 
 	return (
-		<div className='p-4'>
-			<div className='mb-4'>
-				<label className='text-sm text-muted-foreground mr-2'>Ищу:</label>
-				<Select onValueChange={handleIntentChange} defaultValue={intent}>
-					<SelectTrigger className='w-[180px]'>
-						<SelectValue placeholder='Выберите тип поиска' />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value='similar'>Схожие</SelectItem>
-						<SelectItem value='complement'>Дополняющие</SelectItem>
-					</SelectContent>
-				</Select>
-			</div>
-
+		<div className=''>
 			{isLoading ? (
-				<div className='text-center'>Загрузка анкеты...</div>
+				<SkeletonView />
 			) : isError ? (
 				<div className='text-center text-red-500'>
 					Ошибка: {error?.message || 'Не удалось загрузить анкеты'}
@@ -108,18 +96,13 @@ export default function UsersSwipe() {
 						id={currentAnket.userId}
 						showProgress={false}
 						anket={currentAnket}
+						handleSwipeAction={handleSwipeAction}
 					/>
-					<div className='flex justify-center gap-4 mt-4'>
-						<Button variant='outline' onClick={() => handleSwipeAction('skip')}>
-							Skip
-						</Button>
-						<Button variant='default' onClick={() => handleSwipeAction('like')}>
-							Like
-						</Button>
-					</div>
 				</div>
 			) : (
-				<div className='text-center'>Анкеты закончились</div>
+				<div className='h-[550px]'>
+					<div className='text-center'>Анкеты закончились</div>
+				</div>
 			)}
 		</div>
 	)
