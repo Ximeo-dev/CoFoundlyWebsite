@@ -7,7 +7,14 @@ import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { Check, CircleUser, Eye, EyeOff, KeyRound, Mail, SquareUserRound } from 'lucide-react'
+import {
+	Check,
+	CircleUserRound,
+	Eye,
+	EyeOff,
+	KeyRound,
+	Mail,
+} from 'lucide-react'
 import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { slideUp } from '@/lib/motion-variants'
 import { Checkbox } from '../shadcn/checkbox'
@@ -17,13 +24,15 @@ import { authService } from '@/services/auth.service'
 import { toast } from 'sonner'
 import zxcvbn from 'zxcvbn'
 import debounce from 'lodash.debounce'
+import InputField from '../input-field/input-field'
 
 export default function RegisterForm() {
-  const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
+	const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 	const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false)
 	const [isButtonClicked, setIsButtonClicked] = useState(false)
 	const [buttonKey, setButtonKey] = useState(0)
 	const [isChecked, setIsChecked] = useState(false)
+	const [usernameError, setUsernameError] = useState('')
 	const [emailError, setEmailError] = useState('')
 	const [isFormValid, setIsFormValid] = useState(false)
 
@@ -38,7 +47,8 @@ export default function RegisterForm() {
 			queryClient.invalidateQueries({
 				queryKey: ['userProfile'],
 			})
-			router.replace('/profile'), toast.success('Успешная регистрация')
+			router.replace('/profile')
+			toast.success('Успешная регистрация')
 			reset()
 		},
 		onError: error => {
@@ -55,7 +65,7 @@ export default function RegisterForm() {
 		setValue,
 		setError,
 		clearErrors,
-		getValues
+		getValues,
 	} = useForm<IAuthForm>({
 		mode: 'onChange',
 	})
@@ -65,33 +75,36 @@ export default function RegisterForm() {
 	}
 
 	const debouncedCheck = useCallback(
-		debounce(async (value: string) => {
+		debounce(async (value: string, type: 'email' | 'username') => {
 			try {
-				const isAvailable = await authService.checkEmailAvailability(value)
+				const isAvailable = await authService.checkAvailability(type, value)
 				if (!isAvailable) {
-					setEmailError('Почта уже используется')
+					if (type === 'email') setEmailError('Почта уже используется')
+					else setUsernameError('Имя пользователя уже занято')
 				} else {
-					setEmailError('')
+					if (type === 'email') setEmailError('')
+					else setUsernameError('')
 				}
 			} catch (error) {
-				setEmailError('Укажите корректную почту')
+				if (type === 'email') setEmailError('Укажите корректную почту')
 			}
 		}, 300),
 		[]
 	)
 
 	const handleChange = async (
-		e: ChangeEvent<HTMLInputElement>,
+		e: React.ChangeEvent<HTMLInputElement>,
+		type: 'email' | 'username'
 	) => {
 		const value = e.target.value
-		setValue('email', value)
-		await trigger('email')
+		setValue(type, value)
+		await trigger(type)
 
 		if (
-			(!errors.name) || 
-			(!errors.email)
+			(!errors.username && type === 'username') ||
+			(!errors.email && type === 'email')
 		) {
-			debouncedCheck(value)
+			debouncedCheck(value, type)
 		}
 	}
 
@@ -118,13 +131,14 @@ export default function RegisterForm() {
 			await trigger(type)
 		}
 	}
-	
+
 	const validateForm = () => {
 		const password = getValues('password')
 		const confirmPassword = getValues('confirmPassword')
 
 		const hasErrors =
 			!isValid ||
+			usernameError ||
 			emailError ||
 			password !== confirmPassword ||
 			!isChecked
@@ -134,12 +148,15 @@ export default function RegisterForm() {
 
 	useEffect(() => {
 		validateForm()
-	}, [isValid, emailError, isChecked, errors.password])
+	}, [isValid, usernameError, emailError, isChecked, errors.password])
 
 	const onSubmit: SubmitHandler<IAuthForm> = data => {
-		if (errors.email || errors.name || errors.password) {
+		if (errors.email || errors.username || errors.password) {
 			setButtonKey(prevKey => prevKey + 1)
 			return toast.error('Пожалуйста, заполните все поля')
+		}
+		if (usernameError) {
+			return toast.error('Имя пользователя уже занято')
 		}
 		if (emailError) {
 			return toast.error('Пользователь с таким email уже зарегистрирован')
@@ -164,144 +181,103 @@ export default function RegisterForm() {
 						</span>
 					</h1>
 					<form onSubmit={handleSubmit(onSubmit)} className='mt-12'>
-						<label
-							className={cn(
-								styles.field,
-								'mt-4 mb-1 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
-							)}
-						>
-							<div
-								className={cn(
-									styles.icon,
-									'focus-within:text-black dark:focus-within:text-white/70'
-								)}
-							>
-								<Mail />
-							</div>
-							<input
-								className='bg-transparent outline-none'
-								placeholder='Почта'
-								type='text'
-								{...register('email', {
-									required: true,
-									validate: {
-										hasAtSymbol: value =>
-											/@/.test(value) ||
-											'Адрес электронной почты должен содержать символ "@"',
-										isValidEmailFormat: value =>
-											/^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/.test(
-												value
-											) ||
-											'Адрес электронной почты должен быть в корректном формате',
+						<InputField
+							icon={<CircleUserRound />}
+							placeholder='Никнейм'
+							type='text'
+							{...register('username', {
+								required: true,
+								maxLength: {
+									value: 16,
+									message:
+										'Имя пользователя должно содержать не более 16 символов',
+								},
+								minLength: {
+									value: 4,
+									message:
+										'Имя пользователя должно состоять минимум из 4 символов',
+								},
+								validate: value => {
+									if (!/^[a-zA-Z0-9_-]+$/.test(value)) {
+										return 'Имя пользователя может состоять только из букв английского алфавита, цифр, и символов "_", "-"'
+									}
+									return true
+								},
+							})}
+							onChange={e => handleChange(e, 'username')}
+							error={errors.username?.message || usernameError}
+							className='mb-4'
+						/>
+						<InputField
+							icon={<Mail />}
+							placeholder='Почта'
+							type='text'
+							{...register('email', {
+								required: true,
+								validate: {
+									hasAtSymbol: value =>
+										/@/.test(value) ||
+										'Адрес электронной почты должен содержать символ "@"',
+									isValidEmailFormat: value =>
+										/^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/.test(
+											value
+										) ||
+										'Адрес электронной почты должен быть в корректном формате',
+								},
+							})}
+							onChange={e => handleChange(e, 'email')}
+							error={errors.email?.message || emailError}
+							className='mt-8 mb-4'
+						/>
+						<InputField
+							icon={<KeyRound />}
+							placeholder='Пароль'
+							type={isShowPassword ? 'text' : 'password'}
+							rightIcon={isShowPassword ? <Eye /> : <EyeOff />}
+							onRightIconClick={() => setIsShowPassword(!isShowPassword)}
+							{...register('password', {
+								required: true,
+								validate: {
+									minLength: value =>
+										value.length >= 8 ||
+										'Пароль должен содержать минимум 8 символов',
+									maxLength: value =>
+										value.length <= 128 ||
+										'Пароль должен содержать не более 128 символов',
+									hasLowerCase: value =>
+										/[a-z]/.test(value) ||
+										'Пароль должен содержать хотя бы одну строчную букву',
+									hasNumber: value =>
+										/[0-9]/.test(value) ||
+										'Пароль должен содержать хотя бы одну цифру',
+									passwordStrength: value => {
+										const result = zxcvbn(value)
+										if (result.score <= 1) {
+											return 'Пароль слишком простой'
+										}
+										return true
 									},
-								})}
-								onChange={e => handleChange(e)}
-							/>
-						</label>
-						{errors.email ? (
-							<p className='text-red-500 text-sm lg:h-1 h-auto'>
-								{errors.email.message}
-							</p>
-						) : emailError ? (
-							<p className='text-red-500 text-sm lg:h-1 h-auto'>{emailError}</p>
-						) : (
-							<div className='h-1' />
-						)}
-						<label
-							className={cn(
-								styles.field,
-								'mb-1 mt-5 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
-							)}
-						>
-							<div
-								className={cn(
-									styles.icon,
-									'focus-within:text-black dark:focus-within:text-white/70'
-								)}
-							>
-								<KeyRound />
-							</div>
-							<input
-								className='bg-transparent outline-none'
-								placeholder='Пароль'
-								type={isShowPassword ? 'text' : 'password'}
-								{...register('password', {
-									required: true,
-									validate: {
-										minLength: value =>
-											value.length >= 8 ||
-											'Пароль должен содержать минимум 8 символов',
-										maxLength: value =>
-											value.length <= 128 ||
-											'Пароль должен содержать не более 128 символов',
-										hasLowerCase: value =>
-											/[a-z]/.test(value) ||
-											'Пароль должен содержать хотя бы одну строчную букву',
-										hasNumber: value =>
-											/[0-9]/.test(value) ||
-											'Пароль должен содержать хотя бы одну цифру',
-										passwordStrength: value => {
-											const result = zxcvbn(value)
-											if (result.score <= 1) {
-												return 'Пароль слишком простой'
-											}
-											return true
-										},
-									},
-								})}
-								onChange={e => validatePasswords(e, 'password')}
-							/>
-							<div
-								className={styles.icon}
-								onClick={() => setIsShowPassword(!isShowPassword)}
-							>
-								{isShowPassword ? <Eye /> : <EyeOff />}
-							</div>
-						</label>
-						{errors.password ? (
-							<p className='text-red-500 text-sm lg:h-1 h-auto'>
-								{errors.password.message}
-							</p>
-						) : (
-							<div className='h-1' />
-						)}
-						<label
-							className={cn(
-								styles.field,
-								'mt-5 mb-2 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
-							)}
-						>
-							<div
-								className={cn(
-									styles.icon,
-									'focus-within:text-black dark:focus-within:text-white/70'
-								)}
-							>
-								<Check />
-							</div>
-							<input
-								className='bg-transparent outline-none'
-								placeholder='Повторите пароль'
-								type={isShowConfirmPassword ? 'text' : 'password'}
-								{...register('confirmPassword', {
-									required: true,
-								})}
-								onChange={e => validatePasswords(e, 'confirmPassword')}
-							/>
-							<div
-								className={styles.icon}
-								onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
-							>
-								{isShowConfirmPassword ? <Eye /> : <EyeOff />}
-							</div>
-						</label>
-						{errors.confirmPassword ? (
-							<p className='text-red-500 text-sm lg:h-1 h-auto'>
-								{errors.confirmPassword.message}
-							</p>
-						) : (
-							<div className='h-1' />
-						)}
+								},
+							})}
+							onChange={e => validatePasswords(e, 'password')}
+							error={errors.password?.message}
+							className='mt-8 mb-4'
+						/>
+						<InputField
+							icon={<Check />}
+							placeholder='Повторите пароль'
+							type={isShowConfirmPassword ? 'text' : 'password'}
+							rightIcon={isShowConfirmPassword ? <Eye /> : <EyeOff />}
+							onRightIconClick={() =>
+								setIsShowConfirmPassword(!isShowConfirmPassword)
+							}
+							{...register('confirmPassword', {
+								required: true,
+							})}
+							onChange={e => validatePasswords(e, 'confirmPassword')}
+							error={errors.confirmPassword?.message}
+							className='mt-8 mb-4' // Увеличиваем верхний и нижний отступ
+						/>
 						<div className='mt-4 flex gap-x-3 max-w-[500px]'>
 							<Checkbox
 								checked={isChecked}
@@ -309,7 +285,7 @@ export default function RegisterForm() {
 								id='agreeement'
 							/>
 							<label
-								htmlFor=''
+								htmlFor='agreeement'
 								className='text-sm font-medium leading-5 peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
 							>
 								Я согласен(-на) с положениями{' '}
@@ -336,10 +312,10 @@ export default function RegisterForm() {
 									{
 										[styles.buttonError]:
 											isButtonClicked &&
-											(errors.email || errors.name || errors.password),
+											(errors.email || errors.username || errors.password),
 										[styles.form_btn]: !(
 											isButtonClicked &&
-											(errors.email || errors.name || errors.password)
+											(errors.email || errors.username || errors.password)
 										),
 									},
 									'disabled:opacity-60 disabled:cursor-default disabled:scale-100 dark:bg-white bg-black dark:text-black text-white border-border rounded-full px-6 py-2.5 text-sm font-medium transition-colors duration-300 cursor-pointer'

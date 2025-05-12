@@ -4,36 +4,44 @@ import { cn } from '@/lib/utils'
 import styles from './profile-info.module.css'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Pencil, Trash } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import Spinner from '@/components/ui/spinner/spinner'
 import { anketService } from '@/services/anket.service'
 import { API_URL } from '@/constants/api.constants'
+import { useProfile } from '@/hooks/anket/useProfile'
 
 interface IAvatarUploader {
 	size: 64 | 128 | 512
 	editable?: boolean
 	className?: string
 	id?: string
+	name?: string
 }
 
 export default function Avatar({
 	size,
 	editable = false,
 	className,
-	id
+	id,
+	name
 }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
-	const { user, setAvatarVersion } = useAuth()
+	const { user, avatarVersion, setAvatarVersion } = useAuth()
 	const [imageError, setImageError] = useState(false)
+	const { anket } = useProfile()
 
-	const { mutate, isPending } = useMutation({
+	useEffect(() => {
+		setImageError(false)
+	}, [id])
+
+	const { mutate: uploadAvatar, isPending: isUploading } = useMutation({
 		mutationKey: ['user-avatar'],
 		mutationFn: (file: File) => anketService.uploadAvatar(file),
-		onSuccess: () => {
+		onSuccess: data => {
 			setAvatarVersion(Date.now())
 			setImageError(false)
 			queryClient.invalidateQueries({
@@ -42,13 +50,14 @@ export default function Avatar({
 			toast.success('Аватар обновлён')
 		},
 		onError: (error: any) => {
+			setImageError(true)
 			toast.error(
 				error?.response?.data?.message || 'Ошибка при загрузке аватара'
 			)
 		},
 	})
 
-	const { mutate: deleteAvatar } = useMutation({
+	const { mutate: deleteAvatar, isPending: isDeleting } = useMutation({
 		mutationKey: ['delete avatar'],
 		mutationFn: () => anketService.deleteAvatar(),
 		onSuccess: () => {
@@ -77,17 +86,17 @@ export default function Avatar({
 				toast.error('Размер файла не должен превышать 3 МБ')
 				return
 			}
-			mutate(file)
+			uploadAvatar(file)
 		}
 	}
 
 	const handleClick = () => {
-		if (!isPending) {
+		if (!isUploading && !isDeleting) {
 			inputRef.current?.click()
 		}
 	}
 
-	const initialLetter = 'U'
+	const initialLetter = name?.charAt(0) || 'u'
 
 	const avatarStyles = cn(
 		size === 64
@@ -97,15 +106,20 @@ export default function Avatar({
 			: size === 512
 			? 'w-72 h-52 md:w-90 md:h-64 rounded-[15px] object-cover'
 			: styles.avatar,
-		isPending ? 'opacity-50' : 'opacity-100',
+		isUploading || isDeleting ? 'opacity-50' : 'opacity-100',
 		'flex items-center justify-center'
 	)
 
 	const avatarUserId = id || user?.id
+	const avatarUrl = avatarUserId
+		? `${API_URL}/images/avatar/${avatarUserId}/${size}?v=${
+				avatarVersion || Date.now()
+		  }`
+		: null
 
 	return (
 		<div className={cn(className, 'relative')}>
-			{imageError || !avatarUserId ? (
+			{imageError || !avatarUrl ? (
 				<div
 					className={cn(
 						avatarStyles,
@@ -116,7 +130,8 @@ export default function Avatar({
 				</div>
 			) : (
 				<Image
-					src={`${API_URL}/images/avatar/${avatarUserId}/${size}`}
+					key={avatarUrl}
+					src={avatarUrl}
 					alt='avatar'
 					width={size}
 					height={size}
@@ -126,13 +141,13 @@ export default function Avatar({
 				/>
 			)}
 
-			{isPending && (
-				<div className='absolute inset-0 bg-[#111111] flex items-center justify-center z-10 rounded-[30px]'>
+			{(isUploading || isDeleting) && (
+				<div className='absolute inset-0 bg-[#111111] flex items-center justify-center z-10 rounded-[15px]'>
 					<Spinner />
 				</div>
 			)}
 
-			{editable && !isPending && (
+			{editable && !isUploading && !isDeleting && (
 				<>
 					<input
 						type='file'
@@ -144,7 +159,7 @@ export default function Avatar({
 					<button
 						type='button'
 						onClick={handleClick}
-						disabled={isPending}
+						disabled={isUploading || isDeleting}
 						className='cursor-pointer absolute -bottom-8 right-8 md:-bottom-2 md:right-7 flex items-center w-8 h-8 flex items-center justify-center rounded-full bg-black/70 text-white text-[13px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
 					>
 						<Pencil size={16} />
@@ -152,7 +167,7 @@ export default function Avatar({
 					<button
 						type='button'
 						onClick={() => deleteAvatar()}
-						disabled={isPending}
+						disabled={isUploading || isDeleting}
 						className='cursor-pointer absolute -bottom-8 -right-1 md:-bottom-2 md:-right-2 flex items-center w-8 h-8 flex items-center justify-center rounded-full bg-black/70 text-white text-[13px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
 					>
 						<Trash size={16} />

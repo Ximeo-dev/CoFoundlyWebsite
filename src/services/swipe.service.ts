@@ -23,6 +23,11 @@ class SwipeService {
 		)
 		return response.data
 	}
+
+	async resetSwipe() {
+		const response = await axiosWithAuth.post(`${this.BASE_URL}/reset`)
+		return response.data
+	}
 }
 
 export const swipeService = new SwipeService()

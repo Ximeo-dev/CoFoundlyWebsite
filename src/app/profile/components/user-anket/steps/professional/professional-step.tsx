@@ -42,7 +42,7 @@ export default function ProfessionalStep() {
 				<button
 					type='button'
 					onClick={() => setIsJobModalOpen(true)}
-					className='w-full py-2 px-4 h-11 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
+					className='w-full py-2 px-4  rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
 				>
 					{job ? job : 'Выберите род деятельности'}
 				</button>
@@ -66,7 +66,7 @@ export default function ProfessionalStep() {
 				<button
 					type='button'
 					onClick={() => setIsSkillModalOpen(true)}
-					className='w-full py-2 px-4 h-11 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
+					className='w-full py-2 px-4 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
 				>
 					{skills.length > 0 ? skillNames : 'Выберите навыки...'}
 				</button>
@@ -90,7 +90,7 @@ export default function ProfessionalStep() {
 				<button
 					type='button'
 					onClick={() => setIsIndustryModalOpen(true)}
-					className='w-full py-2 px-4 h-11 rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
+					className='w-full py-2 px-4  rounded-lg text-left border text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 transition-colors duration-300 cursor-pointer text-base sm:text-sm'
 				>
 					{industries.length > 0 ? industryNames : 'Выберите ниши'}
 				</button>

@@ -15,6 +15,8 @@ import { ILoginForm } from '@/types/auth.types'
 import { authService } from '@/services/auth.service'
 import { toast } from 'sonner'
 import { ResponseError } from '@/types/error.types'
+import zxcvbn from 'zxcvbn'
+import InputField from '../input-field/input-field'
 
 export default function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
@@ -84,70 +86,36 @@ export default function LoginForm() {
 						</span>
 					</h1>
 					<form onSubmit={handleSubmit(onSubmit)} className='mt-10'>
-						<label
-							className={cn(
-								styles.field,
-								'bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
-							)}
-						>
-							<div
-								className={cn(
-									styles.icon,
-									'focus-within:text-black dark:focus-within:text-white/70'
-								)}
-							>
-								<Mail />
-							</div>
-							<input
-								className='bg-transparent outline-none'
-								placeholder='Почта'
-								type='email'
-								{...register('email', {
-									required: true,
-									validate: {
-										hasAtSymbol: value =>
-											/@/.test(value) ||
-											'Адрес электронной почты должен содержать символ "@"',
-										isValidEmailFormat: value =>
-											/^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/.test(
-												value
-											) ||
-											'Адрес электронной почты должен быть в корректном формате',
-									},
-								})}
-							/>
-						</label>
-						<label
-							className={cn(
-								styles.field,
-								'mb-2 mt-6 bg-background border border-border focus-within:border focus-within:border-black dark:focus-within:border-white/70'
-							)}
-						>
-							<div
-								className={cn(
-									styles.icon,
-									'focus-within:text-black dark:focus-within:text-white/70'
-								)}
-							>
-								<KeyRound />
-							</div>
-							<input
-								className='bg-transparent outline-none'
-								placeholder='Пароль'
-								type={isShowPassword ? 'text' : 'password'}
-								{...register('password', {
-									required: true,
-									minLength: 8,
-									maxLength: 128,
-								})}
-							/>
-							<div
-								className={styles.icon}
-								onClick={() => setIsShowPassword(!isShowPassword)}
-							>
-								{isShowPassword ? <Eye /> : <EyeOff />}
-							</div>
-						</label>
+						<InputField
+							icon={<Mail />}
+							placeholder='Почта'
+							type='email'
+							{...register('email', {
+								required: true,
+								validate: {
+									hasAtSymbol: value =>
+										/@/.test(value) ||
+										'Адрес электронной почты должен содержать символ "@"',
+									isValidEmailFormat: value =>
+										/^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/.test(
+											value
+										) ||
+										'Адрес электронной почты должен быть в корректном формате',
+								},
+							})}
+						/>
+						<InputField
+							icon={<KeyRound />}
+							placeholder='Пароль'
+							type={isShowPassword ? 'text' : 'password'}
+							rightIcon={isShowPassword ? <Eye /> : <EyeOff />}
+							onRightIconClick={() => setIsShowPassword(!isShowPassword)}
+							{...register('password', {
+								required: true,
+								minLength: 8,
+								maxLength: 128,
+							})}
+						/>
 						<Link
 							className={cn(
 								styles.forgot_password,

@@ -4,7 +4,7 @@ export const ENDPOINTS = {
   REGISTER: '/register',
   PROFILE: '/profile',
 	IDEAS: '/ideas',
-	SWIPE_USERS: '/swipe-users',
+	SWIPE_USERS: '/swipes',
 	SUPPORT: '/support',
 	TERMS: '/terms',
 	PRIVACY: '/privacy',

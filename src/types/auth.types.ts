@@ -6,8 +6,8 @@ export interface ILoginForm {
 }
 
 export interface IAuthForm {
+  username: string
   email: string
-  name: string
   password: string
   confirmPassword: string
 }

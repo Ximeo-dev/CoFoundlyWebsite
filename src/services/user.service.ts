@@ -1,4 +1,4 @@
-import { axiosClassic, axiosWithAuth } from '@/api/interceptors'
+import { axiosWithAuth } from '@/api/interceptors'
 import { API_URL } from '@/constants/api.constants'
 import { IChangeEmailDto, IChangePasswordDto } from '@/types/change.types'
 import { IUser } from '@/types/user.types'

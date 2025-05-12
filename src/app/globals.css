@@ -208,3 +208,68 @@ input:-webkit-autofill {
     opacity: 1;
   }
 }
+
+.animate-slide-in {
+  animation: slideInFromLeft 0.5s ease-out forwards;
+}
+
+.animate-slide-out {
+  animation: slideOutToLeft 0.3s ease-in forwards;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-in,
+.animate-slide-out {
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animatedText {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animatedTextDelay1 {
+  animation-delay: 0.1s;
+}
+
+.animatedTextDelay2 {
+  animation-delay: 0.2s;
+}
+
+.animatedTextDelay3 {
+  animation-delay: 0.3s;
+}

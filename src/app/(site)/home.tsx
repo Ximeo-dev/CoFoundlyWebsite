@@ -7,6 +7,7 @@ import { slideUp } from '@/lib/motion-variants'
 import { cn } from '@/lib/utils'
 import { CARD, ICard } from './card.data'
 import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
+import { PointerHighlight } from '@/components/ui/pointer-highlight/pointer-highlight'
 
 export default function Home() {
 	return (
@@ -22,7 +23,13 @@ export default function Home() {
 				<FadeInUp
 					className={cn(styles.sub_text, 'dark:text-[#929191] text-[#696363]')}
 				>
-					— достигай быстрее
+					<PointerHighlight
+						rectangleClassName='bg-neutral-200 dark:bg-neutral-700 border-neutral-300 dark:border-neutral-600 leading-loose'
+						pointerClassName='text-yellow-500 h-3 w-3 text-black dark:text-white'
+						containerClassName='inline-block mr-1'
+					>
+						<span className='relative z-10'>— достигай быстрее</span>
+					</PointerHighlight>
 				</FadeInUp>
 			</div>
 			<div className={styles.sec_text_block}>
@@ -31,7 +38,7 @@ export default function Home() {
 				</FadeInUp>
 			</div>
 			<div className={styles.card_block}>
-				{CARD.map((item: ICard, index: number) => (
+				{CARD.map((item: ICard) => (
 					<article
 						key={item.id}
 						className={cn(
