@@ -18,64 +18,64 @@ import ProgressBar from '@/components/ui/progress-bar/progress-bar'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/shadcn/select'
 
 export default function AnketView({
-	anket,
-	onEdit,
-	editable = false,
-	showProgress = true,
-	id,
-	intent,
-	handleIntentChange,
-	handleSwipeAction,
+  anket,
+  onEdit,
+  editable = false,
+  showProgress = true,
+  id,
+  intent,
+  handleIntentChange,
+  handleSwipeAction,
 }: {
-	anket: any
-	onEdit?: () => void
-	editable?: boolean
-	showProgress?: boolean
-	id?: string
-	intent?: 'similar' | 'complement'
-	handleIntentChange?: (value: 'similar' | 'complement') => void
-	handleSwipeAction?: (action: 'skip' | 'like') => void
+  anket: any
+  onEdit?: () => void
+  editable?: boolean
+  showProgress?: boolean
+  id?: string
+  intent?: 'similar' | 'complement'
+  handleIntentChange?: (value: 'similar' | 'complement') => void
+  handleSwipeAction?: (action: 'skip' | 'like') => void
 }) {
-	const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-	const progress = calculateProgress({
-		name: anket?.name,
-		birthDate: anket?.birthDate,
-		bio: anket?.bio,
-		job: anket?.job,
-		skills: anket?.skills,
-		languages: anket?.languages,
-		industries: anket?.industries,
-		portfolio: anket?.portfolio,
-	})
+  const progress = calculateProgress({
+    name: anket?.name,
+    birthDate: anket?.birthDate,
+    bio: anket?.bio,
+    job: anket?.job,
+    skills: anket?.skills,
+    languages: anket?.languages,
+    industries: anket?.industries,
+    portfolio: anket?.portfolio,
+  })
 
-	const { mutate: deleteAnket } = useMutation({
-		mutationKey: ['anket delete'],
-		mutationFn: () => anketService.deleteAnket(),
-		onSuccess: () => {
-			toast.success('Анкета успешно удалена')
-			setIsModalOpen(false)
-			window.location.reload()
-		},
-		onError: (error: any) => {
-			toast.error(
-				error?.response?.data?.message || 'Ошибка при удалении анкеты'
-			)
-		},
-	})
+  const { mutate: deleteAnket } = useMutation({
+    mutationKey: ['anket delete'],
+    mutationFn: () => anketService.deleteAnket(),
+    onSuccess: () => {
+      toast.success('Анкета успешно удалена')
+      setIsModalOpen(false)
+      window.location.reload()
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message || 'Ошибка при удалении анкеты'
+      )
+    },
+  })
 
-	const handleAnketDelete = () => {
-		deleteAnket()
-	}
+  const handleAnketDelete = () => {
+    deleteAnket()
+  }
 
-	const displayAge =
-		anket?.age !== undefined && anket?.age !== null
-			? anket.age
-			: anket?.birthDate
-			? differenceInYears(new Date(), new Date(anket.birthDate))
-			: '—'
+  const displayAge =
+    anket?.age !== undefined && anket?.age !== null
+      ? anket.age
+      : anket?.birthDate
+      ? differenceInYears(new Date(), new Date(anket.birthDate))
+      : '—'
 
-	return (
+  return (
 		<>
 			<div className={styles.view_block}>
 				<div className={cn(styles.view_inner, `border-b border-border`)}>
@@ -106,24 +106,19 @@ export default function AnketView({
 							</div>
 						)}
 						{!editable && (
-							<>
-								<Select
-									onValueChange={handleIntentChange}
-									defaultValue={intent}
-								>
-									<SelectTrigger className='w-[200px]'>
-										<SelectValue placeholder='Выберите тип поиска' />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem className='cursor-pointer' value='similar'>
-											Схожие
-										</SelectItem>
-										<SelectItem className='cursor-pointer' value='complement'>
-											Дополняющие
-										</SelectItem>
-									</SelectContent>
-								</Select>
-							</>
+							<Select onValueChange={handleIntentChange} value={intent}>
+								<SelectTrigger className='w-[200px]'>
+									<SelectValue placeholder='Выберите тип поиска' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem className='cursor-pointer' value='similar'>
+										Схожие
+									</SelectItem>
+									<SelectItem className='cursor-pointer' value='complement'>
+										Дополняющие
+									</SelectItem>
+								</SelectContent>
+							</Select>
 						)}
 					</div>
 				</div>
@@ -136,7 +131,7 @@ export default function AnketView({
 						)}
 					>
 						<div className={styles.left_block_inner}>
-							<Avatar id={id} size={512} />
+							<Avatar key={id} id={id} size={512} />
 							<h1 className={styles.personal_data}>
 								{anket?.name}, {displayAge}
 							</h1>
@@ -181,7 +176,7 @@ export default function AnketView({
 								<p
 									className={cn('mt-1', !anket?.bio && 'text-muted-foreground')}
 								>
-									{anket?.bio || 'Нет описания'}
+									{anket?.bio || 'Не указано'}
 								</p>
 							</div>
 							<div>

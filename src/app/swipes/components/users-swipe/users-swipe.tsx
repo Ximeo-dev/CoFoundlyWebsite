@@ -6,20 +6,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/shadcn/button'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/shadcn/select'
+
 import SkeletonView from '@/app/profile/components/user-anket/anket-view/skeleton-view'
 
 export default function UsersSwipe() {
-	const queryClient = useQueryClient()
 	const [intent, setIntent] = useState<'similar' | 'complement'>('similar')
 	const [currentAnket, setCurrentAnket] = useState<any>(null)
 	const [remainingAnkets, setRemainingAnkets] = useState<any[]>([])
+	const [isResetting, setIsResetting] = useState(false)
 
 	const { data, refetch, isLoading, isError, error, isSuccess } = useQuery({
 		queryKey: ['swipe users', intent],
@@ -29,7 +23,7 @@ export default function UsersSwipe() {
 
 	useEffect(() => {
 		if (isSuccess && data) {
-			if (data) {
+			if (data?.userId) {
 				setCurrentAnket(data)
 				setRemainingAnkets([])
 			} else {
@@ -60,11 +54,26 @@ export default function UsersSwipe() {
 		},
 	})
 
+	const { mutate: resetSwipe } = useMutation({
+		mutationFn: () => swipeService.resetSwipe(),
+		onSuccess: () => {
+			toast.success('История свайпов сброшена')
+			setCurrentAnket(null)
+			setRemainingAnkets([])
+			refetch()
+		},
+		onError: (error: any) => {
+			toast.error(error.message || 'Failed to reset swipe history')
+		},
+	})
+
 	const handleIntentChange = (value: 'similar' | 'complement') => {
 		setIntent(value)
 		setCurrentAnket(null)
 		setRemainingAnkets([])
-		refetch()
+		setTimeout(() => {
+			refetch()
+		}, 300)
 	}
 
 	const handleSwipeAction = (action: 'like' | 'skip') => {
@@ -72,8 +81,13 @@ export default function UsersSwipe() {
 			toast.error('Не удалось определить пользователя для действия')
 			return
 		}
-		console.log(currentAnket?.userId)
 		swipeAction({ userId: currentAnket.userId, action })
+	}
+
+	const handleResetSwipe = () => {
+		setIsResetting(true)
+		resetSwipe()
+		setIsResetting(false)
 	}
 
 	useEffect(() => {
@@ -90,18 +104,31 @@ export default function UsersSwipe() {
 				<div className='text-center text-red-500'>
 					Ошибка: {error?.message || 'Не удалось загрузить анкеты'}
 				</div>
-			) : currentAnket ? (
+			) : currentAnket?.userId ? (
 				<div>
 					<AnketView
+						key={currentAnket.userId}
 						id={currentAnket.userId}
 						showProgress={false}
 						anket={currentAnket}
+						editable={false}
+						intent={intent}
+						handleIntentChange={handleIntentChange}
 						handleSwipeAction={handleSwipeAction}
 					/>
 				</div>
 			) : (
 				<div className='h-[550px]'>
-					<div className='text-center'>Анкеты закончились</div>
+					<div className='flex items-center justify-center h-full flex-col gap-y-4'>
+						<div className='text-center'>Анкеты закончились</div>
+						<Button
+							variant='outline'
+							onClick={handleResetSwipe}
+							disabled={isResetting}
+						>
+							Сбросить историю свайпов
+						</Button>
+					</div>
 				</div>
 			)}
 		</div>

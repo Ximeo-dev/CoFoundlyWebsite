@@ -13,7 +13,7 @@ export default function ContainerWrapper({
 	const pathname = usePathname()
 
 	const paddingClasses = cn(
-		pathname === '/swipe-users'
+		pathname === '/swipes'
 			? 'px-4 sm:px-6 md:px-10 lg:px-20 2xl:px-96'
 			: pathname === '/profile'
 			? 'px-4 sm:px-6 md:px-10 lg:px-16 2xl:px-60'

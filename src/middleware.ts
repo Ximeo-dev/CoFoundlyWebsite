@@ -15,8 +15,7 @@ export async function middleware(request: NextRequest) {
 
   const isAuthPage = 
     url.includes(ENDPOINTS.LOGIN) || url.includes(ENDPOINTS.REGISTER)
-  const isSwipePage = 
-    url.includes(ENDPOINTS.SWIPE_USERS)
+  const isSwipePage = url.includes(ENDPOINTS.SWIPE_USERS)
 
   if (isAuthPage) {
     if (refreshToken)
@@ -24,6 +23,13 @@ export async function middleware(request: NextRequest) {
 
     return NextResponse.next()
   }
+
+  if (isSwipePage) {
+		if (!refreshToken) {
+			return NextResponse.redirect(new URL(ENDPOINTS.LOGIN, url))
+		}
+		return NextResponse.next()
+	}
 
   console.log(
     `${new Date().toLocaleTimeString()} | Refresh token ${refreshToken}`
@@ -36,5 +42,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/login', '/register', '/profile'],
+	matcher: ['/login', '/register', '/profile', '/swipes'],
 }
