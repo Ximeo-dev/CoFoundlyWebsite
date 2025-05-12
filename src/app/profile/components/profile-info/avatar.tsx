@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import styles from './profile-info.module.css'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { useRef, useState, useEffect } from 'react' // Добавляем useEffect
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Pencil, Trash } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
@@ -18,6 +18,7 @@ interface IAvatarUploader {
 	editable?: boolean
 	className?: string
 	id?: string
+	name?: string
 }
 
 export default function Avatar({
@@ -25,6 +26,7 @@ export default function Avatar({
 	editable = false,
 	className,
 	id,
+	name
 }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
@@ -32,7 +34,6 @@ export default function Avatar({
 	const [imageError, setImageError] = useState(false)
 	const { anket } = useProfile()
 
-	// Сбрасываем imageError при смене id
 	useEffect(() => {
 		setImageError(false)
 	}, [id])
@@ -95,7 +96,7 @@ export default function Avatar({
 		}
 	}
 
-	const initialLetter = anket?.name?.charAt(0) || 'u'
+	const initialLetter = name?.charAt(0) || 'u'
 
 	const avatarStyles = cn(
 		size === 64

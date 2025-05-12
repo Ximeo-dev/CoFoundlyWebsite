@@ -63,11 +63,11 @@ class AuthService {
 		return response
 	}
 
-	async checkEmailAvailability(email: string) {
+	async checkAvailability(type: 'email' | 'username', value: string) {
 		const response = await axiosClassic.get(
-			`${this.BASE_URL}/register/email-available`,
+			`${this.BASE_URL}/register/${type}-available`,
 			{
-				params: { email },
+				params: { [type]: value },
 			}
 		)
 
@@ -75,7 +75,9 @@ class AuthService {
 	}
 
 	async resetPasswordRequest(email: string) {
-		const response = axiosClassic.post(`${this.BASE_URL}/reset-password`, { email })
+		const response = axiosClassic.post(`${this.BASE_URL}/reset-password`, {
+			email,
+		})
 
 		return response
 	}

@@ -6,7 +6,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/shadcn/button'
-
 import SkeletonView from '@/app/profile/components/user-anket/anket-view/skeleton-view'
 
 export default function UsersSwipe() {
@@ -18,7 +17,6 @@ export default function UsersSwipe() {
 	const { data, refetch, isLoading, isError, error, isSuccess } = useQuery({
 		queryKey: ['swipe users', intent],
 		queryFn: () => swipeService.swipeUsers(intent),
-		enabled: false,
 	})
 
 	useEffect(() => {
@@ -41,12 +39,17 @@ export default function UsersSwipe() {
 			userId: string
 			action: 'like' | 'skip'
 		}) => swipeService.swipeAction(userId, action),
-		onSuccess: () => {
+		onSuccess: async () => {
 			if (remainingAnkets.length > 0) {
 				setCurrentAnket(remainingAnkets[0])
 				setRemainingAnkets(remainingAnkets.slice(1))
 			} else {
-				refetch()
+				// Выполняем refetch и проверяем, есть ли новые анкеты
+				const result = await refetch()
+				if (!result.data?.userId) {
+					setCurrentAnket(null)
+					setRemainingAnkets([])
+				}
 			}
 		},
 		onError: (error: any) => {
@@ -60,10 +63,12 @@ export default function UsersSwipe() {
 			toast.success('История свайпов сброшена')
 			setCurrentAnket(null)
 			setRemainingAnkets([])
+			setIsResetting(false)
 			refetch()
 		},
 		onError: (error: any) => {
 			toast.error(error.message || 'Failed to reset swipe history')
+			setIsResetting(false)
 		},
 	})
 
@@ -87,14 +92,7 @@ export default function UsersSwipe() {
 	const handleResetSwipe = () => {
 		setIsResetting(true)
 		resetSwipe()
-		setIsResetting(false)
 	}
-
-	useEffect(() => {
-		if (!currentAnket && remainingAnkets.length === 0 && !isLoading) {
-			refetch()
-		}
-	}, [currentAnket, remainingAnkets, isLoading, refetch])
 
 	return (
 		<div className=''>

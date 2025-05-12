@@ -29,7 +29,7 @@
         @apply flex flex-col items-center;
 
         .personal_data {
-          @apply text-xl font-medium mt-4 text-center;
+          @apply text-2xl font-medium mt-4 text-center;
         }
       }
     }
