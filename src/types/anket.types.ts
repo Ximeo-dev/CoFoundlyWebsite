@@ -4,7 +4,7 @@ export interface IAnketRequest {
 	bio?: string
 	job: {
 		name: string
-	}
+	} | string
 	skills?: string[]
 	industries?: string[]
 	languages?: string[]

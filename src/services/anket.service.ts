@@ -44,6 +44,11 @@ class AnketService {
 		return response.data
 	}
 
+	async deleteAvatar() {
+		const response = await axiosWithAuth.delete('/images/avatar')
+		return response.data
+	}
+
 	async getAvatarUrl(userId: string, size: 64 | 128 | 512) {
 		return `${API_URL}/images/avatar/${userId}/${size}`
 	}

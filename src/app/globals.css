@@ -184,12 +184,27 @@ input:-webkit-autofill {
   animation: slideFade .4s
 }
 
+.animation-tooltip {
+  animation: tooltip .2s
+}
+
 @keyframes slideFade {
   from {
     transform: translateY(-22px);
     opacity: 0.4;
   }
+
   to {
     transform: translateY(0);
+  }
+}
+
+@keyframes tooltip {
+  from {
+    opacity: 0.1;
+  }
+
+  to {
+    opacity: 1;
   }
 }

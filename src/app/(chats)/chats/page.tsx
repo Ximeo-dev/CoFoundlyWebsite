@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: 'Чаты',
 }
 
-export default function ChatsPage({ params }: { params: { id: string } }) {
+export default function ChatsPage() {
   return (
-		<Chat id={params.id} />
+		<Chat />
 	)
 }

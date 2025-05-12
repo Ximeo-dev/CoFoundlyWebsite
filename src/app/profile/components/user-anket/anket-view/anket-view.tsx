@@ -21,11 +21,13 @@ export default function AnketView({
 	onEdit,
 	editable = false,
 	showProgress = true,
+	id,
 }: {
 	anket: any
 	onEdit?: () => void
 	editable?: boolean
-	showProgress: boolean
+	showProgress?: boolean
+	id?: string
 }) {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -46,14 +48,26 @@ export default function AnketView({
 		onSuccess: () => {
 			toast.success('Анкета успешно удалена')
 			setIsModalOpen(false)
+			window.location.reload()
+		},
+		onError: (error: any) => {
+			toast.error(
+				error?.response?.data?.message || 'Ошибка при удалении анкеты'
+			)
 		},
 	})
 
 	const handleAnketDelete = () => {
 		deleteAnket()
-		window.location.reload()
 	}
-	
+
+	const displayAge =
+		anket?.age !== undefined && anket?.age !== null
+			? anket.age
+			: anket?.birthDate
+			? differenceInYears(new Date(), new Date(anket.birthDate))
+			: '—'
+
 	return (
 		<>
 			<div className={styles.view_block}>
@@ -62,9 +76,7 @@ export default function AnketView({
 						<h2 className={styles.view_top_text}>
 							{editable ? 'Ваша анкета' : 'Анкета'}
 						</h2>
-
 						{showProgress && <ProgressBar progress={progress} />}
-
 						{editable && (
 							<div className='flex items-center gap-x-5'>
 								<button
@@ -97,19 +109,15 @@ export default function AnketView({
 						)}
 					>
 						<div className={styles.left_block_inner}>
-							<Avatar size={512} />
+							<Avatar id={id} size={512} />
 							<h1 className={styles.personal_data}>
-								{anket?.name},{' '}
-								{anket?.birthDate
-									? differenceInYears(new Date(), new Date(anket?.birthDate))
-									: '—'}
+								{anket?.name}, {displayAge}
 							</h1>
 						</div>
 					</div>
 
 					<div className={styles.info_block_right}>
 						<h3 className={styles.right_title}>Информация в анкете</h3>
-
 						<div className={styles.right_inner}>
 							<div>
 								<p className='text-sm text-muted-foreground'>
@@ -123,7 +131,6 @@ export default function AnketView({
 										: anket?.job?.name || 'Не указано'}
 								</p>
 							</div>
-
 							<div>
 								<p className='text-sm text-muted-foreground'>О себе</p>
 								<p
@@ -132,15 +139,14 @@ export default function AnketView({
 									{anket?.bio || 'Нет описания'}
 								</p>
 							</div>
-
 							<div>
 								<p className='text-sm text-muted-foreground'>Навыки</p>
 								<div className='mt-2'>
 									{anket?.skills?.length ? (
 										<div className='flex flex-wrap gap-x-2 gap-y-3'>
-											{anket.skills.map((skill: any) => (
+											{anket.skills.map((skill: any, i: number) => (
 												<span
-													key={skill.id || skill}
+													key={i}
 													className='bg-primary text-white dark:text-black text-sm px-3 py-1 rounded-full'
 												>
 													{typeof skill === 'string' ? skill : skill.name}
@@ -157,14 +163,12 @@ export default function AnketView({
 								<div className='mt-2'>
 									{anket?.languages?.length ? (
 										<div className='flex flex-wrap gap-2'>
-											{anket.languages.map((language: any) => (
-												<span
-													key={language.name}
-													className='text-black dark:text-white'
-												>
+											{anket.languages.map((language: any, i: number) => (
+												<span key={i} className='text-black dark:text-white'>
 													{typeof language === 'string'
 														? language
 														: language.name}
+													{i < anket.languages.length - 1 && ', '}
 												</span>
 											))}
 										</div>
@@ -180,14 +184,12 @@ export default function AnketView({
 								<div className='mt-2'>
 									{anket?.industries?.length ? (
 										<div className='flex flex-wrap gap-2'>
-											{anket.industries.map((industry: any) => (
-												<span
-													key={industry.name}
-													className='text-black dark:text-white'
-												>
+											{anket.industries.map((industry: any, i: number) => (
+												<span key={i} className='text-black dark:text-white'>
 													{typeof industry === 'string'
 														? industry
 														: industry.name}
+													{i < anket.industries.length - 1 && ', '}
 												</span>
 											))}
 										</div>
@@ -198,15 +200,20 @@ export default function AnketView({
 							</div>
 							<div>
 								<p className='text-sm text-muted-foreground mb-1'>Портфолио</p>
-								<a
-									href={anket?.portfolio}
-									className={cn(
-										'mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white',
-										!anket?.portfolio && 'text-muted-foreground'
-									)}
-								>
-									{anket?.portfolio || 'Не выбрано'}
-								</a>
+								{anket?.portfolio?.length ? (
+									anket.portfolio.map((link: string, index: number) => (
+										<a
+											key={index}
+											href={link}
+											target='_blank'
+											className='mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white'
+										>
+											{link}
+										</a>
+									))
+								) : (
+									<p className='text-muted-foreground'>Не выбрано</p>
+								)}
 							</div>
 						</div>
 					</div>

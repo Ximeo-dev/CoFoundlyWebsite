@@ -2,7 +2,7 @@ import ChatHeader from './chat-header'
 import { Message } from './message'
 import MessageField from './message-field'
 
-export default function Chat({id}: {id:string}) {
+export default function Chat() {
   return (
 		<div className='w-8/12 border-r border-border h-full grid' style={{
 			gridTemplateRows: '.6fr 6fr .6fr',

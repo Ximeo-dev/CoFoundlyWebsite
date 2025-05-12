@@ -7,11 +7,11 @@ export default function ChatLayout({ children }: PropsWithChildren<unknown>) {
 	return (
 		<div className='grid min-h-screen w-full grid-cols-[60px_350px_1fr]'>
 			<Sidebar />
-			<div className='border-r border-border flex flex-col'>
+			<div className='border-r border-border flex flex-col h-full'>
 				<CurrentUser />
 				<ChatsList />
 			</div>
-			<div className='flex-1'>{children}</div>
+			<div className='flex-1 h-full overflow-hidden'>{children}</div>
 		</div>
 	)
 }
