@@ -52,7 +52,7 @@ export function PointerHighlight({
 					className='pointer-events-none absolute inset-0 z-0'
 					initial={{ opacity: 0, scale: 0.95, originX: 0, originY: 0 }}
 					animate={{ opacity: 1, scale: 1 }}
-					transition={{ duration: 0.5, ease: 'easeOut' }}
+					transition={{ duration: 0.5, ease: 'easeOut', delay: 0.4 }}
 				>
 					<motion.div
 						className={cn(

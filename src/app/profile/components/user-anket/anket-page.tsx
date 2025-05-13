@@ -1,7 +1,6 @@
 'use client'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { anketService } from '@/services/anket.service'
+import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import AnketView from './anket-view/anket-view'
 import AnketEditor from './anket-editor'

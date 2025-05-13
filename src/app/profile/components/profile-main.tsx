@@ -7,6 +7,7 @@ import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
 import AnketPage from './user-anket/anket-page'
 import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
+import ProjectPage from './project-anket/project-page'
 
 export default function ProfileMain() {
 	const validTabs = ['my-anket', 'security', 'project-anket']
@@ -35,7 +36,7 @@ export default function ProfileMain() {
 			case 'my-anket':
 				return <AnketPage />
 			case 'project-anket':
-				return <div>project-form</div>
+				return <ProjectPage />
 			default:
 				return <AnketPage />
 		}

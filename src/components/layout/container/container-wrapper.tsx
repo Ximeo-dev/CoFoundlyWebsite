@@ -38,7 +38,7 @@ export default function ContainerWrapper({
 				className='absolute inset-0 -z-10 opacity-10 dark:opacity-20 block dark:hidden'
 				style={{
 					backgroundImage:
-						'linear-gradient(to right, rgba(0, 0, 0, 0.22) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)',
+						'linear-gradient(to right, rgba(0, 0, 0, 0.23) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px)',
 					backgroundSize: '35px 35px',
 				}}
 			/>

@@ -13,10 +13,6 @@ export interface IAnketRequest {
 	likes?: number
 }
 
-interface IJob {
-	name: string 
-}
-
 export interface IAnket extends IAnketRequest {
 	id: string
 	userId: string

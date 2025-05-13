@@ -32,7 +32,6 @@ export default function Avatar({
 	const queryClient = useQueryClient()
 	const { user, avatarVersion, setAvatarVersion } = useAuth()
 	const [imageError, setImageError] = useState(false)
-	const { anket } = useProfile()
 
 	useEffect(() => {
 		setImageError(false)
@@ -123,7 +122,7 @@ export default function Avatar({
 				<div
 					className={cn(
 						avatarStyles,
-						'bg-gray-200 dark:bg-neutral-800 text-gray-800 dark:text-white text-xl font-semibold'
+						'border border-border text-gray-800 dark:text-white text-xl font-semibold'
 					)}
 				>
 					{initialLetter}
