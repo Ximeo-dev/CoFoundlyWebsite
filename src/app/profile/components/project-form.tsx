@@ -5,9 +5,9 @@ import { ProjectFormSchema, ProjectFormType, ProjectFormValues } from '@/zod/pro
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import MainDataStep from './project-anket/steps/main-data-step'
-import DescriptionStep from './project-anket/steps/description-step'
-import ProjectProfessionalStep from './project-anket/steps/project-professional-step'
+import MainDataStep from '../projects/components/steps/main-data-step'
+import DescriptionStep from '../projects/components/steps/description-step'
+import ProjectProfessionalStep from '../projects/components/steps/project-professional-step'
 import { calculateProjectProgress } from '@/utils/calculateProjectProgress'
 import ProgressBar from '@/components/ui/progress-bar/progress-bar'
 import { cn } from '@/lib/utils'
@@ -177,7 +177,7 @@ export default function ProjectForm({
 				<div className={styles.form_top}>
 					<div className={styles.form_block}>
 						<h2 className='text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white'>
-							{mode === 'edit' ? 'Редактирование анкеты' : 'Создание анкеты'}
+							{mode === 'edit' ? 'Редактирование проекта' : 'Создание проекта'}
 						</h2>
 						<p className='text-sm text-gray-500 dark:text-neutral-500 mt-1'>
 							Шаг {currentStep + 1} из {totalSteps}: {steps[currentStep].title}

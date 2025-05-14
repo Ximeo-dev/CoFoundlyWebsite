@@ -1,7 +1,7 @@
 'use client'
 
 import { toast } from 'sonner'
-import ProjectForm from '../../project-form'
+import ProjectForm from '../../../components/project-form'
 import { IProject, IProjectRequest } from '@/types/project.types'
 import { projectService } from '@/services/project.service'
 import { useProjects } from '@/hooks/anket/useProjects'

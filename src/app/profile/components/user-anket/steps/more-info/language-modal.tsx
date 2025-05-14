@@ -53,9 +53,9 @@ export default function LanguageModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			className='w-[350px] sm:w-full sm:max-w-md'
+			className='w-[90vw] max-w-[400px] sm:max-w-[450px] min-h-[400px] mx-auto'
 		>
-			<div className='p-6'>
+			<div className='p-4 sm:p-6 flex flex-col h-full'>
 				<h3 className='text-xl font-semibold mb-4'>Выберите языки</h3>
 				<input
 					type='text'
@@ -73,7 +73,7 @@ export default function LanguageModal({
 								type='button'
 								key={language.name}
 								onClick={() => toggleLanguages(language.name)}
-								className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+								className={`px-3 shrink-0 py-1.5 rounded-full text-sm transition-colors ${
 									selected.includes(language.name)
 										? 'bg-black dark:bg-white text-white dark:text-black'
 										: 'bg-background border border-border'

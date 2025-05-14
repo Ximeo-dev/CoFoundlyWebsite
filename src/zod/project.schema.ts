@@ -32,8 +32,8 @@ export const ProjectFormSchema = z.object({
 		.min(10, 'Должно быть более 10 символов')
 		.max(256, 'Должно быть менее 256 символов'),
 	industry: z
-		.string()
-		.max(5, 'Максимум можно выбрать 5 ниш'),
+		.string(),
+		// .max(1, 'Максимум можно выбрать 1 нишу')
 	jobs: z.array(z.string()).optional(),
 	skills: z
 		.array(z.string())

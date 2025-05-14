@@ -1,7 +1,7 @@
 'use client'
 
 import maskEmail from '@/utils/maskEmail'
-import ResetPassword from '../profile-info/reset-password'
+import ResetPassword from './reset-password'
 import styles from './security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'

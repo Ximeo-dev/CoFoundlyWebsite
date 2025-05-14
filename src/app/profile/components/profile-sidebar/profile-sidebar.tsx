@@ -7,16 +7,10 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { AlignLeft, ChevronDown, X } from 'lucide-react'
 import styles from './profile-sidebar.module.css'
+import { usePathname } from 'next/navigation'
 
-interface IProfileSidebar {
-	selected: string
-	onSelect: (id: string) => void
-}
-
-export default function ProfileSidebar({
-	selected,
-	onSelect,
-}: IProfileSidebar) {
+export default function ProfileSidebar() {
+	const pathname = usePathname()
 	const [isOpen, setIsOpen] = useState(false)
 
 	const toggleSidebar = () => setIsOpen(!isOpen)
@@ -64,32 +58,20 @@ export default function ProfileSidebar({
 				</div>
 
 				<ul className={styles.sidebar_list}>
-					{PROFILE_MENU.map((item: any & { children?: ISettingsItem[] }) => {
-						const isActive =
-							selected === item.id ||
-							item.children?.some((child: any) => child.id === selected)
-
-						const handleClick = () => {
-							onSelect(item.id)
-							setIsOpen(false)
-						}
-
-						return (
-							<li key={item.id}>
-								<div
-									className={cn(
-										'flex items-center gap-x-3 py-3 rounded-lg text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white cursor-pointer transition-all duration-300',
-										isActive ? 'text-black dark:text-white font-medium' : ''
-									)}
-									onClick={handleClick}
-								>
-									<div className='flex items-center gap-x-3'>
-										<item.icon size={20} /> {item.label}
-									</div>
+					{PROFILE_MENU.map((item) => (
+						<li key={item.href}>
+							<Link href={item.href}
+								className={cn(
+									'flex items-center gap-x-3 py-3 rounded-lg text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white cursor-pointer transition-all duration-300',
+									pathname === item.href ? 'text-black dark:text-white font-medium' : ''
+								)}
+							>
+								<div className='flex items-center gap-x-3'>
+									<item.icon size={20} /> {item.label}
 								</div>
-							</li>
-						)
-					})}
+							</Link>
+						</li>
+					))}
 				</ul>
 			</aside>
 

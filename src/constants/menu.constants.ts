@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@/config/endpoints.config'
-import { BriefcaseBusiness, CircleUser, Fingerprint, House, LucideIcon, MessageSquare, MessagesSquare, Settings, User, Users2 } from 'lucide-react'
+import { Briefcase, BriefcaseBusiness, CircleUser, Fingerprint, House, LayoutDashboard, LucideIcon, MessageSquare, MessagesSquare, Settings, User, Users2 } from 'lucide-react'
 import { ReactNode } from 'react'
 
 export interface IMenuItem {
@@ -72,17 +72,17 @@ export const MOBILE_MENU = [
 
 export const PROFILE_MENU = [
 	{
-		id: 'my-anket',
-		icon: User,
+		href: '/profile',
+		icon: LayoutDashboard,
 		label: 'Моя анкета',
 	},
 	{
-		id: 'project-anket',
-		icon: CircleUser,
-		label: 'Анкета проекта',
+		href: '/profile/projects',
+		icon: Briefcase,
+		label: 'Проекты',
 	},
 	{
-		id: 'security',
+		href: '/profile/security',
 		icon: Fingerprint,
 		label: 'Безопасность',
 	},

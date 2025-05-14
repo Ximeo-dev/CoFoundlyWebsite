@@ -44,7 +44,6 @@ export default function UsersSwipe() {
 				setCurrentAnket(remainingAnkets[0])
 				setRemainingAnkets(remainingAnkets.slice(1))
 			} else {
-				// Выполняем refetch и проверяем, есть ли новые анкеты
 				const result = await refetch()
 				if (!result.data?.userId) {
 					setCurrentAnket(null)

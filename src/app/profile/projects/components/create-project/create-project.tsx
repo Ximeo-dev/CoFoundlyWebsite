@@ -3,7 +3,7 @@
 import { toast } from 'sonner'
 import { projectService } from '@/services/project.service'
 import { IProjectRequest } from '@/types/project.types'
-import ProjectForm from '../../project-form'
+import ProjectForm from '../../../components/project-form'
 
 export default function CreateProject({
   onCreated,

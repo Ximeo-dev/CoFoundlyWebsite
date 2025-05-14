@@ -3,7 +3,7 @@
 import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import styles from '../security/security.module.css'
+import styles from './security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'

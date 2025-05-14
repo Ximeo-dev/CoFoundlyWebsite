@@ -1,13 +1,15 @@
 import type { Metadata } from 'next'
 
 import { NO_INDEX_PAGE } from '@/constants/seo.constants'
-import AnketPage from './components/user-anket/anket-page'
+import Security from './components/security'
 
 export const metadata: Metadata = {
-  title: 'Профиль',
+  title: 'Безопасность',
   ...NO_INDEX_PAGE
 }
 
-export default function ProfilePage() {
-  return <AnketPage />
+export default function SecurityPage() {
+  return (
+		<Security />
+	)
 }

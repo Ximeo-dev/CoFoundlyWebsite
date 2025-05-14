@@ -95,7 +95,7 @@ export default function Avatar({
 		}
 	}
 
-	const initialLetter = name?.charAt(0) || 'u'
+	const initialLetter = name?.charAt(0) || user?.username.charAt(0)
 
 	const avatarStyles = cn(
 		size === 64
