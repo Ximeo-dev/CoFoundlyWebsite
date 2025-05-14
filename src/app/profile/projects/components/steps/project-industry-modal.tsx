@@ -8,56 +8,53 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-export default function JobModal({
-	isOpen,
-	onClose,
+export default function ProjectIndustryModal({
+  isOpen,
+  onClose,
 }: {
-	isOpen: boolean
-	onClose: () => void
+  isOpen: boolean
+  onClose: () => void
 }) {
-	const {
-		setValue,
-		watch,
-		formState: { errors },
-	} = useFormContext()
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext()
 
-	const [searchQuery, setSearchQuery] = useState('')
-	const selectedJob = watch('job', '') as string
+  const [searchQuery, setSearchQuery] = useState('')
+  const selectedIndustry = watch('industry', '') as string
 
-	const { data: jobs, isLoading } = useQuery({
-		queryKey: ['get jobs'],
-		queryFn: () => anketService.getProfessional('job', 70),
+  const { data: industry, isLoading } = useQuery({
+		queryKey: ['get industries'],
+		queryFn: () => anketService.getProfessional('industry', 100),
 		staleTime: 1000 * 60 * 60,
 		gcTime: 1000 * 60 * 60 * 24,
 		enabled: isOpen,
 	})
 
-	const sortedJobs = useMemo(() => {
-		if (!jobs) return []
-		return searchSort(jobs, searchQuery)
-	}, [jobs, searchQuery])
+  const sortedIndustries = useMemo(() => {
+		if (!industry) return []
+		return searchSort(industry, searchQuery)
+	}, [industry, searchQuery])
 
-	const selectJob = (jobName: string) => {
-		console.log('Выбранная работа:', jobName)
-		setValue('job', jobName, { shouldValidate: true })
-
+  const selectIndustry = (industryName: string) => {
+		console.log('Выбранная ниша:', industryName)
+		setValue('industry', industryName, { shouldValidate: true })
 	}
 
-	const resetJob = () => {
-		setValue('job', '', { shouldValidate: true })
-		onClose()
-	}
+  const resetIndustry = () => {
+    setValue('industry', '', { shouldValidate: true })
+    onClose()
+  }
 
-	return (
+  return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
 			className='w-[90vw] max-w-[400px] sm:max-w-[450px] min-h-[400px] mx-auto'
 		>
 			<div className='p-4 sm:p-6 flex flex-col h-full'>
-					<h3 className='text-xl font-semibold mb-4'>
-						Выберите род деятельности
-					</h3>
+					<h3 className='text-xl font-semibold mb-4'>Выберите нишу</h3>
 					<input
 						type='text'
 						value={searchQuery}
@@ -69,31 +66,31 @@ export default function JobModal({
 						{isLoading ? (
 							<div className='text-center'>Загрузка...</div>
 						) : (
-							sortedJobs.map((job, i) => (
+							sortedIndustries.map((industry, i) => (
 								<button
 									type='button'
-									key={job.name || i}
-									onClick={() => selectJob(job.name)}
+									key={industry.name || i}
+									onClick={() => selectIndustry(industry.name)}
 									className={`px-3 shrink-0 py-1.5 rounded-full text-sm transition-colors ${
-										selectedJob === job.name
+										selectedIndustry === industry.name
 											? 'bg-black dark:bg-white text-white dark:text-black'
 											: 'bg-background border border-border'
 									}`}
 								>
-									{job.name}
+									{industry.name}
 								</button>
 							))
 						)}
 					</div>
-					{errors.job && (
+					{errors.industry && (
 						<p className='mt-3 text-sm text-red-600 dark:text-red-500'>
-							{errors.job.message as string}
+							{errors.industry.message as string}
 						</p>
 					)}
 					<div className='flex-none mt-6 flex justify-center gap-6'>
 						<Button
 							variant={'destructive'}
-							onClick={resetJob}
+							onClick={resetIndustry}
 							className='flex items-center gap-1 cursor-pointer'
 						>
 							Сбросить

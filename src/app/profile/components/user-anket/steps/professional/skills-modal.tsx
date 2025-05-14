@@ -55,8 +55,8 @@ export default function SkillsModal({
 			onClose={onClose}
 			className='w-[350px] sm:w-full sm:max-w-md'
 		>
-			<div className='h-[600px] flex flex-col justify-between'>
-				<div className='p-6'>
+			<div className='w-[90vw] max-w-[400px] sm:max-w-[450px] min-h-[400px] mx-auto'>
+				<div className='p-4 sm:p-6 flex flex-col h-full'>
 					<h3 className='text-xl font-semibold mb-4'>Выберите навыки</h3>
 					<input
 						type='text'
@@ -74,7 +74,7 @@ export default function SkillsModal({
 									type='button'
 									key={skill.name}
 									onClick={() => toggleSkill(skill.name)}
-									className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+									className={`px-3 shrink-0 py-1.5 rounded-full text-sm transition-colors ${
 										selected.includes(skill.name)
 											? 'bg-black dark:bg-white text-white dark:text-black'
 											: 'bg-background border border-border'

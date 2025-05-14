@@ -2,12 +2,12 @@
 
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import SkeletonView from '../user-anket/anket-view/skeleton-view'
+import SkeletonView from '../../components/user-anket/anket-view/skeleton-view'
 import { useProjects } from '@/hooks/anket/useProjects'
 import ProjectEditor from './project-editor'
-import ProjectView from './project-view/project-view'
+import ProjectCardList from './project-card-list/project-card-list'
 
-export default function ProjectPage() {
+export default function ProjectMain() {
 	const queryClient = useQueryClient()
 	const [isEditing, setIsEditing] = useState(false)
 	const { projects, isLoading, error } = useProjects()
@@ -19,24 +19,19 @@ export default function ProjectPage() {
 			<ProjectEditor
 				mode='create'
 				onSuccess={createdProject => {
-					queryClient.setQueryData(['getProjects'], [createdProject]) 
+					queryClient.setQueryData(['getProjects'], [createdProject])
 					setIsEditing(false)
 				}}
 			/>
 		)
 	}
 
-	return isEditing ? (
-		<ProjectEditor
-			onCancel={() => setIsEditing(false)}
-			mode='edit'
-			initialData={projects[0]}
-			onSuccess={updatedProject => {
-				queryClient.setQueryData(['getProjects'], [updatedProject])
-				setIsEditing(false)
-			}}
-		/>
-	) : (
-		<ProjectView project={projects[0]} />
+	return (
+		<div className='p-4'>
+			<h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4'>
+				Ваши проекты
+			</h2>
+			<ProjectCardList projects={projects} />
+		</div>
 	)
 }

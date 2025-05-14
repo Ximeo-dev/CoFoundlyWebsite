@@ -205,7 +205,7 @@ export default function AnketView({
 									variants={textVariants}
 									initial='initial'
 									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.33 }}
 									className={cn('mt-1', !anket?.job && 'text-muted-foreground')}
 								>
 									{typeof anket?.job === 'string'
@@ -218,7 +218,7 @@ export default function AnketView({
 									variants={textVariants}
 									initial='initial'
 									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.35 }}
 									className='text-sm text-muted-foreground'
 								>
 									О себе
@@ -227,7 +227,7 @@ export default function AnketView({
 									variants={textVariants}
 									initial='initial'
 									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.38 }}
 									className={cn('mt-1', !anket?.bio && 'text-muted-foreground')}
 								>
 									{anket?.bio || 'Не указано'}
@@ -238,7 +238,7 @@ export default function AnketView({
 									variants={textVariants}
 									initial='initial'
 									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.4 }}
 									className='text-sm text-muted-foreground'
 								>
 									Навыки
@@ -255,7 +255,7 @@ export default function AnketView({
 													transition={{
 														duration: 0.3,
 														ease: 'easeOut',
-														delay: 0.3,
+														delay: 0.43,
 													}}
 													className='bg-primary text-white dark:text-black text-sm px-3 py-1 rounded-full'
 												>
@@ -271,7 +271,7 @@ export default function AnketView({
 											transition={{
 												duration: 0.3,
 												ease: 'easeOut',
-												delay: 0.3,
+												delay: 0.43,
 											}}
 											className='text-muted-foreground'
 										>
@@ -285,7 +285,7 @@ export default function AnketView({
 									variants={textVariants}
 									initial='initial'
 									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.45 }}
 									className='text-sm text-muted-foreground'
 								>
 									Языки
@@ -302,7 +302,7 @@ export default function AnketView({
 													transition={{
 														duration: 0.3,
 														ease: 'easeOut',
-														delay: 0.3,
+														delay: 0.48,
 													}}
 													className='text-black dark:text-white'
 												>
@@ -321,7 +321,7 @@ export default function AnketView({
 											transition={{
 												duration: 0.3,
 												ease: 'easeOut',
-												delay: 0.3,
+												delay: 0.48,
 											}}
 											className='text-muted-foreground'
 										>
@@ -335,7 +335,7 @@ export default function AnketView({
 									variants={textVariants}
 									initial='initial'
 									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.48 }}
 									className='text-sm text-muted-foreground'
 								>
 									Интересующие ниши
@@ -352,7 +352,7 @@ export default function AnketView({
 													transition={{
 														duration: 0.3,
 														ease: 'easeOut',
-														delay: 0.3,
+														delay: 0.51,
 													}}
 													className='text-black dark:text-white'
 												>
@@ -371,7 +371,7 @@ export default function AnketView({
 											transition={{
 												duration: 0.3,
 												ease: 'easeOut',
-												delay: 0.3,
+												delay: 0.51,
 											}}
 											className='text-muted-foreground'
 										>
@@ -385,7 +385,7 @@ export default function AnketView({
 									variants={textVariants}
 									initial='initial'
 									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.53 }}
 									className='text-sm text-muted-foreground mb-1'
 								>
 									Портфолио
@@ -402,7 +402,7 @@ export default function AnketView({
 											transition={{
 												duration: 0.3,
 												ease: 'easeOut',
-												delay: 0.3,
+												delay: 0.56,
 											}}
 											className='mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white'
 										>
@@ -414,7 +414,7 @@ export default function AnketView({
 										variants={textVariants}
 										initial='initial'
 										animate='animate'
-										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.56 }}
 										className='text-muted-foreground'
 									>
 										Не указано

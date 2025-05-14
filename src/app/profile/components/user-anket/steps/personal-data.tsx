@@ -29,6 +29,7 @@ export default function PersonalData() {
 			<div>
 				<input
 					{...register('name')}
+					type='text'
 					className={`w-full py-1 px-3 h-9 rounded-lg border placeholder:text-[#585654] ${
 						errors.name ? 'border-red-500 focus:ring-red-500' : 'border-border'
 					} focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent  dark:bg-input/30`}

@@ -28,11 +28,16 @@ class ProjectService {
 		return response.data
 	}
 
-	async getProjectById(projectId: string) {
-		const response = await axiosWithAuth.get<IProject>(
-			`${this.BASE_URL}/${projectId}`
-		)
-		return response.data
+	async getProjectById(projectId: string): Promise<IProject | null> {
+		try {
+			const response = await axiosWithAuth.get<IProject>(
+				`${this.BASE_URL}/${projectId}`
+			)
+			return response.data
+		} catch (e) {
+			console.error('Ошибка загрузки проекта', e)
+			return null
+		}
 	}
 }
 

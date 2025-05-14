@@ -35,7 +35,7 @@ class AnketService {
 		const formData = new FormData()
 		formData.append('avatar', file)
 
-		const response = await axiosWithAuth.post('/images/avatar', formData, {
+		const response = await axiosWithAuth.post('/images/avatar/user', formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -45,7 +45,7 @@ class AnketService {
 	}
 
 	async deleteAvatar() {
-		const response = await axiosWithAuth.delete('/images/avatar')
+		const response = await axiosWithAuth.delete('/images/avatar/user')
 		return response.data
 	}
 
