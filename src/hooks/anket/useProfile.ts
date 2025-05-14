@@ -8,7 +8,7 @@ export function useProfile() {
 		refetchOnWindowFocus: false,
 		staleTime: 1000 * 60 * 60,
 		gcTime: 1000 * 60 * 60 * 24,
-		// retry: false,
+		retry: 1,
 	})
 
   return { anket, isLoading }
