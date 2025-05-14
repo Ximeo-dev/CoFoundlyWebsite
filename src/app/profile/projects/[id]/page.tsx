@@ -1,21 +1,21 @@
-import type { Metadata } from 'next'
-import { projectService } from '@/services/project.service'
+'use client'
+
+import { useProjectById } from '@/hooks/anket/useProjectById'
 import ProjectCardView from './components/project-card-view'
+import * as React from 'react'
 
 interface IProjectPage {
-  params: { name: string }
+	params: Promise<{ id: string }>
 }
 
-export async function generateMetadata({ params }: IProjectPage): Promise<Metadata> {
-	const project = await projectService.getProjectById(params.name)
-  
-	return {
-		title: project?.name || 'Проект',
-	}
-}
+export default function ProjectPage({ params }: IProjectPage) {
+	const resolvedParams = React.use(params)
+	const projectId = resolvedParams.id
 
-export default async function ProjectPage({ params }: IProjectPage) {
-  const project = await projectService.getProjectById(params.name)
+	const { project, isLoading, error } = useProjectById(projectId)
 
-  return <ProjectCardView project={project} />
+	if (isLoading) return <div>Загрузка...</div>
+	if (error) return <div>Ошибка: {error.message}</div>
+
+	return <ProjectCardView project={project} />
 }
