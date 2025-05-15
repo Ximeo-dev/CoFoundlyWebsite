@@ -23,10 +23,10 @@ export default function ProjectSidebar({ onTabChange }: IProjectSidebar) {
 			<nav className='flex flex-col space-y-2'>
 				<button
 					onClick={() => handleTabChange('participants')}
-					className={`flex items-center space-x-3 p-2 rounded-md transition-colors duration-200 ${
+					className={`cursor-pointer flex items-center space-x-3 p-2 rounded-md transition-colors duration-300 ${
 						activeTab === 'participants'
-							? 'bg-neutral-600 text-white'
-							: 'text-gray-400 hover:bg-neutral-600'
+							? 'text-white'
+							: 'text-neutral-400 hover:text-neutral-200'
 					}`}
 				>
 					<Users className='w-5 h-5' />
@@ -34,10 +34,10 @@ export default function ProjectSidebar({ onTabChange }: IProjectSidebar) {
 				</button>
 				<button
 					onClick={() => handleTabChange('settings')}
-					className={`flex items-center space-x-3 p-2 rounded-md transition-colors duration-200 ${
+					className={`cursor-pointer flex items-center space-x-3 p-2 rounded-md transition-colors duration-200 ${
 						activeTab === 'settings'
-							? 'bg-neutral-600 text-white'
-							: 'text-gray-400 hover:bg-neutral-600'
+							? 'text-white'
+							: 'text-neutral-400 hover:text-neutral-200'
 					}`}
 				>
 					<Settings className='w-5 h-5' />

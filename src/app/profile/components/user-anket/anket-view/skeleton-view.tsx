@@ -6,7 +6,12 @@ import styles from './anket-view.module.css'
 
 export default function SkeletonView() {
 	return (
-		<div className={styles.view_block}>
+		<div
+			className={cn(
+				styles.view_block,
+				'bg-background border border-border rounded-[15px]'
+			)}
+		>
 			<div className={cn(styles.view_inner, 'border-b border-border')}>
 				<div className={styles.view_top}>
 					<Skeleton className='h-7 w-32' />

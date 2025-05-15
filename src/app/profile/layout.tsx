@@ -13,7 +13,7 @@ export default function Layout({ children }: PropsWithChildren<unknown>) {
 				<div className={cn(styles.profile_section, '')}>
 					{children}
 				</div>
-				<EmailConfirmationNotification />
+				{/* <EmailConfirmationNotification /> */}
 			</div>
 		</ContainerWrapper>
 	)

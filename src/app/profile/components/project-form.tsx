@@ -1,7 +1,11 @@
 'use client'
 
 import { IProjectRequest } from '@/types/project.types'
-import { ProjectFormSchema, ProjectFormType, ProjectFormValues } from '@/zod/project.schema'
+import {
+	ProjectFormSchema,
+	ProjectFormType,
+	ProjectFormValues,
+} from '@/zod/project.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -15,6 +19,7 @@ import Tooltip from '@/components/ui/tooltip/tooltip'
 import { Button } from '@/components/ui/shadcn/button'
 import { ArrowLeft, ArrowRight, Loader } from 'lucide-react'
 import styles from './profile.module.css'
+import ProjectAvatar from '@/components/ui/project-avatar/project-avatar'
 
 interface IProjectForm {
 	initialValues?: ProjectFormValues
@@ -29,9 +34,9 @@ export default function ProjectForm({
 	initialValues,
 	onSubmit,
 	mode = 'create',
-	submitButtonText = mode === 'edit' ? 'Сохранить изменения' : 'Создать анкету',
+	submitButtonText = mode === 'edit' ? 'Сохранить изменения' : 'Создать проект',
 	onCancel,
-	userId
+	userId,
 }: IProjectForm) {
 	const localStorageKey = `projectFormData-${userId}`
 	const stepStorageKey = `projectFormStep-${userId}`
@@ -78,15 +83,19 @@ export default function ProjectForm({
 					initialValues.languages?.map((lang: any) =>
 						typeof lang === 'object' ? lang.name : lang
 					) || [],
-					jobs: initialValues.jobs?.map((job: any) => typeof job === 'object' ? job.name : job) || [],
+				jobs:
+					initialValues.jobs?.map((job: any) =>
+						typeof job === 'object' ? job.name : job
+					) || [],
 			}),
 		},
 		resolver: zodResolver(ProjectFormSchema),
-		mode: 'onChange'
+		mode: 'onChange',
 	})
 
 	const [currentStep, setCurrentStep] = useState(savedStep)
 	const [isFormSubmitting, setIsFormSubmitting] = useState(false)
+	const [avatarVersion, setAvatarVersion] = useState(Date.now())
 
 	useEffect(() => {
 		const subscription = methods.watch(value => {
@@ -109,9 +118,9 @@ export default function ProjectForm({
 	]
 
 	const stepFields: (keyof ProjectFormType)[][] = [
-		['name'], ['industry'],
+		['name', 'industry'], // Добавили industry для валидации
 		['description'],
-		['jobs', 'skills', 'languages']
+		['jobs', 'skills', 'languages'],
 	]
 
 	const totalSteps = steps.length
@@ -134,13 +143,15 @@ export default function ProjectForm({
 			setIsFormSubmitting(true)
 			const transformedData = {
 				...data,
-				skills: data.skills?.map((skill: any) => typeof skill === 'object' ? skill.id : skill
+				skills: data.skills?.map((skill: any) =>
+					typeof skill === 'object' ? skill.id : skill
 				),
 			}
 			await onSubmit(transformedData)
 			localStorage.removeItem(localStorageKey)
 			localStorage.removeItem(stepStorageKey)
 		} catch (error) {
+			console.error('Submit error:', error)
 		} finally {
 			setIsFormSubmitting(false)
 		}
@@ -155,10 +166,10 @@ export default function ProjectForm({
 	}
 
 	const progress = useMemo(() => {
-			const values = methods.getValues()
-			return calculateProjectProgress(values)
-		}, [methods.watch()])
-	
+		const values = methods.getValues()
+		return calculateProjectProgress(values)
+	}, [methods.watch()])
+
 	const confirm = async () => {
 		const fieldsToValidate = stepFields[currentStep]
 		const isValid = await methods.trigger(fieldsToValidate)
@@ -167,6 +178,8 @@ export default function ProjectForm({
 			methods.handleSubmit(submitHandler)()
 		}
 	}
+
+	const projectName = methods.watch('name')
 
 	return (
 		<FormProvider {...methods}>
@@ -179,14 +192,28 @@ export default function ProjectForm({
 			>
 				<div className={styles.form_top}>
 					<div className={styles.form_block}>
-						<h2 className='text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white'>
-							{mode === 'edit' ? 'Редактирование проекта' : 'Создание проекта'}
-						</h2>
-						<p className='text-sm text-gray-500 dark:text-neutral-500 mt-1'>
-							Шаг {currentStep + 1} из {totalSteps}: {steps[currentStep].title}
-						</p>
+						<div className='flex items-center gap-4'>
+							<ProjectAvatar
+								size={128}
+								editable={mode === 'edit'}
+								projectName={projectName || 'Новый проект'}
+								avatarVersion={avatarVersion}
+								setAvatarVersion={setAvatarVersion}
+								className='shrink-0'
+							/>
+							<div>
+								<h2 className='text-xl sm:text-2xl font-semibold text-gray-800 dark:text-white'>
+									{mode === 'edit'
+										? 'Редактирование проекта'
+										: 'Создание проекта'}
+								</h2>
+								<p className='text-sm text-gray-500 dark:text-neutral-500 mt-1'>
+									Шаг {currentStep + 1} из {totalSteps}:{' '}
+									{steps[currentStep].title}
+								</p>
+							</div>
+						</div>
 					</div>
-
 					<ProgressBar progress={progress} />
 				</div>
 

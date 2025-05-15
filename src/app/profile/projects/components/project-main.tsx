@@ -9,26 +9,30 @@ import ProjectCardList from './project-card-list/project-card-list'
 
 export default function ProjectMain() {
 	const queryClient = useQueryClient()
-	const [isEditing, setIsEditing] = useState(false)
+	const [isCreating, setIsCreating] = useState(false)
 	const { projects, isLoading, error } = useProjects()
 
 	if (isLoading) return <SkeletonView />
 
-	if (error || !projects || projects.length === 0) {
+	if (error || !projects || projects.length === 0 || isCreating) {
 		return (
 			<ProjectEditor
 				mode='create'
 				onSuccess={createdProject => {
-					queryClient.setQueryData(['getProjects'], [createdProject])
-					setIsEditing(false)
+					queryClient.setQueryData(
+						['getProjects'],
+						[createdProject, ...(projects || [])]
+					)
+					setIsCreating(false)
 				}}
+				onCancel={() => setIsCreating(false)}
 			/>
 		)
 	}
 
 	return (
-		<div className='p-6 min-h-[500px]'>
-			<h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-7 text-center'>
+		<div className=''>
+			<h2 className='text-2xl md:text-3xl font-semibold mb-12 text-center'>
 				Ваши проекты
 			</h2>
 			<ProjectCardList projects={projects} />

@@ -8,7 +8,7 @@ export default function ProjectCard({ project }: { project: IProject }) {
 	const { user } = useAuth()
 
 	return (
-		<div className='group rounded-[15px] border border-border p-4 shadow-xs hover:shadow-neutral-700 transition-all duration-300 bg-background'>
+		<div className='group rounded-[15px] border border-border p-5 shadow-xs hover:shadow-neutral-700 transition-all duration-300 bg-background'>
 			<div className='w-full flex items-center justify-center'>
 				<div className='relative w-1/2 h-32 rounded-md overflow-hidden mb-7 border border-border' />
 			</div>
@@ -18,7 +18,7 @@ export default function ProjectCard({ project }: { project: IProject }) {
 			</h3>
 
 			<p className='text-sm text-neutral-500 dark:text-neutral-400 line-clamp-2'>
-				{project.description || 'Описание отсутствует'}
+				{project.description.slice(0, 50) || 'Описание отсутствует'}
 			</p>
 
 			<div className='flex justify-between items-center mt-7'>
