@@ -89,7 +89,13 @@ export default function AnketView({
 
 	return (
 		<LazyMotion features={domAnimation}>
-			<div key={id} className={styles.view_block}>
+			<div
+				key={id}
+				className={cn(
+					styles.view_block,
+					'bg-background border border-border rounded-[15px]'
+				)}
+			>
 				{' '}
 				<div className={cn(styles.view_inner, `border-b border-border`)}>
 					<div className={styles.view_top}>

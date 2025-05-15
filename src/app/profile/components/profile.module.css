@@ -4,7 +4,7 @@
   @apply pb-14 pt-24 lg:pb-[70px] lg:pt-[160px] w-full min-h-screen md:block flex md:items-start items-center md:justify-start justify-center;
 
   .profile_section {
-    @apply lg:ml-[242px] rounded-[15px];
+    @apply lg:ml-[242px];
 
     .anket_form {
       @apply space-y-4 sm:space-y-3;

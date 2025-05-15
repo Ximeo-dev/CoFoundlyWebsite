@@ -6,7 +6,7 @@ import ProjectCard from '../project-card/project-card'
 export default function ProjectCardList({ projects }: { projects: IProject[] }) {
   if (!projects || projects.length === 0) {
 		return (
-			<div className='text-center text-gray-500 dark:text-gray-400 py-6'>
+			<div className='text-center py-6'>
 				Проекты отсутствуют
 			</div>
 		)

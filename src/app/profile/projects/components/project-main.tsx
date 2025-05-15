@@ -27,8 +27,8 @@ export default function ProjectMain() {
 	}
 
 	return (
-		<div className='p-4'>
-			<h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4'>
+		<div className='p-6 min-h-[500px]'>
+			<h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-7 text-center'>
 				Ваши проекты
 			</h2>
 			<ProjectCardList projects={projects} />

@@ -12,17 +12,18 @@ export default function Security() {
   const { user } = useAuth()
 
   return (
-		<div className={styles.sec_block}>
-			<FadeInUp className={styles.sec_title}>
-				Безопасность
-			</FadeInUp>
+		<div
+			className={cn(
+				styles.sec_block,
+				'bg-background border border-border rounded-[15px]'
+			)}
+		>
+			<FadeInUp className={styles.sec_title}>Безопасность</FadeInUp>
 			<div className={styles.sec_inner}>
 				<div className={styles.sec}>
 					<div className={cn(styles.change_block, 'border-border')}>
 						<div>
-							<FadeInUp className={styles.email}>
-								Электронная почта
-							</FadeInUp>
+							<FadeInUp className={styles.email}>Электронная почта</FadeInUp>
 							<FadeInUp
 								className={cn(
 									styles.user_email,

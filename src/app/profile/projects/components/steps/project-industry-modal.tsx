@@ -54,7 +54,7 @@ export default function ProjectIndustryModal({
 			className='w-[90vw] max-w-[400px] sm:max-w-[450px] min-h-[400px] mx-auto'
 		>
 			<div className='p-4 sm:p-6 flex flex-col h-full'>
-					<h3 className='text-xl font-semibold mb-4'>Выберите нишу</h3>
+					<h3 className='text-xl font-semibold mb-4'>Выберите направление</h3>
 					<input
 						type='text'
 						value={searchQuery}

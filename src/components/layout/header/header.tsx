@@ -28,7 +28,7 @@ export default function Header() {
       <header
         className={cn(
           styles.header,
-          `fixed z-50 top-10 transition-all duration-500 bg-white dark:bg-[#1A1A1A] border border-border shadow-lg hidden lg:block ${
+          `fixed z-20 top-10 transition-all duration-500 bg-white dark:bg-[#1A1A1A] border border-border shadow-lg hidden lg:block ${
             isVisible ? '-translate-y-3' : '-translate-y-32 overflow-hidden'
           }`
         )}
