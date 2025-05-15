@@ -39,7 +39,7 @@ export default function Avatar({
 
 	const { mutate: uploadAvatar, isPending: isUploading } = useMutation({
 		mutationKey: ['user-avatar'],
-		mutationFn: (file: File) => anketService.uploadAvatar(file),
+		mutationFn: (file: File) => anketService.uploadAvatar(file, 'user'),
 		onSuccess: data => {
 			setAvatarVersion(Date.now())
 			setImageError(false)
@@ -58,7 +58,7 @@ export default function Avatar({
 
 	const { mutate: deleteAvatar, isPending: isDeleting } = useMutation({
 		mutationKey: ['delete avatar'],
-		mutationFn: () => anketService.deleteAvatar(),
+		mutationFn: () => anketService.deleteAvatar('user'),
 		onSuccess: () => {
 			setAvatarVersion(Date.now())
 			setImageError(true)
@@ -95,7 +95,7 @@ export default function Avatar({
 		}
 	}
 
-	const initialLetter = name?.charAt(0) || user?.username.charAt(0)
+	const initialLetter = user?.username.charAt(0)
 
 	const avatarStyles = cn(
 		size === 64
@@ -111,7 +111,7 @@ export default function Avatar({
 
 	const avatarUserId = id || user?.id
 	const avatarUrl = avatarUserId
-		? `${API_URL}/images/avatar/${avatarUserId}/${size}?v=${
+		? `${API_URL}/images/avatar/user/${avatarUserId}/${size}?v=${
 				avatarVersion || Date.now()
 		  }`
 		: null

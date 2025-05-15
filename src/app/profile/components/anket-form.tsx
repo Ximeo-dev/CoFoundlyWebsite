@@ -185,7 +185,10 @@ export default function AnketForm({
 		<FormProvider {...methods}>
 			<form
 				onSubmit={methods.handleSubmit(submitHandler)}
-				className={styles.anket_form}
+				className={cn(
+					styles.anket_form,
+					'bg-background border border-border rounded-[15px]'
+				)}
 			>
 				<div className={styles.form_top}>
 					<div className={styles.form_block}>

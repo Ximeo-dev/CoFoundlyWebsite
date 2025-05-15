@@ -4,20 +4,21 @@ import { toast } from 'sonner'
 import ProjectForm from '../../../components/project-form'
 import { IProject, IProjectRequest } from '@/types/project.types'
 import { projectService } from '@/services/project.service'
-import { useProjects } from '@/hooks/anket/useProjects'
-import { useProjectById } from '@/hooks/anket/useProjectById'
 
-interface IEditAnket {
-  initialData: IProject
-  onUpdated: (updated: IProject) => void
+interface IEditProject {
+	initialData: IProject
+	onUpdated: (updated: IProject) => void
+	onCancel: () => void
 }
 
-export default function EditProject({ initialData, onUpdated }: IEditAnket) {
-  const { projects } = useProjects()
-  const { project } = useProjectById(projects[0]?.id || '')
+export default function EditProject({
+	initialData,
+	onUpdated,
+	onCancel,
+}: IEditProject) {
 	const handleSubmit = async (data: IProjectRequest) => {
 		try {
-			const response = await projectService.editProject(data, project?.id || '')
+			const response = await projectService.editProject(data, initialData.id)
 			toast.success('Проект успешно обновлен')
 			onUpdated(response)
 		} catch (error) {
@@ -31,6 +32,8 @@ export default function EditProject({ initialData, onUpdated }: IEditAnket) {
 			initialValues={initialData}
 			onSubmit={handleSubmit}
 			submitButtonText='Сохранить изменения'
+			onCancel={onCancel}
+			mode='edit'
 		/>
 	)
 }

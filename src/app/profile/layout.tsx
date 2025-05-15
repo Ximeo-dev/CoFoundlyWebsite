@@ -10,10 +10,10 @@ export default function Layout({ children }: PropsWithChildren<unknown>) {
 		<ContainerWrapper>
 			<div className={styles.profile_main}>
 				<ProfileSidebar />
-				<div className={cn(styles.profile_section, 'bg-background border')}>
+				<div className={cn(styles.profile_section, '')}>
 					{children}
 				</div>
-				<EmailConfirmationNotification />
+				{/* <EmailConfirmationNotification /> */}
 			</div>
 		</ContainerWrapper>
 	)

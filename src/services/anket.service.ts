@@ -31,11 +31,11 @@ class AnketService {
 		return response.data
 	}
 
-	async uploadAvatar(file: File) {
+	async uploadAvatar(file: File, type: 'user' | 'project') {
 		const formData = new FormData()
 		formData.append('avatar', file)
 
-		const response = await axiosWithAuth.post('/images/avatar/user', formData, {
+		const response = await axiosWithAuth.post(`/images/avatar/${type}`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -44,13 +44,13 @@ class AnketService {
 		return response.data
 	}
 
-	async deleteAvatar() {
-		const response = await axiosWithAuth.delete('/images/avatar/user')
+	async deleteAvatar(type: 'user' | 'project') {
+		const response = await axiosWithAuth.delete(`/images/avatar/${type}`)
 		return response.data
 	}
 
-	async getAvatarUrl(userId: string, size: 64 | 128 | 512) {
-		return `${API_URL}/images/avatar/${userId}/${size}`
+	async getAvatarUrl(userId: string, size: 64 | 128 | 512, type: 'user' | 'project') {
+		return `${API_URL}/images/avatar/${type}/${userId}/${size}`
 	}
 
 	async getProfessional(
