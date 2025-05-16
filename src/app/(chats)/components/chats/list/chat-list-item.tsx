@@ -12,7 +12,7 @@ interface IChatListItem {
 
 export default function ChatListItem({ chat }: IChatListItem) {
 	const { user } = useAuth()
-	const correspondent = chat.participants.find(p => p.profile?.id !== user?.id)
+	const correspondent = chat.participants.find(p => p.userId !== user?.id)
 
 	const lastMessage =
 		chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null
@@ -26,7 +26,12 @@ export default function ChatListItem({ chat }: IChatListItem) {
 			href={`/chats/${chat.id}`}
 			className='p-5 flex items-center border-b border-border duration-300 ease-linear transition-colors hover:bg-border cursor-pointer animation-slide-fade'
 		>
-			<Avatar size={64} id={correspondent?.userId} className='w-full' />
+			<Avatar
+				size={64}
+				id={correspondent?.userId}
+				hasAvatar={correspondent?.profile?.hasAvatar ?? false}
+				className='w-full'
+			/>
 			<div className='text-sm w-full'>
 				<div className='flex items-center justify-between'>
 					<span>

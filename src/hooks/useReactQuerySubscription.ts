@@ -1,5 +1,5 @@
 import { WS_URL } from '@/constants/api.constants'
-import { ChatClientEvent, IMessages } from '@/types/chat.types'
+import { ChatClientEvent, IMessage } from '@/types/chat.types'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 import io, { Socket } from 'socket.io-client'
@@ -54,13 +54,13 @@ export const useReactQuerySubscription = () => {
 			)
 		})
 
-		s.on('errors', (error) => {
+		s.on('errors', error => {
 			console.log(error)
 		})
 
-		s.on('new-message', (message: IMessages) => {
+		s.on('new-message', (message: IMessage) => {
 			console.log('[socket] new-message:', message)
-			queryClient.setQueryData<IMessages[]>(
+			queryClient.setQueryData<IMessage[]>(
 				['messages', message.chatId],
 				(oldMessages = []) => [...oldMessages, message]
 			)
@@ -74,9 +74,13 @@ export const useReactQuerySubscription = () => {
 
 	const sendMessage = (dto: any) => {
 		return new Promise((resolve, reject) => {
-			socket.current.emit(ChatClientEvent.SEND_MESSAGE, dto, (response: any) => {
-				resolve(response)
-			})
+			socket.current.emit(
+				ChatClientEvent.SEND_MESSAGE,
+				dto,
+				(response: any) => {
+					resolve(response)
+				}
+			)
 		})
 	}
 

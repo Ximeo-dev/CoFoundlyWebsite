@@ -19,6 +19,7 @@ interface IAvatarUploader {
 	className?: string
 	id?: string
 	name?: string
+	hasAvatar?: boolean
 }
 
 export default function Avatar({
@@ -26,7 +27,8 @@ export default function Avatar({
 	editable = false,
 	className,
 	id,
-	name
+	name,
+	hasAvatar = false
 }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
@@ -118,7 +120,7 @@ export default function Avatar({
 
 	return (
 		<div className={cn(className, 'relative')}>
-			{imageError || !avatarUrl ? (
+			{imageError || !hasAvatar || !avatarUrl ? (
 				<div
 					className={cn(
 						avatarStyles,

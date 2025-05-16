@@ -1,26 +1,33 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-import ChatHeader from './chat-header'
-import { chatService } from '@/services/chat.service'
 import { useAuth } from '@/hooks/useAuth'
-import MessageField from './message-field'
-import { Message } from './message'
-import { IMessages, ISender } from '@/types/chat.types'
+import { getSocket } from '@/lib/socket'
+import { chatService } from '@/services/chat.service'
+import {
+	ChatClientEvent,
+	ChatServerEvent,
+	IMessage,
+	ISender,
+} from '@/types/chat.types'
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { socket } from '@/lib/socket'
+import ChatHeader from './chat-header'
+import { Message } from './message'
+import MessageField from './message-field'
+import { useSocket } from '@/hooks/useSocket'
 
 export default function Chat({ id }: { id: string }) {
 	const { user } = useAuth()
-	const [messages, setMessages] = useState<IMessages[]>([])
+	const [messages, setMessages] = useState<IMessage[]>([])
+	const socket = useSocket()
 
 	const {
 		data: initialMessages,
 		isLoading,
 		error,
 	} = useQuery({
-		queryKey: ['messages', id],
-		queryFn: () => chatService.getChatMessages(id),
+		queryKey: ['get-messages', id],
+		queryFn: async () => await chatService.getChatMessages(id),
 		enabled: !!id,
 		initialData: [],
 	})
@@ -32,7 +39,7 @@ export default function Chat({ id }: { id: string }) {
 	}, [initialMessages])
 
 	useEffect(() => {
-		const handleNewMessage = (message: IMessages) => {
+		const handleNewMessage = (message: IMessage) => {
 			if (message.chatId === id) {
 				setMessages(prev => {
 					if (!prev.some(m => m.id === message.id)) {
@@ -46,10 +53,10 @@ export default function Chat({ id }: { id: string }) {
 			}
 		}
 
-		socket.on('new-message', handleNewMessage)
+		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
 
 		return () => {
-			socket.off('new-message', handleNewMessage)
+			socket.off(ChatServerEvent.NEW_MESSAGE)
 		}
 	}, [id])
 

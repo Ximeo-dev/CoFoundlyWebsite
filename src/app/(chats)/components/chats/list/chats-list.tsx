@@ -10,11 +10,10 @@ import { Loader } from 'lucide-react'
 
 export default function ChatsList() {
 	const [searchTerm, setSearchTerm] = useState('')
-	const debounceSearchTerm = useDebounce(searchTerm, 300)
 
 	const { data, isLoading, error } = useQuery({
-		queryKey: ['chats', debounceSearchTerm],
-		queryFn: () => chatService.getChats(debounceSearchTerm),
+		queryKey: ['get-direct-chats'],
+		queryFn: async () => await chatService.getChats(),
 	})
 
 	return (

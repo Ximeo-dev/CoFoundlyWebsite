@@ -1,11 +1,11 @@
 'use client'
 
 import Avatar from '@/app/profile/components/profile-info/avatar'
-import { IMessages } from '@/types/chat.types'
+import { IMessage } from '@/types/chat.types'
 import dayjs from 'dayjs'
 
 interface MessageProps {
-	message: IMessages
+	message: IMessage
 	onDelete: (messageId: string) => void
 	onEdit: (messageId: string, newContent: string) => void
 	isSender: boolean
@@ -27,7 +27,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 					isSender ? 'flex-row-reverse' : ''
 				}`}
 			>
-				<Avatar size={64} id={message.sender.id} />
+				<Avatar size={64} id={message?.sender?.id} hasAvatar={true} />
 				<div className={isSender ? 'mr-3' : 'ml-3'}>
 					<div
 						className={`text-sm text-white py-1.5 mt-4 px-3 rounded-2xl ${

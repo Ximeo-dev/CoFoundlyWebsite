@@ -1,22 +1,20 @@
 import { axiosWithAuth } from '@/api/interceptors'
 import { API_URL } from '@/constants/api.constants'
-import { IChat, IMessages } from '@/types/chat.types'
+import { IChat, IMessage } from '@/types/chat.types'
 
 class ChatService {
 	private BASE_URL = `${API_URL}/chat`
 
-	async getChats(searchTerm: string = ''): Promise<IChat[]> {
-		const response = await axiosWithAuth.get<IChat[]>(this.BASE_URL, {
-			params: { search: searchTerm },
-		})
+	async getChats() {
+		const response = await axiosWithAuth.get<IChat[]>(this.BASE_URL)
 		return response.data
 	}
 
-	async getChatMessages(chatId: string) {
-		const response = await axiosWithAuth.get<IMessages[]>(
+	async getChatMessages(chatId: string, page: number = 1, limit: number = 30) {
+		const response = await axiosWithAuth.get<IMessage[]>(
 			`${this.BASE_URL}/${chatId}/messages`,
 			{
-				params: { page: 1, limit: 30 },
+				params: { page, limit },
 			}
 		)
 		return response.data

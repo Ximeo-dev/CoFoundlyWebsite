@@ -1,24 +1,22 @@
 'use client'
 
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 import { WS_URL } from '@/constants/api.constants'
+import { getAccessToken } from '@/services/auth-token.services'
 
-const socket = io(WS_URL, {
-	path: '/socket.io',
-	transports: ['websocket'],
-	withCredentials: true,
-})
+let socket: Socket | null = null
 
-socket.on('connect', () => {
-	console.log('[socket] Подключено к серверу Socket.io')
-})
+export const getSocket = (): Socket => {
+	if (!socket) {
+		socket = io(WS_URL, {
+			// path: '/socket.io',
+			transports: ['websocket'],
+			withCredentials: true,
+			auth: {
+				token: getAccessToken(),
+			},
+		})
+	}
 
-socket.on('connect_error', error => {
-	console.error('[socket] Ошибка подключения:', error.message)
-})
-
-socket.on('disconnect', () => {
-	console.log('[socket] Отключено от сервера')
-})
-
-export { socket }
+	return socket
+}

@@ -3,7 +3,7 @@
 import { FormEvent, useState, useCallback } from 'react'
 import { ChatClientEvent } from '@/types/chat.types'
 import { Send } from 'lucide-react'
-import { socket } from '@/lib/socket'
+import { useSocket } from '@/hooks/useSocket'
 
 interface MessageFieldProps {
 	chatId: string
@@ -12,6 +12,7 @@ interface MessageFieldProps {
 
 export default function MessageField({ chatId, userId }: MessageFieldProps) {
 	const [message, setMessage] = useState('')
+	const socket = useSocket()
 
 	const sendMessage = useCallback(
 		(e: FormEvent) => {
@@ -24,12 +25,11 @@ export default function MessageField({ chatId, userId }: MessageFieldProps) {
 			}
 
 			const messageData = {
-				event: ChatClientEvent.SEND_MESSAGE,
 				content: message,
-				recipientId: 'cd282006-34ba-497f-9e8b-a8bcc98d6dd6',
+				recipientId: '5c2a8d0c-1ab2-4aa6-83ac-5a01a74d0e55',
 			}
 			console.log('[client] Отправка сообщения:', messageData)
-			socket.emit('client-message', messageData)
+			socket.emit(ChatClientEvent.SEND_MESSAGE, messageData)
 			setMessage('')
 		},
 		[message, chatId, userId]
