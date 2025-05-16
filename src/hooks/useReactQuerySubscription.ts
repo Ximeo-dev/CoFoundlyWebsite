@@ -1,4 +1,5 @@
-import { API_URL } from '@/constants/api.constants'
+import { WS_URL } from '@/constants/api.constants'
+import { ChatClientEvent, IMessages } from '@/types/chat.types'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 import io, { Socket } from 'socket.io-client'
@@ -8,6 +9,7 @@ interface WebSocketEvent {
 	entity: string
 	id?: string
 	payload?: Record<string, unknown>
+	event?: string
 }
 
 interface UpdateData {
@@ -17,23 +19,29 @@ interface UpdateData {
 
 export const useReactQuerySubscription = () => {
 	const queryClient = useQueryClient()
-
-	const socket = useRef<Socket>(null)
+	const socket = useRef<Socket | null>(null)
 
 	useEffect(() => {
-		socket.current = io(API_URL as string)
+		const s = io(WS_URL, {
+			path: '/socket.io',
+			transports: ['websocket'],
+			withCredentials: true,
+		})
+		socket.current = s
 
-		socket.current.on('connect', () => {
-			console.log('connected to socket.io server')
+		s.on('connect', () => {
+			console.log('[socket] Подключено к серверу Socket.io')
 		})
 
-		socket.current.on('server-message', (data: WebSocketEvent) => {
+		s.on('server-message', (data: WebSocketEvent) => {
+			console.log('[socket] server-message:', data)
 			queryClient.invalidateQueries({
 				queryKey: [data.entity, data.id].filter(Boolean),
 			})
 		})
 
-		socket.current.on('update', (data: WebSocketEvent) => {
+		s.on('update', (data: WebSocketEvent) => {
+			console.log('[socket] update:', data)
 			queryClient.setQueriesData<UpdateData[] | UpdateData | undefined>(
 				{ queryKey: [data.entity, data.id] },
 				oldData => {
@@ -46,14 +54,45 @@ export const useReactQuerySubscription = () => {
 			)
 		})
 
+		s.on('errors', (error) => {
+			console.log(error)
+		})
+
+		s.on('new-message', (message: IMessages) => {
+			console.log('[socket] new-message:', message)
+			queryClient.setQueryData<IMessages[]>(
+				['messages', message.chatId],
+				(oldMessages = []) => [...oldMessages, message]
+			)
+		})
+
 		return () => {
-			socket.current?.disconnect()
+			console.log('[socket] Отключение от сервера')
+			s.disconnect()
 		}
 	}, [queryClient])
 
-	const send = (input: WebSocketEvent) => {
-		socket.current?.emit('client-message', input)
+	const sendMessage = (dto: any) => {
+		return new Promise((resolve, reject) => {
+			socket.current.emit(ChatClientEvent.SEND_MESSAGE, dto, (response: any) => {
+				resolve(response)
+			})
+		})
 	}
 
-	return send
+	const emitTyping = (chatId: string, userId: string) => {
+		const eventData: WebSocketEvent = {
+			operation: 'update',
+			entity: 'chat',
+			id: chatId,
+			event: ChatClientEvent.TYPING,
+			payload: {
+				typingUserId: userId,
+			},
+		}
+		// console.log('[socket] emitTyping:', eventData)
+		socket.current?.emit('client-message', eventData)
+	}
+
+	return { send, emitTyping }
 }
