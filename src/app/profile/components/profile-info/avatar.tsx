@@ -39,7 +39,7 @@ export default function Avatar({
 
 	const { mutate: uploadAvatar, isPending: isUploading } = useMutation({
 		mutationKey: ['user-avatar'],
-		mutationFn: (file: File) => anketService.uploadAvatar(file, 'user'),
+		mutationFn: (file: File) => anketService.uploadAvatar(file),
 		onSuccess: data => {
 			setAvatarVersion(Date.now())
 			setImageError(false)

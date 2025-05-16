@@ -2,6 +2,7 @@ export interface IUser {
 	id: string
 	email: string
 	username: string
+	displayUsername: string
 	createdAt: string
 	securitySettings: ISecuritySettings
 }

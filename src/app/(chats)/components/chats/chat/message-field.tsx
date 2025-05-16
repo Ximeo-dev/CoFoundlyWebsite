@@ -1,22 +1,68 @@
 'use client'
 
-import { Send } from 'lucide-react'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
+import { ChatClientEvent } from '@/types/chat.types'
+import { useReactQuerySubscription } from '@/hooks/useReactQuerySubscription'
 
-export default function MessageField() {
-  const [message, setMessage] = useState('')
+interface MessageFieldProps {
+	chatId: string
+	userId: string | undefined
+}
 
-  return (
-		<div className='border-t border-border p-5 flex items-center justify-between'>
-      <input
-        value={message}
-        onChange={e => setMessage(e.target.value)}
-        className='outline-none w-4/5 bg-[#1a1a1a] px-4 py-2 border-border rounded-[30px]'
-        placeholder='Поиск...'
-      />
-      <button className='cursor-pointer hover:text-cyan-200 transition-colors duration-300 ease-linear'>
-        <Send />
-      </button>
-		</div>
+export default function MessageField({ chatId, userId }: MessageFieldProps) {
+	const [message, setMessage] = useState('')
+	const send = useReactQuerySubscription()
+
+	const sendMessage = (e: FormEvent) => {
+		e.preventDefault()
+		if (message.trim()) {
+			send({
+				operation: 'update',
+				entity: 'messages',
+				id: chatId,
+				payload: {
+					senderId: userId,
+					content: message,
+					sentAt: new Date().toISOString(),
+					updatedAt: new Date().toISOString(),
+					isEdited: false,
+					event: ChatClientEvent.SEND_MESSAGE,
+				},
+			})
+			setMessage('')
+		}
+	}
+
+	const handleTyping = () => {
+		if (message.length > 0) {
+			send({
+				operation: 'update',
+				entity: 'chat',
+				id: chatId,
+				payload: { typingUserId: userId },
+			})
+		}
+	}
+
+	return (
+		<form
+			onSubmit={sendMessage}
+			className='p-5 border-t border-border flex space-x-2'
+			onInput={handleTyping}
+		>
+			<input
+				type='text'
+				value={message}
+				onChange={e => setMessage(e.target.value)}
+				className='flex-1 p-2 bg-gray-700 text-white rounded-md focus:outline-none'
+				placeholder='Введите сообщение...'
+			/>
+			<button
+				type='submit'
+				className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500'
+			>
+				Отправить
+			</button>
+		</form>
 	)
 }

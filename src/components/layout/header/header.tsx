@@ -21,7 +21,7 @@ export default function Header() {
     }
   }, [scrollDirection])
 
-  if (pathname === '/login' || pathname === '/register' || pathname === '/reset-password' || pathname === '/chats') return null
+  if (pathname === '/login' || pathname === '/register' || pathname === '/reset-password' || pathname.startsWith('/chats')) return null
 
   return (
 		<>

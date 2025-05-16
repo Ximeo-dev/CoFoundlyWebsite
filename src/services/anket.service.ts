@@ -31,11 +31,11 @@ class AnketService {
 		return response.data
 	}
 
-	async uploadAvatar(file: File, type: 'user' | 'project') {
+	async uploadAvatar(file: File) {
 		const formData = new FormData()
 		formData.append('avatar', file)
 
-		const response = await axiosWithAuth.post(`/images/avatar/${type}`, formData, {
+		const response = await axiosWithAuth.post(`/images/avatar/user`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},

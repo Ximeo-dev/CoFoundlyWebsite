@@ -113,6 +113,10 @@
   }
 }
 
+html, body {
+  height: 100vh;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -121,6 +125,7 @@
   body {
     @apply overflow-x-auto bg-background text-foreground;
   }
+
 }
 
 .no-scrollbar {

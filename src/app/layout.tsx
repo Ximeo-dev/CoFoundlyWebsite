@@ -41,8 +41,7 @@ export default function RootLayout({
 						<AuthProvider>
 							<Toaster duration={3000} />
 							<Header />
-							<main className='h-full'>{children}</main>
-							{/* <Footer /> */}
+							<main className=''>{children}</main>
 						</AuthProvider>
 					</QueryProvider>
 				</ThemeProvider>

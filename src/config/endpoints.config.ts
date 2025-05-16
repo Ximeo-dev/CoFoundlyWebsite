@@ -9,4 +9,5 @@ export const ENDPOINTS = {
 	TERMS: '/terms',
 	PRIVACY: '/privacy',
 	PRICING: '/pricing',
+	CHATS: '/chats'
 } as const

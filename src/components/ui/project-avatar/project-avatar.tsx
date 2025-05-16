@@ -41,7 +41,7 @@ export default function ProjectAvatar({
 	const { mutate: uploadAvatar, isPending: isUploading } = useMutation({
 		mutationKey: ['project-avatar', projectId],
 		mutationFn: (file: File) =>
-			anketService.uploadAvatar(file, 'project'),
+			anketService.uploadAvatar(file),
 		onSuccess: () => {
 			if (setAvatarVersion) setAvatarVersion(Date.now())
 			setImageError(false)
