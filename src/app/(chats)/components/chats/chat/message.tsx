@@ -1,8 +1,15 @@
 'use client'
 
 import Avatar from '@/app/profile/components/profile-info/avatar'
+import {
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuItem,
+	ContextMenuTrigger,
+} from '@/components/ui/shadcn/context-menu'
 import { IMessage } from '@/types/chat.types'
 import dayjs from 'dayjs'
+import { Copy, Edit, Trash2 } from 'lucide-react'
 
 interface MessageProps {
 	message: IMessage
@@ -15,55 +22,72 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 	const handleEdit = () => {
 		const newContent =
 			prompt('Новое сообщение:', message.content) || message.content
-		onEdit(message.id, newContent)
+		if (newContent !== message.content) {
+			onEdit(message.id, newContent)
+		}
+	}
+
+	const handleCopy = () => {
+		navigator.clipboard.writeText(message.content)
 	}
 
 	return (
-		<div
-			className={`flex ${isSender ? 'justify-end' : 'justify-start'} mb-2.5`}
-		>
-			<div
-				className={`relative flex items-center ${
-					isSender ? 'flex-row-reverse' : ''
-				}`}
-			>
-				<Avatar size={64} id={message?.sender?.id} hasAvatar={true} />
-				<div className={isSender ? 'mr-3' : 'ml-3'}>
-					<div
-						className={`text-sm text-white py-1.5 mt-4 px-3 rounded-2xl ${
-							isSender
-								? 'rounded-tr-none bg-primary'
-								: 'rounded-tl-none bg-border'
-						}`}
-					>
-						{message.content}
-					</div>
-					<div
-						className={`text-xs opacity-30 block mt-1.5 ${
-							isSender ? 'text-right' : 'text-left'
-						}`}
-					>
-						{dayjs(message.sentAt).format('HH:mm')}
-						{message.isEdited && ' (отредактировано)'}
-					</div>
-					{isSender && (
-						<div className='text-xs mt-1 space-x-2'>
-							<button
-								onClick={() => onDelete(message.id)}
-								className='text-red-400 hover:text-red-300'
+		<ContextMenu>
+			<ContextMenuTrigger>
+				<div className={`flex mb-2.5`}>
+					<div className='relative flex flex-col'>
+						<div className={`flex items-end gap-2 flex-row`}>
+							<Avatar
+								smallChatAvatar
+								size={64}
+								id={message?.sender?.id}
+								hasAvatar={true}
+								className='flex-shrink-0'
+							/>
+							<div
+								className={`text-sm text-white py-2 px-3 rounded-2xl rounded-bl-none relative ${
+									isSender ? 'bg-[#6B7480]' : 'bg-border'
+								}`}
+								style={{
+									maxWidth: '700px',
+									wordBreak: 'break-word',
+								}}
 							>
-								Удалить
-							</button>
-							<button
-								onClick={handleEdit}
-								className='text-yellow-400 hover:text-yellow-300'
-							>
-								Редактировать
-							</button>
+								<div className='whitespace-pre-wrap pr-10'>
+									{message.content}
+								</div>
+								<div className='absolute right-2 bottom-1 flex items-center gap-1'>
+									{message.isEdited && (
+										<span className='text-[10px] opacity-30'>ред.</span>
+									)}
+									<span className='text-xs opacity-30'>
+										{dayjs(message.sentAt).format('HH:mm')}
+									</span>
+								</div>
+							</div>
 						</div>
-					)}
+					</div>
 				</div>
-			</div>
-		</div>
+			</ContextMenuTrigger>
+
+			<ContextMenuContent className='w-48'>
+				<ContextMenuItem onClick={handleCopy} className='cursor-pointer'>
+					<Copy className='mr-2 h-4 w-4' />
+					Копировать
+				</ContextMenuItem>
+				{isSender && (
+					<>
+						<ContextMenuItem onClick={handleEdit}>
+							<Edit className='mr-2 h-4 w-4' />
+							Редактировать
+						</ContextMenuItem>
+						<ContextMenuItem onClick={() => onDelete(message.id)}>
+							<Trash2 className='mr-2 h-4 w-4' />
+							Удалить
+						</ContextMenuItem>
+					</>
+				)}
+			</ContextMenuContent>
+		</ContextMenu>
 	)
 }

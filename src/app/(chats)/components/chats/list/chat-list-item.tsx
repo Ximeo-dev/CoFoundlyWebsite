@@ -24,32 +24,40 @@ export default function ChatListItem({
 	const lastMessageTime = lastMessage
 		? dayjs(lastMessage.sentAt).format('HH:mm')
 		: ''
-	const lastMessageContent = lastMessage ? lastMessage.content : 'Нет сообщений'
+
+	const truncateMessage = (text: string, maxLength = 100) => {
+		if (text.length <= maxLength) return text
+		return text.substring(0, maxLength) + '...'
+	}
+
+	const lastMessageContent = lastMessage
+		? truncateMessage(lastMessage.content)
+		: 'Нет сообщений'
 
 	return (
 		<div
 			onClick={onClick}
-			className={`p-2 flex items-center duration-300 ease-linear transition-colors hover:bg-border rounded-lg ${
-				isActive ? 'bg-indigo-400' : ''
+			className={`p-2 flex justify-between duration-300 ease-linear transition-colors hover:bg-border/30 rounded-lg ${
+				isActive ? 'bg-border' : ''
 			}`}
 		>
-			<Avatar
-				size={64}
-				id={correspondent?.userId}
-				hasAvatar={correspondent?.profile?.hasAvatar ?? false}
-				className='w-full'
-			/>
-			<div className='text-sm w-full'>
-				<div className='flex items-center justify-between'>
-					<span>
+			<div className='flex items-center gap-x-3 min-w-0'>
+				<Avatar
+					size={64}
+					id={correspondent?.userId}
+					hasAvatar={correspondent?.profile?.hasAvatar ?? false}
+					className='flex-shrink-0'
+				/>
+				<div className='text-sm flex flex-col gap-y-2 min-w-0'>
+					<span className='font-medium truncate'>
 						{correspondent?.displayUsername || 'Неизвестный пользователь'}
 					</span>
-					<span className='text-xs opacity-30'>{lastMessageTime || '---'}</span>
-				</div>
-				<div className='opacity-30 truncate max-w-[200px]'>
-					{lastMessageContent}
+					<span className='opacity-30 truncate'>{lastMessageContent}</span>
 				</div>
 			</div>
+			<span className='text-xs opacity-30 flex-shrink-0 pl-2'>
+				{lastMessageTime || '---'}
+			</span>
 		</div>
 	)
 }

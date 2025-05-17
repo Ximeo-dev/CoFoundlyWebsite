@@ -26,7 +26,7 @@ export default function MessageField({ chatId, userId }: MessageFieldProps) {
 
 			const messageData = {
 				content: message,
-				recipientId: '5c2a8d0c-1ab2-4aa6-83ac-5a01a74d0e55',
+				chatId: chatId,
 			}
 			console.log('[client] Отправка сообщения:', messageData)
 			socket.emit(ChatClientEvent.SEND_MESSAGE, messageData)
@@ -64,7 +64,7 @@ export default function MessageField({ chatId, userId }: MessageFieldProps) {
 			/>
 			<button
 				type='submit'
-				className='rounded-lg border px-4 py-2 text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 rounded-md disabled:opacity-50'
+				className='rounded-lg border px-4 py-2 text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 disabled:opacity-50'
 				disabled={!userId || !message.trim()}
 			>
 				<Send size={18} />

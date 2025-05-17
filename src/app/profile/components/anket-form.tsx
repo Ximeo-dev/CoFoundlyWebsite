@@ -42,6 +42,9 @@ export default function AnketForm({
 	const stepStorageKey = `anketFormStep-${userId}`
 
 	const savedData = useMemo(() => {
+		if (!userId) {
+			return undefined
+		}
 		try {
 			const stored = localStorage.getItem(localStorageKey)
 			return stored ? JSON.parse(stored) : undefined

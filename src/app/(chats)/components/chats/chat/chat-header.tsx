@@ -43,7 +43,7 @@ export default function ChatHeader({
 				onClick={onToggleSidebar}
 				className='rounded-full'
 			>
-				<PanelLeft size={18} />
+				<PanelLeft size={18} className='rotate-180' />
 			</Button>
 		</div>
 	)

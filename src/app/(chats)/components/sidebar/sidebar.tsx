@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { SIDEBAR_MENU } from '@/constants/menu.constants'
 import { usePathname } from 'next/navigation'
-import { Moon } from 'lucide-react'
+import { Moon, Sun } from 'lucide-react'
 
 export default function Sidebar() {
 	const { resolvedTheme, setTheme } = useTheme()
@@ -39,9 +39,9 @@ export default function Sidebar() {
 						key={item.url}
 						href={item.url}
 						className={cn(
-							'text-[#7C7275] hover:text-white transition-colors duration-300',
+							'text-[#7C7275] hover:text-zinc-900 dark:hover:text-white transition-colors duration-300',
 							{
-								'text-white': pathname === item.url,
+								'text-zinc-900 dark:text-white': pathname === item.url,
 							}
 						)}
 					>
@@ -52,10 +52,17 @@ export default function Sidebar() {
 			<button
 				onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
 			>
-				<Moon
-					className='text-[#7C7275] hover:text-white transition-colors duration-300'
-					size={24}
-				/>
+				{resolvedTheme === 'light' ? (
+					<Moon
+						className='text-[#7C7275] hover:text-zinc-900 transition-colors duration-300 cursor-pointer'
+						size={24}
+					/>
+				) : (
+					<Sun
+						className='text-[#7C7275] hover:text-white transition-colors duration-300 cursor-pointer'
+						size={24}
+					/>
+				)}
 			</button>
 		</aside>
 	)

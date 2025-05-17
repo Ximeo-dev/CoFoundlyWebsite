@@ -10,7 +10,7 @@ export enum ChatClientEvent {
 }
 
 export enum ChatServerEvent {
-	NEW_MESSAGE = 'new_message',
+	NEW_MESSAGE = 'chat:new_message',
 	READ = 'chat:read',
 	USER_TYPING = 'chat:typing',
 	MESSAGE_DELETED = 'chat:deleted',

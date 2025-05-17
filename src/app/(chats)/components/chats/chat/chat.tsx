@@ -49,7 +49,8 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	}, [initialMessages])
 
 	useEffect(() => {
-		const handleNewMessage = (message: IMessage) => {
+		const handleNewMessage = (message: any) => {
+			console.log(message)
 			if (message.chatId === id) {
 				setMessages(prev => {
 					if (!prev.some(m => m.id === message.id)) {
@@ -98,7 +99,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 				>
 					<ChatHeader onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} correspondent={correspondent} />
 
-					<div className='p-5 overflow-y-auto border-t border-border'>
+					<div className='p-5 overflow-y-auto border-t border-border overflow-hidden'>
 						{messages.map(message => (
 							<Message
 								key={message.id}
