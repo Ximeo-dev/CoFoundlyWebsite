@@ -19,13 +19,13 @@ export interface ISettingsItem {
 export const MENU = [
 	{
 		id: 1,
-		label: 'Проекты',
+		label: 'Свайпы',
 		href: ENDPOINTS.SWIPE_USERS,
 	},
 	{
 		id: 2,
-		label: 'Исполнители',
-		href: ENDPOINTS.SWIPE_USERS,
+		label: 'Чаты',
+		href: ENDPOINTS.CHATS,
 	},
 	{
 		id: 3,
@@ -100,10 +100,10 @@ export const SIDEBAR_MENU = [
 	},
 	{
 		icon: BriefcaseBusiness,
-		url: '/projects-chats',
+		url: '/chats/projects-chats',
 	},
 	{
 		icon: Settings,
-		url: '/settings',
+		url: '/chats/settings',
 	},
 ]

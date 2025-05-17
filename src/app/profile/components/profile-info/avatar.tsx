@@ -11,14 +11,16 @@ import { useAuth } from '@/hooks/useAuth'
 import Spinner from '@/components/ui/spinner/spinner'
 import { anketService } from '@/services/anket.service'
 import { API_URL } from '@/constants/api.constants'
-import { useProfile } from '@/hooks/anket/useProfile'
 
 interface IAvatarUploader {
-	size: 64 | 128 | 512
+	size: 32 | 64 | 128 | 512
 	editable?: boolean
 	className?: string
 	id?: string
 	name?: string
+	hasAvatar?: boolean
+	smallChatAvatar?: boolean
+	bigChatAvatar?: boolean
 }
 
 export default function Avatar({
@@ -26,7 +28,10 @@ export default function Avatar({
 	editable = false,
 	className,
 	id,
-	name
+	name,
+	hasAvatar = false,
+	smallChatAvatar = false,
+	bigChatAvatar = false,
 }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
@@ -39,7 +44,7 @@ export default function Avatar({
 
 	const { mutate: uploadAvatar, isPending: isUploading } = useMutation({
 		mutationKey: ['user-avatar'],
-		mutationFn: (file: File) => anketService.uploadAvatar(file, 'user'),
+		mutationFn: (file: File) => anketService.uploadAvatar(file),
 		onSuccess: data => {
 			setAvatarVersion(Date.now())
 			setImageError(false)
@@ -99,9 +104,15 @@ export default function Avatar({
 
 	const avatarStyles = cn(
 		size === 64
-			? 'rounded-full w-10 h-10 lg:w-12 lg:h-12 object-cover'
+			? `rounded-full object-cover ${
+					smallChatAvatar ? 'w-8 h-8' : 'w-10 h-10 lg:w-12 lg:h-12'
+			  }`
+			: size === 32
+			? 'rounded-full w-8 h-8 object-cover'
 			: size === 128
-			? 'w-36 h-36 rounded-[15px] object-cover'
+			? `object-cover ${
+					bigChatAvatar ? 'w-20 h-20 rounded-full' : 'w-36 h-36 rounded-[15px]'
+			  }`
 			: size === 512
 			? 'w-72 h-52 md:w-90 md:h-64 rounded-[15px] object-cover'
 			: styles.avatar,
@@ -118,7 +129,7 @@ export default function Avatar({
 
 	return (
 		<div className={cn(className, 'relative')}>
-			{imageError || !avatarUrl ? (
+			{imageError || !hasAvatar || !avatarUrl ? (
 				<div
 					className={cn(
 						avatarStyles,

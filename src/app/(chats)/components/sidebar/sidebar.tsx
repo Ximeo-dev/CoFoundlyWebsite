@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { SIDEBAR_MENU } from '@/constants/menu.constants'
 import { usePathname } from 'next/navigation'
-import { Moon } from 'lucide-react'
+import { Moon, Sun } from 'lucide-react'
 
 export default function Sidebar() {
 	const { resolvedTheme, setTheme } = useTheme()
@@ -20,41 +20,49 @@ export default function Sidebar() {
 	}, [])
 
 	return (
-		<aside className='flex flex-col items-center justify-between py-5 border-r border-border w-full'>
-			<Link href={ENDPOINTS.HOME} className='mb-8'>
+		<aside className='flex md:flex-col flex-row items-center md:justify-between justify-around py-2 md:py-5 border-t md:border-r border-border w-full md:w-auto fixed bottom-0 md:static bg-background z-50'>
+			<Link href={ENDPOINTS.HOME} className='mb-0 md:mb-8'>
 				{isMounted && (
 					<Image
 						priority
 						src={resolvedTheme === 'dark' ? '/logo.svg' : '/logo-light.svg'}
 						alt='logo'
-						width={50}
-						height={50}
+						width={30}
+						height={30}
+						className='md:w-[50px] md:h-[50px]'
 					/>
 				)}
 			</Link>
-			<div className='flex flex-col items-center gap-6'>
+			<div className='flex md:flex-col items-center gap-5 md:gap-6'>
 				{SIDEBAR_MENU.map(item => (
 					<Link
 						key={item.url}
 						href={item.url}
 						className={cn(
-							'text-[#7C7275] hover:text-white transition-colors duration-300',
+							'text-[#7C7275] hover:text-zinc-900 dark:hover:text-white transition-colors duration-300',
 							{
-								'text-white': pathname === item.url,
+								'text-zinc-900 dark:text-white': pathname === item.url,
 							}
 						)}
 					>
-						<item.icon size={27} />
+						<item.icon size={24} />
 					</Link>
 				))}
 			</div>
 			<button
 				onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
 			>
-				<Moon
-					className='text-[#7C7275] hover:text-white transition-colors duration-300'
-					size={27}
-				/>
+				{resolvedTheme === 'light' ? (
+					<Moon
+						className='text-[#7C7275] hover:text-zinc-900 transition-colors duration-300 cursor-pointer'
+						size={24}
+					/>
+				) : (
+					<Sun
+						className='text-[#7C7275] hover:text-white transition-colors duration-300 cursor-pointer'
+						size={24}
+					/>
+				)}
 			</button>
 		</aside>
 	)
