@@ -6,6 +6,7 @@ import { chatService } from '@/services/chat.service'
 import {
 	ChatClientEvent,
 	ChatServerEvent,
+	IChat,
 	IMessage,
 	ISender,
 } from '@/types/chat.types'
@@ -15,11 +16,20 @@ import ChatHeader from './chat-header'
 import { Message } from './message'
 import MessageField from './message-field'
 import { useSocket } from '@/hooks/useSocket'
+import { cn } from '@/lib/utils'
+import ChatSidebar from '../../chat-sidebar/chat-sidebar'
 
-export default function Chat({ id }: { id: string }) {
+interface ChatProps {
+	id: string
+	initialData: IChat
+	onClose: () => void
+}
+
+export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const { user } = useAuth()
 	const [messages, setMessages] = useState<IMessage[]>([])
 	const socket = useSocket()
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
 	const {
 		data: initialMessages,
@@ -60,9 +70,9 @@ export default function Chat({ id }: { id: string }) {
 		}
 	}, [id])
 
-	const correspondent: ISender | undefined = messages.find(
-		m => m.senderId !== user?.id
-	)?.sender
+	const correspondent = initialData.participants.find(
+		p => p.userId !== user?.id
+	)
 
 	if (isLoading) return <div className='p-5 text-center'>Загрузка...</div>
 	if (error)
@@ -75,25 +85,39 @@ export default function Chat({ id }: { id: string }) {
 		return <div className='p-5 text-gray-500'>Нет сообщений</div>
 
 	return (
-		<div
-			className='w-8/12 h-full grid'
-			style={{ gridTemplateRows: 'auto 1fr auto' }}
-		>
-			<ChatHeader correspondent={correspondent} />
+		<div className='flex h-full w-full'>
+			<div
+				className={cn('h-full', {
+					'w-full': !isSidebarOpen,
+					'w-[calc(100%-320px)]': isSidebarOpen,
+				})}
+			>
+				<div
+					className='w-full h-full grid'
+					style={{ gridTemplateRows: 'auto 1fr auto' }}
+				>
+					<ChatHeader onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} correspondent={correspondent} />
 
-			<div className='p-5 overflow-y-auto border-t border-border'>
-				{messages.map(message => (
-					<Message
-						key={message.id}
-						message={message}
-						onDelete={() => {}}
-						onEdit={() => {}}
-						isSender={user?.id === message.senderId}
-					/>
-				))}
+					<div className='p-5 overflow-y-auto border-t border-border'>
+						{messages.map(message => (
+							<Message
+								key={message.id}
+								message={message}
+								onDelete={() => {}}
+								onEdit={() => {}}
+								isSender={user?.id === message.senderId}
+							/>
+						))}
+					</div>
+
+					<MessageField chatId={id} userId={user?.id || ''} />
+				</div>
 			</div>
-
-			<MessageField chatId={id} userId={user?.id || ''} />
+			<ChatSidebar
+				correspondent={correspondent}
+				isOpen={isSidebarOpen}
+				onClose={() => setIsSidebarOpen(false)}
+			/>
 		</div>
 	)
 }

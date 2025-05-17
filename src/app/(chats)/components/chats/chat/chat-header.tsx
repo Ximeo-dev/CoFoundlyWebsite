@@ -1,26 +1,50 @@
+// components/chats/chat/chat-header.tsx
+'use client'
+
 import Avatar from '@/app/profile/components/profile-info/avatar'
-import { ISender } from '@/types/chat.types'
-import { IUser } from '@/types/user.types'
-import { Search } from 'lucide-react'
+import { Button } from '@/components/ui/shadcn/button'
+import { IParticipant } from '@/types/chat.types'
+import { Info, PanelLeft } from 'lucide-react'
+
+interface ChatHeaderProps {
+	correspondent?: IParticipant
+	onToggleSidebar: () => void
+}
 
 export default function ChatHeader({
 	correspondent,
-}: {
-	correspondent?: ISender
-}) {
+	onToggleSidebar,
+}: ChatHeaderProps) {
 	return (
 		<div className='p-5 flex items-center justify-between'>
-			<div className='flex items-center'>
-				<Avatar size={64} id={correspondent?.id} />
-				<div className='text-sm'>
-					<div className='mb-1'>
+			<div className='flex items-center gap-3'>
+				<Avatar
+					size={64}
+					id={correspondent?.userId}
+					hasAvatar={correspondent?.profile?.hasAvatar ?? false}
+				/>
+				<div>
+					<h3>
 						{correspondent?.displayUsername || 'Неизвестный пользователь'}
-					</div>
+					</h3>
+					{correspondent?.profile?.job && (
+						<p className='text-sm opacity-50'>
+							{typeof correspondent.profile.job === 'string'
+								? correspondent.profile.job
+								: correspondent.profile.job.name}
+						</p>
+					)}
 				</div>
 			</div>
-			<button className='md:hidden text-[#7c7275] hover:text-white transition-colors duration-300 ease-linear mr-4'>
-				<Search />
-			</button>
+
+			<Button
+				variant='ghost'
+				size='icon'
+				onClick={onToggleSidebar}
+				className='rounded-full'
+			>
+				<PanelLeft size={18} />
+			</Button>
 		</div>
 	)
 }

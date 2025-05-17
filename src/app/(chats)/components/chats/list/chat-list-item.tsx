@@ -2,15 +2,20 @@
 
 import { useAuth } from '@/hooks/useAuth'
 import { IChat } from '@/types/chat.types'
-import Link from 'next/link'
 import dayjs from 'dayjs'
 import Avatar from '@/app/profile/components/profile-info/avatar'
 
 interface IChatListItem {
 	chat: IChat
+	isActive?: boolean
+	onClick?: () => void
 }
 
-export default function ChatListItem({ chat }: IChatListItem) {
+export default function ChatListItem({
+	chat,
+	isActive,
+	onClick,
+}: IChatListItem) {
 	const { user } = useAuth()
 	const correspondent = chat.participants.find(p => p.userId !== user?.id)
 
@@ -22,9 +27,11 @@ export default function ChatListItem({ chat }: IChatListItem) {
 	const lastMessageContent = lastMessage ? lastMessage.content : 'Нет сообщений'
 
 	return (
-		<Link
-			href={`/chats/${chat.id}`}
-			className='p-5 flex items-center border-b border-border duration-300 ease-linear transition-colors hover:bg-border cursor-pointer animation-slide-fade'
+		<div
+			onClick={onClick}
+			className={`p-2 flex items-center duration-300 ease-linear transition-colors hover:bg-border rounded-lg ${
+				isActive ? 'bg-indigo-400' : ''
+			}`}
 		>
 			<Avatar
 				size={64}
@@ -43,6 +50,6 @@ export default function ChatListItem({ chat }: IChatListItem) {
 					{lastMessageContent}
 				</div>
 			</div>
-		</Link>
+		</div>
 	)
 }

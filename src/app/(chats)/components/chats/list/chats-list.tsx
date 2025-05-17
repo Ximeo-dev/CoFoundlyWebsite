@@ -2,13 +2,21 @@
 
 import { useState } from 'react'
 import ChatListItem from './chat-list-item'
-import { useDebounce } from '@/hooks/useDebounce'
 import CurrentUser from '../current-user'
 import { useQuery } from '@tanstack/react-query'
 import { chatService } from '@/services/chat.service'
 import { Loader } from 'lucide-react'
+import { IChat } from '@/types/chat.types'
 
-export default function ChatsList() {
+interface ChatsListProps {
+	onSelectChat: (chat: IChat) => void
+	selectedChatId?: string | null
+}
+
+export default function ChatsList({
+	onSelectChat,
+	selectedChatId,
+}: ChatsListProps) {
 	const [searchTerm, setSearchTerm] = useState('')
 
 	const { data, isLoading, error } = useQuery({
@@ -17,7 +25,7 @@ export default function ChatsList() {
 	})
 
 	return (
-		<div className='flex flex-col h-full'>
+		<div className='flex flex-col h-full w-full'>
 			<CurrentUser />
 			<div className='border-t border-b border-border p-3'>
 				<input
@@ -27,7 +35,7 @@ export default function ChatsList() {
 					placeholder='Поиск...'
 				/>
 			</div>
-			<div className='overflow-y-auto flex-1'>
+			<div className='overflow-y-auto flex-1 p-2'>
 				{isLoading ? (
 					<div className='p-5 flex justify-center'>
 						<Loader className='animate-spin text-gray-500' />
@@ -35,7 +43,15 @@ export default function ChatsList() {
 				) : error ? (
 					<p className='p-5 text-red-500'>Ошибка загрузки чатов</p>
 				) : data?.length ? (
-					data.map(chat => <ChatListItem key={chat.id} chat={chat} />)
+					data.map(chat => (
+						<div
+							key={chat.id}
+							onClick={() => onSelectChat(chat)}
+							className='cursor-pointer'
+						>
+							<ChatListItem chat={chat} isActive={selectedChatId === chat.id} />
+						</div>
+					))
 				) : (
 					<p className='p-5 text-gray-500'>Ничего не найдено</p>
 				)}

@@ -1,4 +1,4 @@
-import { IAnketRequest } from './anket.types'
+import { IAnket } from './anket.types'
 import { IUser } from './user.types'
 
 export enum ChatClientEvent {
@@ -27,7 +27,7 @@ export interface IChat {
 export interface IParticipant {
 	userId: string
 	displayUsername: string
-	profile?: IAnketRequest
+	profile?: IAnket
 }
 
 export interface IMessage {
@@ -38,7 +38,7 @@ export interface IMessage {
 	sentAt: string
 	updatedAt: string
 	isEdited: boolean
-	sender?: ISender
+	sender: ISender
 }
 
 export interface ISender {
