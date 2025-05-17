@@ -141,7 +141,9 @@ export default function AnketForm({
 		setCurrentStep(prev => Math.max(prev - 1, 0))
 	}
 
-	const submitHandler = async (data: AnketFormType) => {
+// TODO: data: AnketFormType
+
+	const submitHandler = async (data: any) => {
 		try {
 			setIsFormSubmitting(true)
 			const transformedData = {
@@ -149,7 +151,7 @@ export default function AnketForm({
 				skills: data.skills?.map((skill: any) =>
 					typeof skill === 'object' ? skill.id : skill
 				),
-				portfolio: data.portfolio?.map(link => link.trim()),
+				portfolio: data.portfolio?.map((link: any) => link.trim()),
 			}
 			await onSubmit(transformedData)
 			localStorage.removeItem(localStorageKey)
