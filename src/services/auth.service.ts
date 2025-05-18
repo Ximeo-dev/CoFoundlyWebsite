@@ -75,7 +75,7 @@ class AuthService {
 	}
 
 	async resetPasswordRequest(email: string) {
-		const response = axiosClassic.post(`${this.BASE_URL}/reset-password`, {
+		const response = axiosClassic.post(`/security/reset-password`, {
 			email,
 		})
 
@@ -84,7 +84,7 @@ class AuthService {
 
 	async resetPasswordConfirm(password: string, token: string) {
 		const response = await axiosClassic.post<IConfirmPassword>(
-			`${this.BASE_URL}/reset-password/confirm`,
+			`/security/reset-password/confirm`,
 			{ password },
 			{
 				params: { token },

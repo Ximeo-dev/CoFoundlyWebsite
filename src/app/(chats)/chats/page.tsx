@@ -106,7 +106,7 @@ export default function ChatsPage() {
 					</>
 				) : (
 					<div className='flex items-center justify-center h-full'>
-						<p className='text-gray-500'>Выберите, кому хотели бы написать</p>
+						<p className='bg-border px-2 py-1 rounded-[15px] text-sm'>Выберите, кому хотели бы написать</p>
 					</div>
 				)}
 			</div>

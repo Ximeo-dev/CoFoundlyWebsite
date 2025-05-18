@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/shadcn/context-menu'
 import { IMessage } from '@/types/chat.types'
 import dayjs from 'dayjs'
-import { Copy, Edit, Trash2 } from 'lucide-react'
+import { Check, CheckCheck, Copy, Edit, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
 interface MessageProps {
@@ -45,7 +45,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 		<>
 			<ContextMenu>
 				<ContextMenuTrigger>
-					<div className={`flex mb-2.5`}>
+					<div className={`flex mb-3`}>
 						<div className='relative flex flex-col'>
 							<div className={`flex items-end gap-2 flex-row`}>
 								<Avatar
@@ -66,7 +66,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 								>
 									<div
 										className={`whitespace-pre-wrap ${
-											message.isEdited ? 'pr-28' : 'pr-10'
+											message.isEdited && isSender ? 'pr-34' : message.isEdited && !isSender ? 'pr-28' : isSender ? 'pr-14' : 'pr-10'
 										}`}
 									>
 										{message.content}
@@ -78,6 +78,12 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 										<span className='text-xs opacity-50'>
 											{dayjs(message.sentAt).format('HH:mm')}
 										</span>
+										{isSender &&
+											(message.readReceipt ? (
+												<CheckCheck className='h-4 w-4 text-zinc-100' />
+											) : (
+												<Check className='h-4 w-4 text-gray-300' />
+											))}
 									</div>
 								</div>
 							</div>

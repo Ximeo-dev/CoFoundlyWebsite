@@ -10,7 +10,7 @@ export default function SwipeTabs() {
   return (
 		<>
 			<SwipeLinks activeTab={activeTab} setActiveTab={setActiveTab} />
-			<div className='w-full rounded-[30px] bg-background border border-border mt-12'>
+			<div className='w-full rounded-[30px] bg-background mt-12'>
 				{activeTab === 'specialists' ? <Specialists /> : <p>projects</p>}
 			</div>
 		</>

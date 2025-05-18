@@ -25,11 +25,28 @@ export default function ChatsList({
 	const socket = useSocket()
 	const queryClient = useQueryClient()
 	const { user } = useAuth()
+	const [initialChatId, setInitialChatId] = useState<string | null>(null)
 
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['get-direct-chats'],
 		queryFn: async () => await chatService.getChats(),
 	})
+
+	useEffect(() => {
+		const savedChatId = localStorage.getItem('activeChatId')
+		if (savedChatId && !selectedChatId) {
+			setInitialChatId(savedChatId)
+		}
+	}, [])
+
+	useEffect(() => {
+		if (initialChatId && onSelectChat) {
+			const chat = data?.find(c => c.id === initialChatId)
+			if (chat) {
+				onSelectChat(chat)
+			}
+		}
+	}, [initialChatId, data, onSelectChat])
 
 	const sortedChats = useMemo(() => {
 		if (!data) return []

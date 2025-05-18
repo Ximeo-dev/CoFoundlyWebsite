@@ -60,7 +60,7 @@ export default function MessageField({
 
 		typingTimeout.current = setTimeout(() => {
 			sendTypingStatus(false)
-		}, 3000)
+		}, 2000)
 	}
 
 	useEffect(() => {
