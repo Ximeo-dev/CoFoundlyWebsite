@@ -1,16 +1,14 @@
 'use client'
 
 import { useAuth } from '@/hooks/useAuth'
-import { getSocket } from '@/lib/socket'
 import { chatService } from '@/services/chat.service'
 import {
 	ChatClientEvent,
 	ChatServerEvent,
 	IChat,
 	IMessage,
-	ISender,
 } from '@/types/chat.types'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import ChatHeader from './chat-header'
 import { Message } from './message'
@@ -28,8 +26,10 @@ interface ChatProps {
 export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const { user } = useAuth()
 	const [messages, setMessages] = useState<IMessage[]>([])
+	const [editingMessage, setEditingMessage] = useState<IMessage | null>(null)
 	const socket = useSocket()
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+	const queryClient = useQueryClient()
 
 	const {
 		data: initialMessages,
@@ -59,6 +59,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 					}
 					return prev
 				})
+				queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 			} else {
 				console.log('[Chat] chatId не совпадает:', message.chatId, id)
 			}
@@ -69,7 +70,67 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		return () => {
 			socket.off(ChatServerEvent.NEW_MESSAGE)
 		}
-	}, [id])
+	}, [id, queryClient])
+
+	useEffect(() => {
+		const handleDeletedMessage = (deletedMessage: IMessage) => {
+			if (deletedMessage.chatId === id) {
+				setMessages(prev => prev.filter(m => m.id !== deletedMessage.id))
+				queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+			}
+		}
+
+		socket.on(ChatServerEvent.MESSAGE_DELETED, handleDeletedMessage)
+
+		return () => {
+			socket.off(ChatServerEvent.MESSAGE_DELETED)	
+		}
+	}, [id, queryClient])
+
+	const handleDeleteMessage = (messageId: string) => {
+		const messageToDelete = messages.find(m => m.id === messageId)
+		if (!messageToDelete) return
+
+		socket.emit(ChatClientEvent.DELETE_MESSAGE, {
+			chatId: id,
+			messageId: messageId
+		})
+
+		setMessages(prev => prev.filter(m => m.id !== messageId))
+		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+	}
+
+	useEffect(() => {
+		const handleEditedMessage = (editedMessage: IMessage) => {
+			if (editedMessage.chatId === id) {
+				setMessages(prev =>
+					prev.map(m => (m.id === editedMessage.id ? editedMessage : m))
+				)
+				queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+			}
+		}
+
+		socket.on(ChatServerEvent.MESSAGE_EDITED, handleEditedMessage)
+
+		return () => {
+			socket.off(ChatServerEvent.MESSAGE_EDITED, handleEditedMessage)
+		}
+	}, [id, queryClient])
+
+	const handleEditMessage = (messageId: string, newContent: string) => {
+		const messageToEdit = messages.find(m => m.id === messageId)
+		if (!messageToEdit) return
+
+		socket.emit(ChatClientEvent.EDIT_MESSAGE, {
+			chatId: id,
+			messageId: messageId,
+			newContent: newContent
+		})
+
+		setMessages(prev => prev.map(m => m.id === messageId ? { ...m, content: newContent, isEdited: true } : m))
+		setEditingMessage(null)
+		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+	}
 
 	const correspondent = initialData.participants.find(
 		p => p.userId !== user?.id
@@ -78,7 +139,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	if (isLoading) return <div className='p-5 text-center'>Загрузка...</div>
 	if (error)
 		return (
-			<div className='p-5 text-red-500'>
+			<div className='p-5'>
 				Ошибка загрузки сообщений: {error.message}
 			</div>
 		)
@@ -97,21 +158,30 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 					className='w-full h-full grid'
 					style={{ gridTemplateRows: 'auto 1fr auto' }}
 				>
-					<ChatHeader onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} correspondent={correspondent} />
+					<ChatHeader
+						onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+						correspondent={correspondent}
+					/>
 
-					<div className='p-5 overflow-y-auto border-t border-border overflow-hidden'>
+					<div className='px-5 py-3 overflow-y-auto border-t border-border'>
 						{messages.map(message => (
 							<Message
-								key={message.id}
-								message={message}
-								onDelete={() => {}}
-								onEdit={() => {}}
-								isSender={user?.id === message.senderId}
+							key={message.id}
+							message={message}
+							onDelete={handleDeleteMessage}
+							onEdit={() => setEditingMessage(message)}
+							isSender={user?.id === message.senderId}
 							/>
 						))}
 					</div>
 
-					<MessageField chatId={id} userId={user?.id || ''} />
+					<MessageField
+						chatId={id}
+						userId={user?.id || ''}
+						editingMessage={editingMessage}
+						onCancelEdit={() => setEditingMessage(null)}
+						onSubmitEdit={handleEditMessage}
+					/>
 				</div>
 			</div>
 			<ChatSidebar
