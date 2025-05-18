@@ -7,9 +7,10 @@ import {
 	ChatServerEvent,
 	IChat,
 	IMessage,
+	IReadReceipt,
 } from '@/types/chat.types'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ChatHeader from './chat-header'
 import { Message } from './message'
 import MessageField from './message-field'
@@ -131,6 +132,90 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		setEditingMessage(null)
 		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 	}
+
+	// useEffect(() => { 
+	// 	const handleVisibilityChange = () => {
+	// 		if (document.visibilityState === 'visible') {
+	// 			markMessagesAsRead()
+	// 		}
+	// 	}
+
+	// 	document.addEventListener('visibilitychange', handleVisibilityChange)
+	// 	return () => {
+	// 		document.removeEventListener('visibilitychange', handleVisibilityChange)
+	// 	}
+	// }, [messages])
+
+	// const markMessagesAsRead = useCallback(() => {
+  //   const unreadMessages = messages.filter(
+	// 		m => m.senderId !== user?.id && !m.readReceipt
+	// 	)
+
+	// 	if (unreadMessages.length > 0) {
+	// 		socket.emit(ChatClientEvent.MARK_READ, {
+	// 			chatId: id,
+	// 			messageIds: unreadMessages.map(m => m.id),
+	// 		})
+	// 	}
+	// }, [messages, id, user?.id])
+
+	// useEffect(() => {
+	// 	const handleMessageRead = (readReceipt: IReadReceipt) => {
+	// 		setMessages(prev =>
+	// 			prev.map(m =>
+	// 				m.id === readReceipt.messageId ? { ...m, readReceipt } : m
+	// 			)
+	// 		)
+	// 		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+	// 	}
+
+	// 	socket.on(ChatServerEvent.MESSAGE_READ, handleMessageRead)
+	// 	return () => {
+	// 		socket.off(ChatServerEvent.MESSAGE_READ, handleMessageRead)
+	// 	}
+	// })
+
+	// useEffect(() => {
+	// 	markMessagesAsRead()
+	// }, [markMessagesAsRead])
+
+	const markMessagesAsRead = useCallback(() => {
+		if (!user?.id) return
+
+		const unreadMessages = messages.filter(
+			m => m.senderId !== user.id && !m.readReceipt
+		)
+
+		if (unreadMessages.length > 0) {
+			socket.emit(ChatClientEvent.MARK_READ, {
+				chatId: id,
+				messageIds: unreadMessages.map(m => m.id),
+				// userId: user.id,
+			})
+		}
+	}, [messages, id, user])
+
+	useEffect(() => {
+		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
+			setMessages(prev =>
+				prev.map(m => {
+					const receipt = readReceipts.find(r => r.messageId === m.id)
+					return receipt ? { ...m, readReceipt: receipt } : m
+				})
+			)
+			queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+		}
+
+		socket.on(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
+		return () => {
+			socket.off(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
+		}
+	}, [])
+
+	useEffect(() => {
+		const timer = setTimeout(markMessagesAsRead, 300)
+		return () => clearTimeout(timer)
+	}, [messages, markMessagesAsRead])
 
 	const correspondent = initialData.participants.find(
 		p => p.userId !== user?.id

@@ -16,12 +16,10 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 			console.log('✅ Socket connected:', socketInstance.id)
 		})
 
-		// Подписка на disconnect
 		socketInstance.on('disconnect', reason => {
 			console.warn('⚠️ Socket disconnected:', reason)
 		})
 
-		// Подписка на ошибки подключения
 		socketInstance.on('errors', err => {
 			console.error('❌ Socket connection error:', err)
 		})

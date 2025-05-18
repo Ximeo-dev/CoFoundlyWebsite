@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/shadcn/context-menu'
 import { IMessage } from '@/types/chat.types'
 import dayjs from 'dayjs'
-import { Copy, Edit, Trash2 } from 'lucide-react'
+import { Check, CheckCheck, Copy, Edit, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
 interface MessageProps {
@@ -78,6 +78,12 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 										<span className='text-xs opacity-50'>
 											{dayjs(message.sentAt).format('HH:mm')}
 										</span>
+										{isSender &&
+											(message.readReceipt ? (
+												<CheckCheck className='h-3 w-3 text-blue-500' />
+											) : (
+												<Check className='h-3 w-3 text-gray-400' />
+											))}
 									</div>
 								</div>
 							</div>
