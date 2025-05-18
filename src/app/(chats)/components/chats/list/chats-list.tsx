@@ -68,32 +68,12 @@ export default function ChatsList({
 			queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 		}
 
-		const handleNewChat = (newChat: IChat) => {
-			queryClient.setQueryData<IChat[]>(
-				['get-direct-chats'],
-				(oldChats = []) => {
-					if (!oldChats.some(chat => chat.id === newChat.id)) {
-						toast.success(
-							`Новый чат с ${
-								newChat.participants.find(p => p.userId !== user?.id)
-									?.displayUsername
-							}`
-						)
-						return [newChat, ...oldChats]
-					}
-					return oldChats
-				}
-			)
-		}
-
 		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
-		socket.on(ChatServerEvent.NEW_CHAT, handleNewChat)
-		
+
 		return () => {
 			socket.off(ChatServerEvent.NEW_MESSAGE)
-			socket.off(ChatServerEvent.NEW_CHAT, handleNewChat)
 		}
-	}, [queryClient, user?.id])
+	}, [queryClient])
 
 	useEffect(() => {
 		const handleNewChat = async (payload: { chatId: string }) => {
