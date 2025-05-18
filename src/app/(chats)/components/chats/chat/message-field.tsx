@@ -117,7 +117,7 @@ export default function MessageField({
 				type='text'
 				value={message}
 				onChange={e => setMessage(e.target.value)}
-				className='rounded-lg border placeholder:text-[#585654] flex-1 p-2 focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30'
+				className='rounded-lg border placeholder:text-[#585654] flex-1 p-2 focus:outline-none text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 break-words whitespace-pre-wrap'
 				placeholder={
 					editingMessage ? 'Редактирование сообщения...' : 'Сообщение...'
 				}

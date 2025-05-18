@@ -55,7 +55,7 @@ export default function ChatSidebar({
 						}}
 						className='fixed inset-y-0 right-0 z-50 w-full max-w-lg sm:relative sm:z-auto'
 					>
-						<div className='w-full h-full bg-background border-l border-border overflow-y-auto'>
+						<div className='w-full h-full bg-background border-l border-border overflow-y-auto overflow-x-hidden'>
 							<div className='h-full flex flex-col'>
 								<div className='flex justify-between items-center mb-6 p-4'>
 									<h3 className='text-lg font-semibold'>Информация</h3>
@@ -129,9 +129,10 @@ export default function ChatSidebar({
 											initial={{ y: 10, opacity: 0 }}
 											animate={{ y: 0, opacity: 1 }}
 											transition={{ delay: 0.28 }}
+											className=''
 										>
 											<h4 className='text-sm mb-2'>О себе</h4>
-											<p className='text-muted-foreground'>
+											<p className='text-muted-foreground break-words whitespace-pre-wrap'>
 												{correspondent.profile.bio}
 											</p>
 										</motion.div>

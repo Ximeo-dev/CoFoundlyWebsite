@@ -115,7 +115,7 @@ export default function UsersSwipe() {
 					/>
 				</div>
 			) : (
-				<div className='h-[550px]'>
+				<div className='h-[550px] border border-border rounded-[15px]'>
 					<div className='flex items-center justify-center h-full flex-col gap-y-4'>
 						<div className='text-center'>Анкеты закончились</div>
 						<Button

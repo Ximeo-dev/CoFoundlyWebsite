@@ -20,7 +20,7 @@ const TypingDots = () => {
 				{[0, 1, 2].map(i => (
 					<motion.span
 						key={i}
-						className='block w-1 h-1 rounded-full opacity-50'
+						className='block w-1 h-1 rounded-full'
 						animate={{
 							y: [0, -3, 0],
 							opacity: [0.6, 1, 0.6],
