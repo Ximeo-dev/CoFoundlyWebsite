@@ -10,7 +10,7 @@ import {
 	IReadReceipt,
 } from '@/types/chat.types'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import ChatHeader from './chat-header'
 import { Message } from './message'
 import MessageField from './message-field'
@@ -24,6 +24,8 @@ interface ChatProps {
 	onClose: () => void
 }
 
+const ACTIVE_CHAT_KEY = 'activeChatId'
+
 export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const { user } = useAuth()
 	const [messages, setMessages] = useState<IMessage[]>([])
@@ -31,6 +33,23 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const socket = useSocket()
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 	const queryClient = useQueryClient()
+	const messagesEndRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		scrollToBottom()
+	}, [messages])
+
+	const scrollToBottom = useCallback(() => {
+		messagesEndRef.current?.scrollIntoView()
+	}, [])
+
+
+	useEffect(() => {
+		localStorage.setItem(ACTIVE_CHAT_KEY, id)
+		return () => {
+			localStorage.removeItem(ACTIVE_CHAT_KEY)
+		}
+	}, [id])
 
 	const {
 		data: initialMessages,
@@ -133,52 +152,6 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 	}
 
-	// useEffect(() => { 
-	// 	const handleVisibilityChange = () => {
-	// 		if (document.visibilityState === 'visible') {
-	// 			markMessagesAsRead()
-	// 		}
-	// 	}
-
-	// 	document.addEventListener('visibilitychange', handleVisibilityChange)
-	// 	return () => {
-	// 		document.removeEventListener('visibilitychange', handleVisibilityChange)
-	// 	}
-	// }, [messages])
-
-	// const markMessagesAsRead = useCallback(() => {
-  //   const unreadMessages = messages.filter(
-	// 		m => m.senderId !== user?.id && !m.readReceipt
-	// 	)
-
-	// 	if (unreadMessages.length > 0) {
-	// 		socket.emit(ChatClientEvent.MARK_READ, {
-	// 			chatId: id,
-	// 			messageIds: unreadMessages.map(m => m.id),
-	// 		})
-	// 	}
-	// }, [messages, id, user?.id])
-
-	// useEffect(() => {
-	// 	const handleMessageRead = (readReceipt: IReadReceipt) => {
-	// 		setMessages(prev =>
-	// 			prev.map(m =>
-	// 				m.id === readReceipt.messageId ? { ...m, readReceipt } : m
-	// 			)
-	// 		)
-	// 		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
-	// 	}
-
-	// 	socket.on(ChatServerEvent.MESSAGE_READ, handleMessageRead)
-	// 	return () => {
-	// 		socket.off(ChatServerEvent.MESSAGE_READ, handleMessageRead)
-	// 	}
-	// })
-
-	// useEffect(() => {
-	// 	markMessagesAsRead()
-	// }, [markMessagesAsRead])
-
 	const markMessagesAsRead = useCallback(() => {
 		if (!user?.id) return
 
@@ -251,13 +224,14 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 					<div className='px-5 py-3 overflow-y-auto border-t border-border'>
 						{messages.map(message => (
 							<Message
-							key={message.id}
-							message={message}
-							onDelete={handleDeleteMessage}
-							onEdit={() => setEditingMessage(message)}
-							isSender={user?.id === message.senderId}
+								key={message.id}
+								message={message}
+								onDelete={handleDeleteMessage}
+								onEdit={() => setEditingMessage(message)}
+								isSender={user?.id === message.senderId}
 							/>
 						))}
+						<div ref={messagesEndRef} />
 					</div>
 
 					<MessageField

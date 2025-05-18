@@ -98,8 +98,4 @@ export const SIDEBAR_MENU = [
 		icon: MessagesSquare,
 		url: '/chats',
 	},
-	{
-		icon: Settings,
-		url: '/chats/settings',
-	},
 ]

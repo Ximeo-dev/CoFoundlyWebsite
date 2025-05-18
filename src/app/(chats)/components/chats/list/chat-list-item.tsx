@@ -22,7 +22,6 @@ export default function ChatListItem({
 	const correspondent = chat.participants.find(p => p.userId !== user?.id)
 	const socket = useSocket()
 	const [isTyping, setIsTyping] = useState(false)
-	// const typingTimeout = useRef<NodeJS.Timeout>(null)
 
 	const lastMessage =
 		chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null

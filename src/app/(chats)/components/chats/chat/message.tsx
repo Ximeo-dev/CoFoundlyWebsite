@@ -45,7 +45,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 		<>
 			<ContextMenu>
 				<ContextMenuTrigger>
-					<div className={`flex mb-2.5`}>
+					<div className={`flex mb-3`}>
 						<div className='relative flex flex-col'>
 							<div className={`flex items-end gap-2 flex-row`}>
 								<Avatar
@@ -66,7 +66,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 								>
 									<div
 										className={`whitespace-pre-wrap ${
-											message.isEdited ? 'pr-28' : 'pr-10'
+											message.isEdited && isSender ? 'pr-34' : message.isEdited && !isSender ? 'pr-28' : isSender ? 'pr-14' : 'pr-10'
 										}`}
 									>
 										{message.content}
@@ -80,9 +80,9 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 										</span>
 										{isSender &&
 											(message.readReceipt ? (
-												<CheckCheck className='h-3 w-3 text-blue-500' />
+												<CheckCheck className='h-4 w-4 text-zinc-100' />
 											) : (
-												<Check className='h-3 w-3 text-gray-400' />
+												<Check className='h-4 w-4 text-gray-300' />
 											))}
 									</div>
 								</div>

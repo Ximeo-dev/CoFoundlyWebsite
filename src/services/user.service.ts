@@ -24,14 +24,16 @@ class UserService {
 
 	async changeEmail(data: IChangeEmailDto) {
 		const response = await axiosWithAuth.patch<IUser>(
-			`${this.BASE_URL}/settings/change-email`,
+			`${this.BASE_URL}/security/change-email`,
 			data
 		)
 		return response.data
 	}
 
 	async emailConfirmation() {
-		const response = await axiosWithAuth.post<IUser>(`/send-confirmation`)
+		const response = await axiosWithAuth.post<IUser>(
+			`/security/send-confirmation`
+		)
 		return response.data
 	}
 }
