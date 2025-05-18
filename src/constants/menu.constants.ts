@@ -99,10 +99,6 @@ export const SIDEBAR_MENU = [
 		url: '/chats',
 	},
 	{
-		icon: BriefcaseBusiness,
-		url: '/chats/projects-chats',
-	},
-	{
 		icon: Settings,
 		url: '/chats/settings',
 	},

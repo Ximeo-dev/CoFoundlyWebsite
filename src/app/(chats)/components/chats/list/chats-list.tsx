@@ -1,12 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import ChatListItem from './chat-list-item'
 import CurrentUser from '../current-user'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { chatService } from '@/services/chat.service'
 import { Loader } from 'lucide-react'
 import { IChat } from '@/types/chat.types'
+import { useSocket } from '@/hooks/useSocket'
+import { ChatServerEvent } from '@/types/chat.types'
+import dayjs from 'dayjs'
+import { useAuth } from '@/hooks/useAuth'
 
 interface ChatsListProps {
 	onSelectChat: (chat: IChat) => void
@@ -18,11 +22,50 @@ export default function ChatsList({
 	selectedChatId,
 }: ChatsListProps) {
 	const [searchTerm, setSearchTerm] = useState('')
+	const socket = useSocket()
+	const queryClient = useQueryClient()
+	const { user } = useAuth()
 
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['get-direct-chats'],
 		queryFn: async () => await chatService.getChats(),
 	})
+
+	const sortedChats = useMemo(() => {
+		if (!data) return []
+
+		return [...data].sort((a, b) => {
+			const aLastMessage = a.messages[a.messages.length - 1]
+			const bLastMessage = b.messages[b.messages.length - 1]
+
+			const aTime = aLastMessage ? dayjs(aLastMessage.sentAt).valueOf() : 0
+			const bTime = bLastMessage ? dayjs(bLastMessage.sentAt).valueOf() : 0
+
+			return bTime - aTime
+		})
+	}, [data])
+
+	useEffect(() => {
+		const handleNewMessage = (message: any) => {
+			queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+		}
+
+		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
+
+		return () => {
+			socket.off(ChatServerEvent.NEW_MESSAGE)
+		}
+	}, [queryClient])
+
+	const filteredChats = useMemo(() => {
+		if (!sortedChats) return []
+
+		return sortedChats.filter(chat => {
+			const correspondent = chat.participants.find(p => p.userId !== user?.id)
+			const username = correspondent?.displayUsername || ''
+			return username.toLowerCase().includes(searchTerm.toLowerCase())
+		})
+	}, [sortedChats, searchTerm])
 
 	return (
 		<div className='flex flex-col h-full w-full'>
@@ -42,8 +85,8 @@ export default function ChatsList({
 					</div>
 				) : error ? (
 					<p className='p-5 text-red-500'>Ошибка загрузки чатов</p>
-				) : data?.length ? (
-					data.map(chat => (
+				) : filteredChats.length ? (
+					filteredChats.map(chat => (
 						<div
 							key={chat.id}
 							onClick={() => onSelectChat(chat)}
@@ -53,7 +96,7 @@ export default function ChatsList({
 						</div>
 					))
 				) : (
-					<p className='p-5 text-gray-500'>Ничего не найдено</p>
+					<p className='p-5 text-gray-500'>Нет результатов</p>
 				)}
 			</div>
 		</div>
