@@ -56,7 +56,6 @@ export default function ChatsPage() {
 
   return (
 		<div className='flex h-full w-full'>
-			{/* Список чатов */}
 			<div
 				className={cn(
 					'relative border-r border-border h-full overflow-hidden flex-shrink-0',
@@ -71,7 +70,6 @@ export default function ChatsPage() {
 					onSelectChat={setSelectedChat}
 				/>
 
-				{/* Полоса для изменения ширины */}
 				{!isMobile && (
 					<div
 						className='absolute right-0 top-0 bottom-0 w-[1px] cursor-col-resize z-20'
@@ -80,7 +78,6 @@ export default function ChatsPage() {
 				)}
 			</div>
 
-			{/* Область чата */}
 			<div
 				className={cn('flex-1 h-full', {
 					'hidden sm:block': !selectedChat,

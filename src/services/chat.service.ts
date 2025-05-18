@@ -10,6 +10,13 @@ class ChatService {
 		return response.data
 	}
 
+	async getChatById(chatId: string) {
+		const response = await axiosWithAuth.get<IChat>(
+			`${this.BASE_URL}/${chatId}`
+		)
+		return response.data
+	}
+
 	async getChatMessages(chatId: string, page: number = 1, limit: number = 30) {
 		const response = await axiosWithAuth.get<IMessage[]>(
 			`${this.BASE_URL}/${chatId}/messages`,
