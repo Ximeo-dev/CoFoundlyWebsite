@@ -125,7 +125,7 @@ export default function ChatListItem({
 				<UnreadMessageIndicator
 					count={unreadCount}
 					variant='count'
-					/>
+				/>
 			</div>
 		</div>
 	)

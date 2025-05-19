@@ -40,7 +40,7 @@ export interface IMessage {
 	createdAt: string
 	isEdited: boolean
 	sender: ISender
-	readReceipt?: IReadReceipt
+	readReceipt?: IReadReceipt[]
 }
 
 export interface ISender {
