@@ -1,12 +1,17 @@
 import { ENDPOINTS } from '@/config/endpoints.config'
-import { Briefcase, BriefcaseBusiness, CircleUser, Fingerprint, House, LayoutDashboard, LucideIcon, MessageSquare, MessagesSquare, Settings, User, Users2 } from 'lucide-react'
+import { Briefcase, BriefcaseBusiness, CircleUser, Fingerprint, HeartHandshake, HelpCircle, House, LayoutDashboard, LogOut, LucideIcon, MessageSquare, MessagesSquare, Settings, Shield, User, Users2 } from 'lucide-react'
 import { ReactNode } from 'react'
 
 export interface IMenuItem {
-	id: number
-	label?: string
 	href: string
-	icon?: any
+	icon: LucideIcon
+	label: string
+}
+
+export interface IMenuSection {
+	label: string
+	items: IMenuItem[]
+	collapsible?: boolean
 }
 
 export interface ISettingsItem {
@@ -70,21 +75,62 @@ export const MOBILE_MENU = [
 	},
 ]
 
-export const PROFILE_MENU = [
+export const SIDEBAR_MENU: IMenuSection[] = [
 	{
-		href: '/profile',
-		icon: LayoutDashboard,
-		label: 'Моя анкета',
+		label: 'Основное',
+		items: [
+			{
+				href: '/profile',
+				icon: LayoutDashboard,
+				label: 'Моя анкета',
+			},
+			{
+				href: '/profile/projects',
+				icon: Briefcase,
+				label: 'Проекты',
+			},
+			{
+				href: 'swipes',
+				icon: HeartHandshake,
+				label: 'Свайпы',
+			},
+			{
+				href: '/chats',
+				icon: MessageSquare,
+				label: 'Чаты',
+			},
+		],
 	},
 	{
-		href: '/profile/projects',
-		icon: Briefcase,
-		label: 'Проекты',
+		label: 'Управление',
+		items: [
+			{
+				href: '/profile/security',
+				icon: Shield,
+				label: 'Безопасность',
+			},
+			{
+				href: '/logout',
+				icon: LogOut,
+				label: 'Выход',
+			},
+		],
 	},
 	{
-		href: '/profile/security',
-		icon: Fingerprint,
-		label: 'Безопасность',
+		label: 'Ещё',
+		collapsible: true,
+		items: [
+			{
+				href: '/settings',
+				icon: Settings,
+				label: 'Настройки',
+			},
+			{
+				href: '/support',
+				icon: HelpCircle,
+				label: 'Поддержка',
+			},
+		],
 	},
 ]
 
@@ -93,7 +139,7 @@ export const TABS = [
 	{ id: 'projects', label: 'Найти проект' },
 ]
 
-export const SIDEBAR_MENU = [
+export const CHAT_MENU = [
 	{
 		icon: MessagesSquare,
 		url: '/chats',

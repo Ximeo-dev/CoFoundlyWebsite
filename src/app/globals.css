@@ -196,6 +196,10 @@ html, body {
   }
 }
 
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out forwards;
+}
+
 input:-webkit-autofill {
   transition-delay: 9999s;
   transition-property: background-color;
@@ -299,6 +303,7 @@ input:-webkit-autofill {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
