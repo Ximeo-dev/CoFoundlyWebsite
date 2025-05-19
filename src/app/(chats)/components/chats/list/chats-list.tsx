@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import ChatListItem from './chat-list-item'
 import CurrentUser from '../current-user'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -11,7 +11,6 @@ import { useSocket } from '@/hooks/useSocket'
 import { ChatServerEvent } from '@/types/chat.types'
 import dayjs from 'dayjs'
 import { useAuth } from '@/hooks/useAuth'
-import { toast } from 'sonner'
 
 interface ChatsListProps {
 	onSelectChat: (chat: IChat) => void
@@ -74,48 +73,6 @@ export default function ChatsList({
 			socket.off(ChatServerEvent.NEW_MESSAGE)
 		}
 	}, [queryClient])
-
-	useEffect(() => {
-		const handleNewChat = async (payload: { chatId: string }) => {
-			console.log(
-				'[ChatsList] Получено событие new_chat с chatId:',
-				payload.chatId
-			)
-			try {
-				const newChat = await chatService.getChatById(payload.chatId)
-				console.log('[ChatsList] Получен новый чат:', newChat)
-
-				const isParticipant = newChat.participants.some(
-					p => p.userId === user?.id
-				)
-				if (!isParticipant) return
-
-				queryClient.setQueryData(
-					['get-direct-chats'],
-					(oldChats: IChat[] | undefined) => {
-						if (!oldChats) return [newChat]
-						if (oldChats.some(chat => chat.id === newChat.id)) {
-							return oldChats
-						}
-						console.log('[ChatsList] Добавлен новый чат:', newChat.id)
-						return [newChat, ...oldChats]
-					}
-				)
-
-				if (!selectedChatId) {
-					onSelectChat(newChat)
-				}
-			} catch (error) {
-				console.error('[ChatsList] Ошибка при загрузке нового чата:', error)
-			}
-		}
-
-		socket.on(ChatServerEvent.NEW_CHAT, handleNewChat)
-
-		return () => {
-			socket.off(ChatServerEvent.NEW_CHAT, handleNewChat)
-		}
-	}, [socket, queryClient, user, onSelectChat, selectedChatId])
 
 	const filteredChats = useMemo(() => {
 		if (!sortedChats) return []

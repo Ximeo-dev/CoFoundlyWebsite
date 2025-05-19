@@ -201,8 +201,6 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 				Ошибка загрузки сообщений: {error.message}
 			</div>
 		)
-	// if (!messages || messages.length === 0)
-	// 	return <div className='p-5 text-gray-500'>Нет сообщений</div>
 
 	return (
 		<div className='flex h-full w-full'>

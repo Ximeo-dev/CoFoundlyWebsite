@@ -131,8 +131,10 @@ export default function ChatSidebar({
 											transition={{ delay: 0.28 }}
 											className=''
 										>
-											<h4 className='text-sm mb-2'>О себе</h4>
-											<p className='text-muted-foreground break-words whitespace-pre-wrap'>
+											<h4 className='text-sm mb-2 text-muted-foreground'>
+												О себе
+											</h4>
+											<p className='break-words whitespace-pre-wrap'>
 												{correspondent.profile.bio}
 											</p>
 										</motion.div>

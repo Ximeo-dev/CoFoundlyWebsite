@@ -1,11 +1,12 @@
 'use client'
 
 import { useAuth } from '@/hooks/useAuth'
-import { ChatServerEvent, IChat } from '@/types/chat.types'
+import { ChatServerEvent, IChat, IMessage } from '@/types/chat.types'
 import dayjs from 'dayjs'
 import Avatar from '@/app/profile/components/profile-info/avatar'
 import { useSocket } from '@/hooks/useSocket'
 import { useEffect, useRef, useState } from 'react'
+import UnreadMessageIndicator from './unread-message-indicator'
 
 interface IChatListItem {
 	chat: IChat
@@ -22,13 +23,10 @@ export default function ChatListItem({
 	const correspondent = chat.participants.find(p => p.userId !== user?.id)
 	const socket = useSocket()
 	const [isTyping, setIsTyping] = useState(false)
+	const [unreadCount, setUnreadCount] = useState(0)
 
 	const lastMessage =
 		chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null
-
-	const lastMessageTime = lastMessage
-		? dayjs(lastMessage.sentAt).format('HH:mm')
-		: ''
 
 	const formatMessageDate = (date: string) => {
 		const today = dayjs().startOf('day')
@@ -52,23 +50,47 @@ export default function ChatListItem({
 
 	const lastMessageContent = lastMessage
 		? truncateMessage(lastMessage.content)
-		: 'Нет сообщений'
+		: 'Начните общение'
 
-		useEffect(() => {
-			const handleTyping = (data: { userId: string; typing: boolean }) => {
-				console.log(
-					`Received typing status from ${data.userId}: ${data.typing}`
-				)
-				if (data.userId === correspondent?.userId) {
-					setIsTyping(data.typing)
-				}
-			}
+	useEffect(() => {	
+		if (!user?.id) return
 
-			socket.on(ChatServerEvent.USER_TYPING, handleTyping)
-			return () => {
-				socket.off(ChatServerEvent.USER_TYPING, handleTyping)
+		const count = chat.messages.reduce((acc, message) => {
+			return message.senderId !== user.id && !message.readReceipt ? acc + 1 : acc
+		}, 0)
+
+		setUnreadCount(count)
+	}, [chat.messages, user?.id])
+
+	useEffect(() => {
+		if (!socket || !user?.id) return
+
+		const handleNewMessage = (message: IMessage) => {
+			if (message.chatId === chat.id && message.senderId !== user.id) {
+				setUnreadCount(prev => prev + 1)
 			}
-		}, [correspondent?.userId, socket])
+		}
+
+		const handleMessageRead = () => {
+			setUnreadCount(0)
+		}
+
+		const handleTyping = (data: { userId: string; typing: boolean }) => {
+			if (data.userId === correspondent?.userId) {
+				setIsTyping(data.typing)
+			}
+		}
+
+		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
+		socket.on(ChatServerEvent.MESSAGE_READ, handleMessageRead)
+		socket.on(ChatServerEvent.USER_TYPING, handleTyping)
+
+		return () => {
+			socket.off(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
+			socket.off(ChatServerEvent.MESSAGE_READ, handleMessageRead)
+			socket.off(ChatServerEvent.USER_TYPING, handleTyping)
+		}
+	}, [chat.id, correspondent?.userId, socket, user?.id])
 
 	return (
 		<div
@@ -83,6 +105,7 @@ export default function ChatListItem({
 					id={correspondent?.userId}
 					hasAvatar={correspondent?.profile?.hasAvatar ?? false}
 					className='flex-shrink-0'
+					name={correspondent?.displayUsername}
 				/>
 				<div className='text-sm flex flex-col gap-y-2 min-w-0'>
 					<span className='font-medium truncate'>
@@ -95,9 +118,15 @@ export default function ChatListItem({
 					)}
 				</div>
 			</div>
-			<span className='text-xs opacity-30 flex-shrink-0 pl-2'>
-				{lastMessage ? formatMessageDate(lastMessage.sentAt) : '---'}
-			</span>
+			<div className='flex flex-col h-full justify-between'>
+				<span className='text-xs opacity-30 flex-shrink-0 pl-2'>
+					{lastMessage ? formatMessageDate(lastMessage.sentAt) : ''}
+				</span>
+				<UnreadMessageIndicator
+					count={unreadCount}
+					variant='count'
+					/>
+			</div>
 		</div>
 	)
 }

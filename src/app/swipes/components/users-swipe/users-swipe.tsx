@@ -2,17 +2,22 @@
 
 import AnketView from '@/app/profile/components/user-anket/anket-view/anket-view'
 import { swipeService } from '@/services/swipe.service'
+import { chatService } from '@/services/chat.service'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/shadcn/button'
 import SkeletonView from '@/app/profile/components/user-anket/anket-view/skeleton-view'
+import { useSocket } from '@/hooks/useSocket'
+import { ChatServerEvent, IChat } from '@/types/chat.types'
 
 export default function UsersSwipe() {
 	const [intent, setIntent] = useState<'similar' | 'complement'>('similar')
 	const [currentAnket, setCurrentAnket] = useState<any>(null)
 	const [remainingAnkets, setRemainingAnkets] = useState<any[]>([])
 	const [isResetting, setIsResetting] = useState(false)
+	const socket = useSocket()
+	const queryClient = useQueryClient()
 
 	const { data, refetch, isLoading, isError, error, isSuccess } = useQuery({
 		queryKey: ['swipe users', intent],
@@ -66,10 +71,44 @@ export default function UsersSwipe() {
 			refetch()
 		},
 		onError: (error: any) => {
+			console.error('[UsersSwipe] Ошибка при сбросе свайпов:', error)
 			toast.error(error.message || 'Failed to reset swipe history')
 			setIsResetting(false)
 		},
 	})
+
+	useEffect(() => {
+		console.log('[UsersSwipe] Устанавливаю обработчик NEW_CHAT')
+
+		const handleNewChat = async ({ chatId }: { chatId: string }) => {
+			console.log('[UsersSwipe] Получено событие NEW_CHAT с chatId:', chatId)
+
+			try {
+				console.log('[UsersSwipe] Запрашиваю данные чата по chatId:', chatId)
+				const newChat = await chatService.getChatById(chatId)
+				console.log('[UsersSwipe] Данные нового чата получены:', newChat)
+
+				console.log('[UsersSwipe] Обновляю кэш чатов...')
+				queryClient.setQueryData<IChat[]>(
+					['get-direct-chats'],
+					(oldChats = []) => {
+						const exists = oldChats.some(c => c.id === chatId)
+						console.log('[UsersSwipe] Чат уже существует:', exists)
+						return exists ? oldChats : [newChat, ...oldChats]
+					}
+				)
+			} catch (error) {
+				console.error('[UsersSwipe] Ошибка обработки NEW_CHAT:', error)
+			}
+		}
+
+		socket?.on(ChatServerEvent.NEW_CHAT, handleNewChat)
+
+		return () => {
+			console.log('[UsersSwipe] Удаляю обработчик NEW_CHAT')
+			socket?.off(ChatServerEvent.NEW_CHAT, handleNewChat)
+		}
+	}, [socket, queryClient, currentAnket])
 
 	const handleIntentChange = (value: 'similar' | 'complement') => {
 		setIntent(value)
@@ -82,6 +121,7 @@ export default function UsersSwipe() {
 
 	const handleSwipeAction = (action: 'like' | 'skip') => {
 		if (!currentAnket?.userId) {
+			console.log('[UsersSwipe] Ошибка: userId не определен для текущей анкеты')
 			toast.error('Не удалось определить пользователя для действия')
 			return
 		}
@@ -89,6 +129,7 @@ export default function UsersSwipe() {
 	}
 
 	const handleResetSwipe = () => {
+		console.log('[UsersSwipe] Запуск сброса истории свайпов')
 		setIsResetting(true)
 		resetSwipe()
 	}

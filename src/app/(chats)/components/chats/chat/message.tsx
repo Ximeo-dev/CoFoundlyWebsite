@@ -54,6 +54,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 									id={message?.sender?.id}
 									hasAvatar={true}
 									className='flex-shrink-0'
+									name={message?.sender?.displayUsername}
 								/>
 								<div
 									className={`text-sm text-white rounded-2xl rounded-bl-none relative ${
@@ -66,7 +67,13 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 								>
 									<div
 										className={`whitespace-pre-wrap ${
-											message.isEdited && isSender ? 'pr-34' : message.isEdited && !isSender ? 'pr-28' : isSender ? 'pr-14' : 'pr-10'
+											message.isEdited && isSender
+												? 'pr-34'
+												: message.isEdited && !isSender
+												? 'pr-28'
+												: isSender
+												? 'pr-14'
+												: 'pr-10'
 										}`}
 									>
 										{message.content}

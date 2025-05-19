@@ -100,8 +100,7 @@ export default function Avatar({
 		}
 	}
 
-	const initialLetter = user?.username.charAt(0)
-
+const initialLetter = name ? name.charAt(0) : user?.username.charAt(0) || ''
 	const avatarStyles = cn(
 		size === 64
 			? `rounded-full object-cover ${

@@ -15,7 +15,7 @@ export default function PersonalData() {
 	return (
 		<div className='space-y-6'>
 			<div className='flex items-center justify-center'>
-				<Avatar size={512} editable className='w-fit' />
+				<Avatar size={512} editable className='w-fit' hasAvatar />
 			</div>
 			<div>
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
