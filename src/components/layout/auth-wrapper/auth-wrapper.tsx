@@ -22,13 +22,6 @@ export default function AuthWrapper({
 		console.log('[AuthWrapper] isAuthenticated:', isAuthenticated)
 	}, [isAuthenticated])
 
-	// if (!isClient) {
-	// 	return (
-	// 		<ContainerWrapper>
-	// 			<div>Loading...</div>
-	// 		</ContainerWrapper>
-	// 	) // Лоадер
-	// }
 
 	if (!isAuthenticated) {
 		return (

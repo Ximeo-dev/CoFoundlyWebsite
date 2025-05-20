@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .profile_main {
-  @apply pb-14 pt-24 lg:pb-[70px] lg:pt-[160px] w-full min-h-screen md:block flex md:items-start items-center md:justify-start justify-center;
+  @apply pb-10 lg:pb-[70px] pt-24 w-full min-h-screen md:block flex md:items-start items-center md:justify-start justify-center;
 
   .profile_section {
     @apply lg:ml-[242px];

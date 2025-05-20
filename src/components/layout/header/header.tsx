@@ -22,7 +22,7 @@ export default function Header() {
     }
   }, [scrollDirection])
 
-  // if (isAuthenticated) return null
+  if (isAuthenticated) return null
 
   return (
 		<>

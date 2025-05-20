@@ -7,19 +7,13 @@ import styles from './components/profile.module.css'
 import { cn } from '@/lib/utils'
 import ContainerWrapper from '@/components/layout/container/container-wrapper'
 import ProfileSidebar from './components/profile-sidebar/profile-sidebar'
+import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
 
 export default function AuthLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const { isAuthenticated, isLoading } = useAuth()
-
-	if (isLoading) return <div>Loading...</div>
-	if (!isAuthenticated) {
-		redirect('/welcome')
-	}
-
 	return (
 		<>
 			<ContainerWrapper>
@@ -27,7 +21,7 @@ export default function AuthLayout({
 					<ProfileSidebar />
 					<div className={cn(styles.profile_section, '')}>{children}</div>
 				</div>
-				{/* <EmailConfirmationNotification /> */}
+				<EmailConfirmationNotification />
 			</ContainerWrapper>
 		</>
 	)

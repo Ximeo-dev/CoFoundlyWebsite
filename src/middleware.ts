@@ -4,6 +4,7 @@ import { ENDPOINTS } from './config/endpoints.config'
 
 export async function middleware(request: NextRequest) {
   const { url, cookies } = request
+  const path = request.nextUrl.pathname
 
   if (process.env.NODE_ENV !== 'production') {
     console.log('Skipping middleware in development mode', url)
@@ -11,24 +12,28 @@ export async function middleware(request: NextRequest) {
   }
 
   const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
+  const isAuthenticated = !!refreshToken
   // const accessToken = cookies.get(EnumTokens.ACCESS_TOKEN)?.value
 
-  const isAuthPage = 
-    url.includes(ENDPOINTS.LOGIN) || url.includes(ENDPOINTS.REGISTER)
-  const isSwipePage = url.includes(ENDPOINTS.SWIPE_USERS)
+  const isAuthPage =
+		url.includes(ENDPOINTS.LOGIN) ||
+		url.includes(ENDPOINTS.REGISTER) ||
+		path.includes('/welcome')
 
-  if (isAuthPage) {
-    if (refreshToken)
-			return NextResponse.redirect(new URL(ENDPOINTS.PROFILE, url))
+  const isProtectedPage =
+		path === '/' ||
+		path.startsWith('/(auth)') ||
+		path.includes(ENDPOINTS.PROFILE) ||
+		path.includes(ENDPOINTS.SWIPE_USERS)
 
-    return NextResponse.next()
+	const isChatPage = path.includes('/chats')
+
+  if (isAuthPage && isAuthenticated) {
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
-  if (isSwipePage) {
-		if (!refreshToken) {
-			return NextResponse.redirect(new URL(ENDPOINTS.LOGIN, url))
-		}
-		return NextResponse.next()
+  if (isProtectedPage || isChatPage && !isAuthenticated) {
+		return NextResponse.redirect(new URL('/welcome', request.url))
 	}
 
   console.log(
@@ -42,5 +47,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/login', '/register', '/profile'],
+	matcher: [
+		'/',
+		'/(auth)/:path*',
+		'/(chats)/:path*',
+		'/chats',
+		'/welcome',
+		'/login',
+		'/register',
+	],
 }

@@ -6,9 +6,10 @@ interface TooltipProps {
 	children: React.ReactNode
 	text: string
 	position?: 'top' | 'bottom' | 'left' | 'right'
+	className?: string
 }
 
-export default function Tooltip ({ children, text, position = 'top' }: TooltipProps) {
+export default function Tooltip ({ children, text, position = 'top', className }: TooltipProps) {
 	const [visible, setVisible] = useState(false)
 
 	const positions: Record<string, string> = {
@@ -27,7 +28,7 @@ export default function Tooltip ({ children, text, position = 'top' }: TooltipPr
 			{children}
 			{visible && (
 				<div
-					className={`absolute ${positions[position]} hidden md:block px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-xs rounded-[15px] shadow-md z-10 whitespace-nowrap animation-tooltip`}
+					className={`absolute ${positions[position]} hidden md:block px-2 py-1 bg-black text-white dark:bg-white dark:text-black text-xs rounded-[15px] shadow-md z-10 whitespace-nowrap animation-tooltip ${className}`}
 				>
 					{text}
 				</div>

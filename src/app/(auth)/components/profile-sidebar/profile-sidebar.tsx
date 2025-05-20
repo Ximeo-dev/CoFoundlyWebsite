@@ -15,6 +15,8 @@ import { authService } from '@/services/auth.service'
 import { ResponseError } from '@/types/error.types'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
+import MobileNav from '@/components/layout/header/mobile/mobile-nav'
+import Tooltip from '@/components/ui/tooltip/tooltip'
 
 export default function ProfileSidebar() {
 	const { resolvedTheme, setTheme } = useTheme()
@@ -54,7 +56,7 @@ export default function ProfileSidebar() {
 			setIsAuthenticated(false)
 			setUser(null)
 			queryClient.setQueryData(['userProfile'], null)
-			window.location.href = '/'
+			window.location.href = '/welcome'
 		},
 		onError: (error: ResponseError) => {
 			toast.error('Что-то пошло не так')
@@ -64,7 +66,7 @@ export default function ProfileSidebar() {
 
 	return (
 		<>
-			<div className='lg:hidden fixed top-0 left-0 right-0 z-20 h-16 bg-background/85 backdrop-blur-md border-b border-border flex items-center px-4'>
+			{/* <div className='lg:hidden fixed top-0 left-0 right-0 z-20 h-16 bg-background/85 backdrop-blur-md border-b border-border flex items-center px-4'>
 				<button
 					className={cn(
 						'bg-background border border-border rounded-[15px] w-10 h-10 flex items-center justify-center shadow-sm transition-colors duration-200 hover:bg-neutral-100 dark:hover:bg-neutral-800',
@@ -80,7 +82,8 @@ export default function ProfileSidebar() {
 				>
 					CoFoundly
 				</Link>
-			</div>
+			</div> */}
+			<MobileNav />
 
 			<aside
 				className={cn(
@@ -224,17 +227,41 @@ export default function ProfileSidebar() {
 															!isExpanded && 'justify-center'
 														)}
 													>
-														<item.icon size={20} className='flex-shrink-0' />
-														<span
-															className={cn(
-																'whitespace-nowrap overflow-hidden transition-opacity duration-300',
-																isExpanded
-																	? 'opacity-100 block'
-																	: 'opacity-0 hidden'
-															)}
-														>
-															{item.label}
-														</span>
+														{!isExpanded ? (
+															<Tooltip text={item.label} position='right'>
+																<item.icon
+																	size={20}
+																	className='flex-shrink-0'
+																/>
+																<span
+																	className={cn(
+																		'whitespace-nowrap overflow-hidden transition-opacity duration-300',
+																		isExpanded
+																			? 'opacity-100 block'
+																			: 'opacity-0 hidden'
+																	)}
+																>
+																	{item.label}
+																</span>
+															</Tooltip>
+														) : (
+															<>
+																<item.icon
+																	size={20}
+																	className='flex-shrink-0'
+																/>
+																<span
+																	className={cn(
+																		'whitespace-nowrap overflow-hidden transition-opacity duration-300',
+																		isExpanded
+																			? 'opacity-100 block'
+																			: 'opacity-0 hidden'
+																	)}
+																>
+																	{item.label}
+																</span>
+															</>
+														)}
 													</Link>
 												)}
 											</li>

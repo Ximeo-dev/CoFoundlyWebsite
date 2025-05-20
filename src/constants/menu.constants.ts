@@ -92,12 +92,12 @@ export const SIDEBAR_MENU: IMenuSection[] = [
 				label: 'Моя анкета',
 			},
 			{
-				href: '/profile/projects',
+				href: '/projects',
 				icon: Briefcase,
 				label: 'Проекты',
 			},
 			{
-				href: 'swipes',
+				href: '/swipes',
 				icon: HeartHandshake,
 				label: 'Свайпы',
 			},
@@ -112,7 +112,7 @@ export const SIDEBAR_MENU: IMenuSection[] = [
 		label: 'Управление',
 		items: [
 			{
-				href: '/profile/security',
+				href: '/security',
 				icon: Fingerprint,
 				label: 'Безопасность',
 			},
