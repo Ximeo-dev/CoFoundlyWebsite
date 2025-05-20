@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from 'react'
 import { toggleMenu } from '@/store/menu-store'
 import { useAtom } from 'jotai'
 import { CircleUserRound, LogOut, Settings } from 'lucide-react'
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 
 export default function DropdownProfile() {
   const queryClient = useQueryClient()

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useNotifications } from '@/hooks/useNotifications'
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { X } from 'lucide-react'
 
 const MAX_CONTENT_LENGTH = 40

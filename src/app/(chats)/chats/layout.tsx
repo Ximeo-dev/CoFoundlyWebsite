@@ -3,8 +3,8 @@ import Sidebar from '../components/sidebar/sidebar'
 
 export default function ChatLayout({ children }: PropsWithChildren<unknown>) {
 	return (
-		<div className='grid min-h-screen w-full grid-cols-[70px_1fr]'>
-			<Sidebar />
+		<div className='grid min-h-screen w-full'>
+			{/* <Sidebar /> */}
 			<div className='flex-1 h-screen overflow-hidden'>{children}</div>
 		</div>
 	)

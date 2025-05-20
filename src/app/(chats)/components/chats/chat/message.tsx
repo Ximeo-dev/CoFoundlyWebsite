@@ -1,6 +1,6 @@
 'use client'
 
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import Modal from '@/components/ui/modal/modal'
 import { Button } from '@/components/ui/shadcn/button'
 import {

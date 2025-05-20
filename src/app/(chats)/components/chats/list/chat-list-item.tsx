@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { ChatServerEvent, IChat, IMessage } from '@/types/chat.types'
 import dayjs from 'dayjs'
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { useSocket } from '@/hooks/useSocket'
 import { useEffect, useRef, useState } from 'react'
 import UnreadMessageIndicator from './unread-message-indicator'

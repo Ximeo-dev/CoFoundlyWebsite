@@ -1,6 +1,6 @@
 'use client'
 
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { Button } from '@/components/ui/shadcn/button'
 import { useSocket } from '@/hooks/useSocket'
 import { ChatServerEvent, IParticipant } from '@/types/chat.types'
