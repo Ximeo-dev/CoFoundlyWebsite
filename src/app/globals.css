@@ -299,6 +299,21 @@ input:-webkit-autofill {
   animation-delay: 0.3s;
 }
 
+.animation-slide-left {
+  animation: slideLeft 0.3s ease-in-out forwards;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

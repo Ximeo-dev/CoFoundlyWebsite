@@ -10,7 +10,7 @@ import { AuthProvider } from '@/providers/auth-provider'
 import Footer from '@/components/layout/footer/footer'
 import { SocketProvider } from '@/providers/socket-provider'
 import { NotificationProvider } from '@/providers/notifications-provider'
-import { NotificationList } from '@/components/layout/notification-list/notification-list'
+import NotificationList from '@/components/layout/notification-list/notification-list'
 
 const inter = Inter({
 	subsets: ['latin', 'cyrillic'],
