@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { SIDEBAR_MENU } from '@/constants/menu.constants'
+import { CHAT_MENU } from '@/constants/menu.constants'
 import { usePathname } from 'next/navigation'
 import { Moon, Sun } from 'lucide-react'
 
@@ -34,7 +34,7 @@ export default function Sidebar() {
 				)}
 			</Link>
 			<div className='flex md:flex-col items-center gap-5 md:gap-6'>
-				{SIDEBAR_MENU.map(item => (
+				{CHAT_MENU.map(item => (
 					<Link
 						key={item.url}
 						href={item.url}

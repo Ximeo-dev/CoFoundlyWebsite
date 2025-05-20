@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { CARD, ICard } from './card.data'
 import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 import { PointerHighlight } from '@/components/ui/pointer-highlight/pointer-highlight'
+import { NotificationList } from '@/components/layout/notification-list/notification-list'
 
 export default function Home() {
 	return (

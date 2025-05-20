@@ -69,7 +69,7 @@ export default function DropdownProfile() {
 			}
 			className={cn(isAuthenticated ? styles.dropdown : '')}
 		>
-			<Avatar size={64} />
+			<Avatar size={64} hasAvatar id={user?.id}  />
 			<AnimatePresence>
 				{dropdownOpen && (
 					<>

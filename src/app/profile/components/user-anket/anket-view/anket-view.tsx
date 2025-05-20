@@ -149,7 +149,7 @@ export default function AnketView({
 						)}
 					>
 						<div className={styles.left_block_inner}>
-							<Avatar key={id} id={id} size={512} name={anket.name} />
+							<Avatar key={id} id={id} size={512} name={anket.name} hasAvatar />
 							<m.h1
 								variants={textVariants}
 								initial='initial'

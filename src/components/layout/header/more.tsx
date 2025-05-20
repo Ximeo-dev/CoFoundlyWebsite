@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { FC } from 'react'
 import { domAnimation, LazyMotion, m } from 'framer-motion'
-import { IMenuItem, MENU_MORE } from '@/constants/menu.constants'
+import { IHeaderItem, IMenuItem, MENU_MORE } from '@/constants/menu.constants'
 import { ModeToggle } from '@/components/ui/theme-toggle/theme-toggle'
 
 const More: FC = () => {
@@ -16,7 +16,7 @@ const More: FC = () => {
 				transition={{ type: 'spring', stiffness: 210, damping: 17 }}
 			>
 				<ul className='flex flex-col gap-y-4 p-4'>
-					{MENU_MORE.map((item: IMenuItem) => (
+					{MENU_MORE.map((item: IHeaderItem) => (
 						<li key={item.id}>
 							<Link
 								href={item.href}

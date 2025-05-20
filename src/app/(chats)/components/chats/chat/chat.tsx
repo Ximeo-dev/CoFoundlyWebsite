@@ -171,7 +171,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	useEffect(() => {
 		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
 			setMessages(prev =>
-				prev.map(m => {
+				prev.map((m: any) => {
 					const receipt = readReceipts.find(r => r.messageId === m.id)
 					return receipt ? { ...m, readReceipt: receipt } : m
 				})
@@ -201,8 +201,6 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 				Ошибка загрузки сообщений: {error.message}
 			</div>
 		)
-	// if (!messages || messages.length === 0)
-	// 	return <div className='p-5 text-gray-500'>Нет сообщений</div>
 
 	return (
 		<div className='flex h-full w-full'>

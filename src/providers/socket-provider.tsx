@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { Socket } from 'socket.io-client'
 import { getSocket } from '@/lib/socket'
 
