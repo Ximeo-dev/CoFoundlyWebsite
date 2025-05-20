@@ -3,7 +3,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Socket } from 'socket.io-client'
 import { useSocket } from '@/hooks/useSocket'
-import { INotification, NotificationServerEvent } from '@/types/notification.types'
+import {
+	INotification,
+	NotificationServerEvent,
+} from '@/types/notification.types'
 
 interface NotificationContextType {
 	notifications: INotification[]
@@ -28,8 +31,27 @@ export const NotificationProvider = ({
 				id: notification.notification.id,
 				type: notification.notification.type,
 				content: notification.notification.content,
+				isRead: notification.notification.isRead,
 				createdAt: notification.notification.createdAt,
 			})
+
+			try {
+				const audio = new Audio('/sounds/notification.mp3')
+				audio
+					.play()
+					.then(() =>
+						console.log(
+							'[Notification] Sound played successfully:',
+							notification.notification.id
+						)
+					)
+					.catch(error =>
+						console.error('[Notification] Error playing sound:', error)
+					)
+			} catch (error) {
+				console.error('[Notification] Failed to initialize audio:', error)
+			}
+
 			setNotifications(prev => [notification, ...prev])
 		}
 
@@ -44,6 +66,7 @@ export const NotificationProvider = ({
 	}, [socket])
 
 	const removeNotification = (id: string) => {
+		console.log('[Notification] Removing notification:', { id })
 		setNotifications(prev => prev.filter(n => n.notification.id !== id))
 	}
 
