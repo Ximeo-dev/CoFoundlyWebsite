@@ -1,3 +1,5 @@
+import { IMessage } from './chat.types'
+
 export interface INotification {
 	notification: {
 		id: string
@@ -7,7 +9,7 @@ export interface INotification {
 		isRead: boolean
 		createdAt: Date
 	}
-	data: any // При получении в зависимости от notification.type кастишь дату к IMessage/IInvite/IMatch
+	data: IMessage
 }
 
 export enum NotificationType {
@@ -17,10 +19,6 @@ export enum NotificationType {
 	SYSTEM,
 }
 
-export enum NotificationClientEvent {
-	MARK_READ = 'notification:mark_read', // отправляешь, в callback получаешь обратно INotification[], скрываешь их на фронте
-}
-
 export enum NotificationServerEvent {
-	NEW_NOTIFICATION = 'notification:new_notification', // слушаешь, выводишь новые уведомления
+	NEW_NOTIFICATION = 'notification:new_notification',
 }

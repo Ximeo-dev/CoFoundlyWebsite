@@ -9,6 +9,8 @@ import { Toaster } from 'sonner'
 import { AuthProvider } from '@/providers/auth-provider'
 import Footer from '@/components/layout/footer/footer'
 import { SocketProvider } from '@/providers/socket-provider'
+import { NotificationProvider } from '@/providers/notifications-provider'
+import { NotificationList } from '@/components/layout/notification-list/notification-list'
 
 const inter = Inter({
 	subsets: ['latin', 'cyrillic'],
@@ -39,9 +41,12 @@ export default function RootLayout({
 					<QueryProvider>
 						<AuthProvider>
 							<SocketProvider>
-								<Toaster duration={3000} />
-								<Header />
-								<main className=''>{children}</main>
+								<NotificationProvider>
+									<NotificationList />
+									<Toaster duration={3000} />
+									<Header />
+									<main className=''>{children}</main>
+								</NotificationProvider>
 							</SocketProvider>
 						</AuthProvider>
 					</QueryProvider>

@@ -1,6 +1,6 @@
 'use client'
 
-import { IMenuItem, MENU } from '@/constants/menu.constants'
+import { IHeaderItem, IMenuItem, MENU } from '@/constants/menu.constants'
 import styles from './header.module.css'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -38,7 +38,7 @@ export default function HeaderNav() {
 				</Link>
 			</div>
 			<ul className={styles.nav_list}>
-				{MENU.map((item: IMenuItem) => (
+				{MENU.map((item: IHeaderItem) => (
 					<li key={item.id}>
 						<Link
 							className={cn(

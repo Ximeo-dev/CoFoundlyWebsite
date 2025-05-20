@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import FooterNav from './footer-nav'
+// import FooterNav from './footer-nav'
 import styles from './footer.module.css'
 
 export default function Footer() {
@@ -20,7 +20,7 @@ export default function Footer() {
 		<footer
 			className={styles.footer_block}
 		>
-			<FooterNav />
+			{/* <FooterNav /> */}
 		</footer>
 	)
 }

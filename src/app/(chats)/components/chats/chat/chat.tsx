@@ -171,7 +171,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	useEffect(() => {
 		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
 			setMessages(prev =>
-				prev.map(m => {
+				prev.map((m: any) => {
 					const receipt = readReceipts.find(r => r.messageId === m.id)
 					return receipt ? { ...m, readReceipt: receipt } : m
 				})

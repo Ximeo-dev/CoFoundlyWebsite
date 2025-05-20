@@ -21,6 +21,7 @@ interface IAvatarUploader {
 	hasAvatar?: boolean
 	smallChatAvatar?: boolean
 	bigChatAvatar?: boolean
+	notificationAvatar?: boolean
 }
 
 export default function Avatar({
@@ -32,6 +33,7 @@ export default function Avatar({
 	hasAvatar = false,
 	smallChatAvatar = false,
 	bigChatAvatar = false,
+	notificationAvatar = false
 }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
@@ -100,7 +102,7 @@ export default function Avatar({
 		}
 	}
 
-const initialLetter = name ? name.charAt(0) : user?.username.charAt(0) || ''
+	const initialLetter = name ? name.charAt(0) : user?.username.charAt(0) || ''
 	const avatarStyles = cn(
 		size === 64
 			? `rounded-full object-cover ${
@@ -110,7 +112,11 @@ const initialLetter = name ? name.charAt(0) : user?.username.charAt(0) || ''
 			? 'rounded-full w-8 h-8 object-cover'
 			: size === 128
 			? `object-cover ${
-					bigChatAvatar ? 'w-20 h-20 rounded-full' : 'w-36 h-36 rounded-[15px]'
+					bigChatAvatar
+						? 'w-20 h-20 rounded-full'
+						: notificationAvatar
+						? 'w-[70px] h-[70px] rounded-full'
+						: 'w-36 h-36 rounded-[15px]'
 			  }`
 			: size === 512
 			? 'w-72 h-52 md:w-90 md:h-64 rounded-[15px] object-cover'

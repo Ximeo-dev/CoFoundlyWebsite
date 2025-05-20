@@ -8,6 +8,13 @@ export interface IMenuItem {
 	label: string
 }
 
+export interface IHeaderItem {
+	id: number
+	label?: string
+	href: string
+	icon?: any
+}
+
 export interface IMenuSection {
 	label: string
 	items: IMenuItem[]
