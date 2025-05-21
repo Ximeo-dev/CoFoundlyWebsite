@@ -1,8 +1,5 @@
 'use client'
 
-import { useAuth } from '@/hooks/useAuth'
-import { redirect } from 'next/navigation'
-import Header from '@/components/layout/header/header'
 import styles from './components/profile.module.css'
 import { cn } from '@/lib/utils'
 import ContainerWrapper from '@/components/layout/container/container-wrapper'

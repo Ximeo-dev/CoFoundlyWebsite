@@ -169,7 +169,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 			if (
 				message.senderId !== user.id &&
 				Array.isArray(message.readReceipt) &&
-				message.readReceipt.length === 0
+				!message.readReceipt.some(r => r.userId === user.id)
 			) {
 				const messageElement = document.getElementById(`message-${message.id}`)
 				if (messageElement) {
@@ -184,30 +184,41 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		})
 
 		if (unreadMessages.length > 0) {
-			socket.emit(ChatClientEvent.MARK_READ, {
+			const readReceipts = unreadMessages.map(message => ({
 				chatId: id,
-				messageIds: unreadMessages.map(m => m.id),
+				messageId: message.id,
 				userId: user.id,
-			})
+				readAt: new Date().toISOString(),
+			}))
+			socket.emit(ChatClientEvent.MARK_READ, readReceipts)
 		}
 	}, [messages, id, user, socket])
 
 	useEffect(() => {
-		const container = messagesContainerRef.current
-		if (!container) return
-
-		const handleScroll = () => {
-			markMessagesAsRead()
+		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
+			console.log('[Chat] Received read receipts:', readReceipts)
+			setMessages(prev =>
+				prev.map(m => {
+					const receiptsForMessage = readReceipts.filter(
+						r => r.messageId === m.id
+					)
+					if (receiptsForMessage.length > 0) {
+						return {
+							...m,
+							readReceipt: [...m.readReceipt, ...receiptsForMessage],
+						}
+					}
+					return m
+				})
+			)
+			queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 		}
 
-		container.addEventListener('scroll', handleScroll)
-		window.addEventListener('resize', handleScroll) // Обновление при изменении размера окна
-
+		socket.on(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
 		return () => {
-			container.removeEventListener('scroll', handleScroll)
-			window.removeEventListener('resize', handleScroll)
+			socket.off(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
 		}
-	}, [markMessagesAsRead])
+	}, [socket, id, queryClient])
 
 	useEffect(() => {
 		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
@@ -226,12 +237,6 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 			socket.off(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
 		}
 	}, [socket, id, queryClient])
-
-	// Убираем автоматический таймер, используем только при прокрутке
-	// useEffect(() => {
-	//   const timer = setTimeout(markMessagesAsRead, 300)
-	//   return () => clearTimeout(timer)
-	// }, [messages, markMessagesAsRead])
 
 	const correspondent = initialData.participants.find(
 		p => p.userId !== user?.id
