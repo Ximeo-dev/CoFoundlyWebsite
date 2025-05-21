@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const { url, cookies } = request
   const path = request.nextUrl.pathname
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'development') {
     console.log('Skipping middleware in development mode', url)
 		return NextResponse.next()
   }
