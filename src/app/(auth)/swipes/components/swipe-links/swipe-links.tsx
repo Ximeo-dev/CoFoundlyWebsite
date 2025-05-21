@@ -17,7 +17,7 @@ export default function SwipeLinks({ activeTab, setActiveTab }: ISwipeLinks) {
 
 	return (
 		<LazyMotion features={domAnimation}>
-			<div className='flex justify-center pt-14 sm:pt-[80px] md:pt-[120px] lg:pt-[110px] xl:pt-[160px] select-none'>
+			<div className='flex justify-center py-8 select-none'>
 				<m.div
 					initial={{ opacity: 0, y: -25 }}
 					animate={{ opacity: 1, y: 0 }}

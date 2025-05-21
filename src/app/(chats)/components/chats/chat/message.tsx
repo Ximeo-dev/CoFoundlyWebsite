@@ -57,16 +57,22 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 									name={message?.sender?.displayUsername}
 								/>
 								<div
-									className={`text-sm text-white rounded-2xl rounded-bl-none relative ${
+									className={`text-sm text-white rounded-2xl rounded-bl-none relative dark:border-none border border-border ${
 										message.isEdited ? 'py-2 pl-3' : 'py-1.5 px-3'
-									} ${isSender ? 'bg-[#6B7480]' : 'bg-border'}`}
+									} ${
+										isSender
+											? 'bg-black dark:bg-[#6B7480]'
+											: 'dark:bg-border bg-white'
+									}`}
 									style={{
 										maxWidth: '700px',
 										wordBreak: 'break-word',
 									}}
 								>
 									<div
-										className={`whitespace-pre-wrap ${
+										className={`dark:text-white ${
+											isSender ? '' : 'text-black'
+										} whitespace-pre-wrap ${
 											message.isEdited && isSender
 												? 'pr-34'
 												: message.isEdited && !isSender
@@ -80,9 +86,19 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 									</div>
 									<div className='absolute right-2.5 bottom-[1.5px] flex items-center gap-1'>
 										{message.isEdited && (
-											<span className='text-xs opacity-50'>изменено</span>
+											<span
+												className={`text-xs ${
+													isSender ? '' : 'text-gray-300 text-black'
+												} dark:opacity-50`}
+											>
+												изменено
+											</span>
 										)}
-										<span className='text-xs opacity-50'>
+										<span
+											className={`text-xs ${
+												isSender ? '' : 'text-gray-300 text-black'
+											} dark:opacity-50`}
+										>
 											{dayjs(message.sentAt).format('HH:mm')}
 										</span>
 										{isSender &&

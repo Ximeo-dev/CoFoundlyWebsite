@@ -61,21 +61,21 @@ export default function UsersSwipe() {
 		},
 	})
 
-	const { mutate: resetSwipe } = useMutation({
-		mutationFn: () => swipeService.resetSwipe(),
-		onSuccess: () => {
-			toast.success('История свайпов сброшена')
-			setCurrentAnket(null)
-			setRemainingAnkets([])
-			setIsResetting(false)
-			refetch()
-		},
-		onError: (error: any) => {
-			console.error('[UsersSwipe] Ошибка при сбросе свайпов:', error)
-			toast.error(error.message || 'Failed to reset swipe history')
-			setIsResetting(false)
-		},
-	})
+	// const { mutate: resetSwipe } = useMutation({
+	// 	mutationFn: () => swipeService.resetSwipe(),
+	// 	onSuccess: () => {
+	// 		toast.success('История свайпов сброшена')
+	// 		setCurrentAnket(null)
+	// 		setRemainingAnkets([])
+	// 		setIsResetting(false)
+	// 		refetch()
+	// 	},
+	// 	onError: (error: any) => {
+	// 		console.error('[UsersSwipe] Ошибка при сбросе свайпов:', error)
+	// 		toast.error(error.message || 'Failed to reset swipe history')
+	// 		setIsResetting(false)
+	// 	},
+	// })
 
 	useEffect(() => {
 		console.log('[UsersSwipe] Устанавливаю обработчик NEW_CHAT')
@@ -128,11 +128,11 @@ export default function UsersSwipe() {
 		swipeAction({ userId: currentAnket.userId, action })
 	}
 
-	const handleResetSwipe = () => {
-		console.log('[UsersSwipe] Запуск сброса истории свайпов')
-		setIsResetting(true)
-		resetSwipe()
-	}
+	// const handleResetSwipe = () => {
+	// 	console.log('[UsersSwipe] Запуск сброса истории свайпов')
+	// 	setIsResetting(true)
+	// 	resetSwipe()
+	// }
 
 	return (
 		<div className=''>
@@ -159,13 +159,6 @@ export default function UsersSwipe() {
 				<div className='h-[550px] border border-border rounded-[15px]'>
 					<div className='flex items-center justify-center h-full flex-col gap-y-4'>
 						<div className='text-center'>Анкеты закончились</div>
-						<Button
-							variant='outline'
-							onClick={handleResetSwipe}
-							disabled={isResetting}
-						>
-							Сбросить историю свайпов
-						</Button>
 					</div>
 				</div>
 			)}

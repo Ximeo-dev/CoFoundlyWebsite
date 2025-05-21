@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
 import MobileNav from '@/components/layout/header/mobile/mobile-nav'
 import Tooltip from '@/components/ui/tooltip/tooltip'
+import { ModeToggle } from '@/components/ui/theme-toggle/theme-toggle'
 
 export default function ProfileSidebar() {
 	const { resolvedTheme, setTheme } = useTheme()
@@ -66,23 +67,6 @@ export default function ProfileSidebar() {
 
 	return (
 		<>
-			{/* <div className='lg:hidden fixed top-0 left-0 right-0 z-20 h-16 bg-background/85 backdrop-blur-md border-b border-border flex items-center px-4'>
-				<button
-					className={cn(
-						'bg-background border border-border rounded-[15px] w-10 h-10 flex items-center justify-center shadow-sm transition-colors duration-200 hover:bg-neutral-100 dark:hover:bg-neutral-800',
-						isOpen && 'bg-neutral-100 dark:bg-neutral-800'
-					)}
-					onClick={toggleSidebar}
-				>
-					{isOpen ? <X size={20} /> : <AlignLeft size={20} />}
-				</button>
-				<Link
-					href={ENDPOINTS.HOME}
-					className='ml-4 text-xl font-semibold text-black dark:text-white'
-				>
-					CoFoundly
-				</Link>
-			</div> */}
 			<MobileNav />
 
 			<aside
@@ -197,7 +181,7 @@ export default function ProfileSidebar() {
 													<button
 														onClick={() => logout()}
 														className={cn(
-															'flex items-center gap-x-3 py-2.5 px-2 rounded-lg w-full text-left',
+															'cursor-pointer flex items-center gap-x-3 py-2.5 px-2 rounded-lg w-full text-left',
 															'text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white',
 															'transition-all duration-300 hover:-translate-y-0.5',
 															!isExpanded && 'justify-center'
@@ -270,10 +254,10 @@ export default function ProfileSidebar() {
 								)}
 						</div>
 					))}
+					<ModeToggle direction={pathname === '/chats' ? 'column' : 'row'} />
 				</nav>
 			</aside>
 
-			{/* Mobile Overlay */}
 			{isOpen && (
 				<div
 					className='fixed inset-0 z-30 lg:hidden dark:bg-black/50 backdrop-blur-sm transition-opacity duration-300'
