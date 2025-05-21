@@ -61,7 +61,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 										message.isEdited ? 'py-2 pl-3' : 'py-1.5 px-3'
 									} ${
 										isSender
-											? 'bg-black dark:bg-[#6B7480]'
+											? 'bg-black/70 dark:bg-[#6B7480]'
 											: 'dark:bg-border bg-white'
 									}`}
 									style={{

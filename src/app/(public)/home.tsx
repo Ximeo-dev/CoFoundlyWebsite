@@ -8,10 +8,12 @@ import { cn } from '@/lib/utils'
 import { CARD, ICard } from './card.data'
 import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 import { PointerHighlight } from '@/components/ui/pointer-highlight/pointer-highlight'
+import Header from '@/components/layout/header/header'
 
 export default function Home() {
 	return (
 		<>
+		<Header />
 			<FadeInUp className={styles.title}>{PROJECT_NAME}</FadeInUp>
 			<div className={styles.text_block}>
 				<FadeInUp
