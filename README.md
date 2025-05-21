@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌐 CoFoundly Frontend
 
-## Getting Started
+![Next.JS](https://img.shields.io/badge/NextJS-v15-black)
+![React](https://img.shields.io/badge/React-v19-blue)
 
-First, run the development server:
+Frontend-репозиторий для сервиса **CoFoundly**, реализованный на основе **Next.js 15**, с использованием **React 19**, **TailwindCSS 4** и **TypeScript**
+
+Production-версия доступна по адресу: https://cofoundly.infinitum.su
+
+Backend-репозиторий: https://github.com/Ximeo-dev/CoFoundlyBackend.git
+
+## 🧰 Стек технологий
+
+- **Next.js 15** — современный React-фреймворк с SSR, App Router и Server Actions  
+- **React 19** — последняя версия React с поддержкой Server Components  
+- **TypeScript** — строгая типизация и улучшенная разработка  
+- **TailwindCSS 4** — утилитарный CSS-фреймворк
+- **Zustand + Jotai** — управление состоянием  
+- **React Hook Form + Zod** — формы с типобезопасной валидацией  
+- **TanStack React Query** — работа с API и кеширование  
+- **Radix UI** — доступные и кастомизируемые UI-компоненты  
+- **Framer Motion** — анимации и переходы  
+- **Socket.IO** — real-time взаимодействие (чаты, уведомления и т.п.)  
+- **Lucide-react + React-icons** — набор современных иконок  
+- **SCSS + PostCSS** — гибкие стили и препроцессинг  
+- **Day.js / date-fns** — работа с датами и временем  
+
+## 📁 Структура проекта
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src/
+├── api/          # Интерсепторы для работы с backend API
+├── app/          # Next.js App Router (pages, layout, routing)
+├── components/   # Переиспользуемые UI-компоненты
+├── config/       # Конфигурации и настройки
+├── constants/    # Константы
+├── hooks/        # Кастомные React-хуки
+├── lib/          # Библиотеки, вспомогательные функции
+├── providers/    # Провайдеры (тема, состояние, сессия и т.д.)
+├── services/     # Сервисы для бизнес-логики и API-запросов
+├── store/        # Zustand / Jotai состояние
+├── types/        # TypeScript-типы
+├── utils/        # Утилиты
+└── zod/          # Схемы Zod для валидации
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Структура проекта
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Клонирование репозитория
+git clone https://github.com/Ximeo-dev/CoFoundlyWebsite.git
+cd CoFoundlyWebsite
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Установка зависимостей
+npm install
 
-## Learn More
+# Запуск в режиме разработки
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+# Билд проекта
+npm run build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Предпросмотр продакшн-сборки
+npm run start
+```
