@@ -18,7 +18,7 @@ export default function UnreadMessageIndicator({
 	return (
 		<div
 			className={cn(
-				'bg-background rounded-full flex items-center justify-center',
+				'dark:bg-white bg-black text-white dark:text-black rounded-full flex items-center justify-center mr-1',
 				{
 					'h-5 w-5 text-xs': variant === 'count',
 					'h-4 w-4': variant === 'dot',

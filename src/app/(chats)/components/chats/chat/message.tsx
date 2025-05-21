@@ -102,8 +102,8 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 											{dayjs(message.sentAt).format('HH:mm')}
 										</span>
 										{isSender &&
-											(
-											message.readReceipt ? (
+											(Array.isArray(message.readReceipt) &&
+											message.readReceipt.length > 0 ? (
 												<CheckCheck className='h-4 w-4 text-zinc-100' />
 											) : (
 												<Check className='h-4 w-4 text-gray-300' />
