@@ -34,15 +34,15 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 	const queryClient = useQueryClient()
 	const messagesEndRef = useRef<HTMLDivElement>(null)
+	const messagesContainerRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		scrollToBottom()
 	}, [messages])
 
 	const scrollToBottom = useCallback(() => {
-		messagesEndRef.current?.scrollIntoView()
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
 	}, [])
-
 
 	useEffect(() => {
 		localStorage.setItem(ACTIVE_CHAT_KEY, id)
@@ -57,7 +57,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		error,
 	} = useQuery({
 		queryKey: ['get-messages', id],
-		queryFn: async () => await chatService.getChatMessages(id),
+		queryFn: async () => await chatService.getChatMessages(id, 1),
 		enabled: !!id,
 		initialData: [],
 	})
@@ -70,25 +70,25 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 
 	useEffect(() => {
 		const handleNewMessage = (message: any) => {
-			console.log(message)
+			console.log('[Chat] New message received:', message)
 			if (message.chatId === id) {
 				setMessages(prev => {
 					if (!prev.some(m => m.id === message.id)) {
-						console.log('[Chat] Добавление нового сообщения:', message)
+						console.log('[Chat] Adding new message:', message)
 						return [...prev, message]
 					}
 					return prev
 				})
 				queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 			} else {
-				console.log('[Chat] chatId не совпадает:', message.chatId, id)
+				console.log('[Chat] chatId mismatch:', message.chatId, id)
 			}
 		}
 
 		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
 
 		return () => {
-			socket.off(ChatServerEvent.NEW_MESSAGE)
+			socket.off(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
 		}
 	}, [id, queryClient])
 
@@ -103,7 +103,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		socket.on(ChatServerEvent.MESSAGE_DELETED, handleDeletedMessage)
 
 		return () => {
-			socket.off(ChatServerEvent.MESSAGE_DELETED)	
+			socket.off(ChatServerEvent.MESSAGE_DELETED, handleDeletedMessage)
 		}
 	}, [id, queryClient])
 
@@ -113,7 +113,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 
 		socket.emit(ChatClientEvent.DELETE_MESSAGE, {
 			chatId: id,
-			messageId: messageId
+			messageId: messageId,
 		})
 
 		setMessages(prev => prev.filter(m => m.id !== messageId))
@@ -144,20 +144,44 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		socket.emit(ChatClientEvent.EDIT_MESSAGE, {
 			chatId: id,
 			messageId: messageId,
-			newContent: newContent
+			newContent: newContent,
 		})
 
-		setMessages(prev => prev.map(m => m.id === messageId ? { ...m, content: newContent, isEdited: true } : m))
+		setMessages(prev =>
+			prev.map(m =>
+				m.id === messageId ? { ...m, content: newContent, isEdited: true } : m
+			)
+		)
 		setEditingMessage(null)
 		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 	}
 
 	const markMessagesAsRead = useCallback(() => {
-		if (!user?.id) return
+		if (!user?.id || !messagesContainerRef.current) {
+			console.log(
+				'[Chat] Cannot mark messages as read: user.id or container missing'
+			)
+			return
+		}
 
-		const unreadMessages = messages.filter(
-			m => m.senderId !== user.id && !m.readReceipt
-		)
+		const unreadMessages: IMessage[] = []
+		messages.forEach(message => {
+			if (
+				message.senderId !== user.id &&
+				Array.isArray(message.readReceipt) &&
+				message.readReceipt.length === 0
+			) {
+				const messageElement = document.getElementById(`message-${message.id}`)
+				if (messageElement) {
+					const rect = messageElement.getBoundingClientRect()
+					const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
+					if (isVisible) {
+						unreadMessages.push(message)
+						console.log('[Chat] Marking message as read:', message.id)
+					}
+				}
+			}
+		})
 
 		if (unreadMessages.length > 0) {
 			socket.emit(ChatClientEvent.MARK_READ, {
@@ -166,14 +190,32 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 				userId: user.id,
 			})
 		}
-	}, [messages, id, user])
+	}, [messages, id, user, socket])
+
+	useEffect(() => {
+		const container = messagesContainerRef.current
+		if (!container) return
+
+		const handleScroll = () => {
+			markMessagesAsRead()
+		}
+
+		container.addEventListener('scroll', handleScroll)
+		window.addEventListener('resize', handleScroll) // Обновление при изменении размера окна
+
+		return () => {
+			container.removeEventListener('scroll', handleScroll)
+			window.removeEventListener('resize', handleScroll)
+		}
+	}, [markMessagesAsRead])
 
 	useEffect(() => {
 		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
+			console.log('[Chat] Received read receipts:', readReceipts)
 			setMessages(prev =>
 				prev.map((m: any) => {
 					const receipt = readReceipts.find(r => r.messageId === m.id)
-					return receipt ? { ...m, readReceipt: receipt } : m
+					return receipt ? { ...m, readReceipt: [receipt] } : m
 				})
 			)
 			queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
@@ -183,24 +225,27 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		return () => {
 			socket.off(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
 		}
-	}, [])
+	}, [socket, id, queryClient])
 
-	useEffect(() => {
-		const timer = setTimeout(markMessagesAsRead, 300)
-		return () => clearTimeout(timer)
-	}, [messages, markMessagesAsRead])
+	// Убираем автоматический таймер, используем только при прокрутке
+	// useEffect(() => {
+	//   const timer = setTimeout(markMessagesAsRead, 300)
+	//   return () => clearTimeout(timer)
+	// }, [messages, markMessagesAsRead])
 
 	const correspondent = initialData.participants.find(
 		p => p.userId !== user?.id
 	)
 
+	if (!user?.id) {
+		return (
+			<div className='p-5 text-center'>Ошибка: Пользователь не авторизован</div>
+		)
+	}
+
 	if (isLoading) return <div className='p-5 text-center'>Загрузка...</div>
 	if (error)
-		return (
-			<div className='p-5'>
-				Ошибка загрузки сообщений: {error.message}
-			</div>
-		)
+		return <div className='p-5'>Ошибка загрузки сообщений: {error.message}</div>
 
 	return (
 		<div className='flex h-full w-full'>
@@ -219,22 +264,26 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 						correspondent={correspondent}
 					/>
 
-					<div className='px-5 py-3 overflow-y-auto border-t border-border'>
+					<div
+						ref={messagesContainerRef}
+						className='px-5 py-3 overflow-y-auto border-t border-border'
+					>
 						{messages.map(message => (
-							<Message
-								key={message.id}
-								message={message}
-								onDelete={handleDeleteMessage}
-								onEdit={() => setEditingMessage(message)}
-								isSender={user?.id === message.senderId}
-							/>
+							<div key={message.id} id={`message-${message.id}`}>
+								<Message
+									message={message}
+									onDelete={handleDeleteMessage}
+									onEdit={() => setEditingMessage(message)}
+									isSender={user.id === message.senderId}
+								/>
+							</div>
 						))}
 						<div ref={messagesEndRef} />
 					</div>
 
 					<MessageField
 						chatId={id}
-						userId={user?.id || ''}
+						userId={user.id}
 						editingMessage={editingMessage}
 						onCancelEdit={() => setEditingMessage(null)}
 						onSubmitEdit={handleEditMessage}

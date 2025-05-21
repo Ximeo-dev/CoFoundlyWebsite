@@ -55,7 +55,7 @@ export default function ChatSidebar({
 						}}
 						className='fixed inset-y-0 right-0 z-50 w-full max-w-lg sm:relative sm:z-auto'
 					>
-						<div className='w-full h-full bg-background border-l border-border overflow-y-auto overflow-x-hidden'>
+						<div className='w-full h-full bg-background border-l-none lg:border-l border-border overflow-y-auto overflow-x-hidden'>
 							<div className='h-full flex flex-col'>
 								<div className='flex justify-between items-center mb-6 p-4'>
 									<h3 className='text-lg font-semibold'>Информация</h3>

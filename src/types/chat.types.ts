@@ -22,6 +22,7 @@ export interface IChat {
 	type: string
 	participants: IParticipant[]
 	messages: IMessage[]
+	unreadMessages: number
 }
 
 export interface IParticipant {
