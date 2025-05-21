@@ -18,12 +18,27 @@ export default function EditProject({
 }: IEditProject) {
 	const handleSubmit = async (data: IProjectRequest) => {
 		try {
+			if (!initialData.id) {
+				console.error('[EditProject] Missing project ID:', initialData)
+				throw new Error('Project ID is missing')
+			}
+			console.log(
+				'[EditProject] Submitting data for project ID:',
+				initialData.id
+			)
+			console.log('[EditProject] Data:', JSON.stringify(data, null, 2))
 			const response = await projectService.editProject(data, initialData.id)
+			console.log('[EditProject] Success response:', response)
 			toast.success('Проект успешно обновлен')
 			onUpdated(response)
-		} catch (error) {
-			console.error('Ошибка при обновлении проекта:', error)
-			toast.error('Не удалось обновить проект')
+		} catch (error: any) {
+			console.error('[EditProject] Error updating project:', {
+				message: error.message,
+				status: error.response?.status,
+				data: error.response?.data,
+				stack: error.stack,
+			})
+			toast.error(error.response?.data?.message || 'Не удалось обновить проект')
 		}
 	}
 

@@ -6,36 +6,63 @@ import SkeletonView from '../../components/user-anket/anket-view/skeleton-view'
 import { useProjects } from '@/hooks/anket/useProjects'
 import ProjectEditor from './project-editor'
 import ProjectCardList from './project-card-list/project-card-list'
+import ProjectPreviewCard from './preview/components/project-preview-card'
+import { IProject } from '@/types/project.types'
 
 export default function ProjectMain() {
 	const queryClient = useQueryClient()
-	const [isCreating, setIsCreating] = useState(false)
-	const { projects, isLoading, error } = useProjects()
+	const [isEditing, setIsEditing] = useState(false)
+	const { projects, isLoading } = useProjects()
 
 	if (isLoading) return <SkeletonView />
 
-	if (error || !projects || projects.length === 0 || isCreating) {
-		return (
+	const project = projects && projects.length > 0 ? projects[0] : null
+
+	if (project) {
+		return isEditing ? (
 			<ProjectEditor
-				mode='create'
-				onSuccess={createdProject => {
+				onCancel={() => setIsEditing(false)}
+				mode='edit'
+				initialData={project}
+				onSuccess={updatedProject => {
 					queryClient.setQueryData(
 						['getProjects'],
-						[createdProject, ...(projects || [])]
+						(old: IProject[] | undefined) =>
+							old
+								? old.map(p =>
+										p.id === updatedProject.id ? updatedProject : p
+								  )
+								: [updatedProject]
 					)
-					setIsCreating(false)
+					setIsEditing(false)
 				}}
-				onCancel={() => setIsCreating(false)}
+			/>
+		) : (
+			<ProjectPreviewCard
+				project={project}
+				editable
+				onEdit={() => setIsEditing(true)}
+				onDelete={() => {
+					queryClient.setQueryData(
+						['getProjects'],
+						(old: IProject[] | undefined) =>
+							old ? old.filter(p => p.id !== project.id) : []
+					)
+				}}
 			/>
 		)
 	}
 
 	return (
-		<div className=''>
-			<h2 className='text-2xl md:text-3xl font-semibold mb-12 text-center'>
-				Ваши проекты
-			</h2>
-			<ProjectCardList projects={projects} />
-		</div>
+		<ProjectEditor
+			mode='create'
+			onSuccess={createdProject => {
+				queryClient.setQueryData(
+					['getProjects'],
+					(old: IProject[] | undefined) => [createdProject, ...(old || [])]
+				)
+				setIsEditing(false)
+			}}
+		/>
 	)
 }
