@@ -19,7 +19,7 @@ export default function AuthLayout({
 					<ProfileSidebar />
 					<div className={cn(styles.profile_section, '')}>{children}</div>
 				</div>
-				{/* <EmailConfirmationNotification /> */}
+				<EmailConfirmationNotification />
 				<NotificationList />
 			</ContainerWrapper>
 		</>

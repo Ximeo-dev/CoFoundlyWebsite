@@ -32,27 +32,25 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en' suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
-          <QueryProvider>
-            <AuthProvider>
-              <SocketProvider>
-                <NotificationProvider>
-                  {/* <NotificationList /> */}
-                  <Toaster duration={3000} />
-                  {/* <Header /> */}
-                  {children}
-                </NotificationProvider>
-              </SocketProvider>
-            </AuthProvider>
-          </QueryProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+			<body className={`${inter.className} antialiased`}>
+				<ThemeProvider
+					attribute='class'
+					defaultTheme='system'
+					enableSystem
+					disableTransitionOnChange
+				>
+					<QueryProvider>
+						<AuthProvider>
+							<SocketProvider>
+								<NotificationProvider>
+									<Toaster duration={3000} />
+									<main>{children}</main>
+								</NotificationProvider>
+							</SocketProvider>
+						</AuthProvider>
+					</QueryProvider>
+				</ThemeProvider>
+			</body>
+		</html>
 	)
 }

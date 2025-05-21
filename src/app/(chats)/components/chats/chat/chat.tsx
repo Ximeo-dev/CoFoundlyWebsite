@@ -18,6 +18,9 @@ import { useSocket } from '@/hooks/useSocket'
 import { cn } from '@/lib/utils'
 import ChatSidebar from '../../chat-sidebar/chat-sidebar'
 import { Loader } from 'lucide-react'
+import { groupMessagesByDate } from '@/utils/groupMessagesByDate'
+import { isToday, isYesterday, format } from 'date-fns'
+import { ru } from 'date-fns/locale'
 
 interface ChatProps {
 	id: string
@@ -94,6 +97,8 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		queryFn: async () => await chatService.getChatMessages(id, 1, 30),
 		enabled: !!id,
 		initialData: [],
+		staleTime: 0,
+		gcTime: 0
 	})
 
 	useEffect(() => {
@@ -363,16 +368,34 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 								<Loader />
 							</div>
 						)}
-						{messages.map((message, i) => (
-							<div key={`${message.id}-${i}`} id={`message-${message.id}`}>
-								<Message
-									message={message}
-									onDelete={handleDeleteMessage}
-									onEdit={() => setEditingMessage(message)}
-									isSender={user.id === message.senderId}
-								/>
-							</div>
-						))}
+						{Object.entries(groupMessagesByDate(messages)).map(
+							([date, messagesForDate]) => (
+								<div key={date}>
+									<div className='text-center text-sm opacity-50 py-2'>
+										<span className='bg-background border border-border py-1.5 px-2.5 rounded-[15px]'>
+											{isToday(new Date(date))
+												? 'Сегодня'
+												: isYesterday(new Date(date))
+												? 'Вчера'
+												: format(new Date(date), 'd MMMM', { locale: ru })}
+										</span>
+									</div>
+									{messagesForDate.map((message, i) => (
+										<div
+											key={`${message.id}-${i}`}
+											id={`message-${message.id}`}
+										>
+											<Message
+												message={message}
+												onDelete={handleDeleteMessage}
+												onEdit={() => setEditingMessage(message)}
+												isSender={user.id === message.senderId}
+											/>
+										</div>
+									))}
+								</div>
+							)
+						)}
 						<div ref={messagesEndRef} />
 					</div>
 

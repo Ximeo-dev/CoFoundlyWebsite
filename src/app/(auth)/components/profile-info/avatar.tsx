@@ -127,10 +127,10 @@ export default function Avatar({
 
 	const avatarUserId = id || user?.id
 	const avatarUrl =
-		avatarUserId && hasAvatar
+		hasAvatar && avatarUserId
 			? `${API_URL}/images/avatar/user/${avatarUserId}/${size}?v=${
-					avatarVersion || Date.now()
-			  }`
+				avatarVersion || Date.now()
+			}`
 			: null
 
 	return (
