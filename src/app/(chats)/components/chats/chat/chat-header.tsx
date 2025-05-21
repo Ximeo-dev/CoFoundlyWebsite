@@ -7,6 +7,7 @@ import { ChatServerEvent, IParticipant } from '@/types/chat.types'
 import { PanelLeft } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { cn } from '@/lib/utils'
 
 interface ChatHeaderProps {
 	correspondent?: IParticipant
@@ -14,15 +15,19 @@ interface ChatHeaderProps {
 }
 
 const TypingDots = () => {
+	useEffect(() => {
+		console.log('[TypingDots] Component rendered')
+	}, [])
+
 	return (
-		<div className='flex items-center text-xs opacity-50'>
+		<div className='flex items-center opacity-50'>
 			<div className='flex space-x-1'>
 				{[0, 1, 2].map(i => (
 					<motion.span
 						key={i}
-						className='block w-1 h-1 rounded-full'
+						className='block w-1 h-1 rounded-full bg-gray-500 dark:bg-gray-400'
 						animate={{
-							y: [0, -3, 0],
+							y: [0, -4, 0],
 							opacity: [0.6, 1, 0.6],
 						}}
 						transition={{
@@ -34,7 +39,7 @@ const TypingDots = () => {
 					/>
 				))}
 			</div>
-			<span className='ml-1'>печатает</span>
+			<span className='ml-1 text-sm'>печатает</span>
 		</div>
 	)
 }
@@ -43,11 +48,12 @@ export default function ChatHeader({
 	correspondent,
 	onToggleSidebar,
 }: ChatHeaderProps) {
-  const socket = useSocket()
+	const socket = useSocket()
 	const [isTyping, setIsTyping] = useState(false)
 
 	useEffect(() => {
 		const handleTyping = (data: { userId: string; typing: boolean }) => {
+			console.log('[ChatHeader] Received typing event:', data)
 			if (data.userId === correspondent?.userId) {
 				setIsTyping(data.typing)
 			}
@@ -80,7 +86,7 @@ export default function ChatHeader({
 								: correspondent.profile.job.name}
 						</p>
 					) : (
-						<div className='hidden'></div>
+						<div className='h-4' />
 					)}
 				</div>
 			</div>

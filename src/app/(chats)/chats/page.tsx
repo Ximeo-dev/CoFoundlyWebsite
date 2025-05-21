@@ -46,7 +46,7 @@ export default function ChatsPage() {
 
 	const handleTouchEnd = () => {
 		if (!isMobile || !selectedChat) return
-		if (swipeOffset > 200) {
+		if (swipeOffset > 150) {
 			setSelectedChat(null)
 		}
 		setSwipeOffset(0)

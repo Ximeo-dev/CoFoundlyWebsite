@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import ContainerWrapper from '@/components/layout/container/container-wrapper'
 import ProfileSidebar from './components/profile-sidebar/profile-sidebar'
 import { EmailConfirmationNotification } from '@/components/layout/email-confirmation/email-confirmation-notification'
+import NotificationList from '@/components/layout/notification-list/notification-list'
 
 export default function AuthLayout({
 	children,
@@ -21,7 +22,8 @@ export default function AuthLayout({
 					<ProfileSidebar />
 					<div className={cn(styles.profile_section, '')}>{children}</div>
 				</div>
-				<EmailConfirmationNotification />
+				{/* <EmailConfirmationNotification /> */}
+				<NotificationList />
 			</ContainerWrapper>
 		</>
 	)

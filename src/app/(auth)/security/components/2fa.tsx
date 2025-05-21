@@ -12,9 +12,11 @@ import { Check, Copy } from 'lucide-react'
 import { twoFactorService } from '@/services/two-factor.service'
 import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
 import { ResponseError } from '@/types/error.types'
+import TwoFA from '@/components/ui/2fa/2fa'
 
 export default function TwoFactor() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+	const [isBotModalOpen, setIsBotModalOpen] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const [generatedToken, setGeneratedToken] = useState('')
 
@@ -43,6 +45,12 @@ export default function TwoFactor() {
 			}
 		}
 	})
+
+	const handleUnbind = () => {
+		setIsBotModalOpen(true)
+		setIsModalOpen(false)
+		unbind()
+	}
 
   const handleCopy = () => {
     if (!generatedToken) return
@@ -80,7 +88,7 @@ export default function TwoFactor() {
 				{user?.securitySettings?.twoFactorEnabled &&
 				user?.securitySettings?.telegramId ? (
 					<button
-						onClick={() => unbind()}
+						onClick={handleUnbind}
 						className={cn(
 							styles.change_btn,
 							'bg-black text-white dark:bg-white dark:text-black hover:dark:bg-white/70 hover:bg-neutral-700'
@@ -159,6 +167,12 @@ export default function TwoFactor() {
 						</div>
 					</div>
 				</Modal>
+			)}
+			{isBotModalOpen && (
+				<TwoFA
+					isOpen={isBotModalOpen}
+					onClose={() => setIsBotModalOpen(false)}
+				/>
 			)}
 		</>
 	)

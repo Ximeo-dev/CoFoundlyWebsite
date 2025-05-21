@@ -22,6 +22,7 @@ export interface IChat {
 	type: string
 	participants: IParticipant[]
 	messages: IMessage[]
+	unreadMessages: number
 }
 
 export interface IParticipant {
@@ -40,7 +41,7 @@ export interface IMessage {
 	createdAt: string
 	isEdited: boolean
 	sender: ISender
-	readReceipt?: IReadReceipt[]
+	readReceipt: IReadReceipt[]
 }
 
 export interface ISender {

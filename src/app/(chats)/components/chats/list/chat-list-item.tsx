@@ -1,12 +1,13 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
-import { ChatServerEvent, IChat, IMessage } from '@/types/chat.types'
+import { ChatServerEvent, IChat } from '@/types/chat.types'
 import dayjs from 'dayjs'
 import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { useSocket } from '@/hooks/useSocket'
-import { useEffect, useRef, useState } from 'react'
 import UnreadMessageIndicator from './unread-message-indicator'
+import { useEffect, useState } from 'react'
 
 interface IChatListItem {
 	chat: IChat
@@ -23,7 +24,6 @@ export default function ChatListItem({
 	const correspondent = chat.participants.find(p => p.userId !== user?.id)
 	const socket = useSocket()
 	const [isTyping, setIsTyping] = useState(false)
-	const [unreadCount, setUnreadCount] = useState(0)
 
 	const lastMessage =
 		chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null
@@ -52,45 +52,21 @@ export default function ChatListItem({
 		? truncateMessage(lastMessage.content)
 		: 'Начните общение'
 
-	useEffect(() => {	
-		if (!user?.id) return
-
-		const count = chat.messages.reduce((acc, message) => {
-			return message.senderId !== user.id && !message.readReceipt ? acc + 1 : acc
-		}, 0)
-
-		setUnreadCount(count)
-	}, [chat.messages, user?.id])
-
 	useEffect(() => {
-		if (!socket || !user?.id) return
-
-		const handleNewMessage = (message: IMessage) => {
-			if (message.chatId === chat.id && message.senderId !== user.id) {
-				setUnreadCount(prev => prev + 1)
-			}
-		}
-
-		const handleMessageRead = () => {
-			setUnreadCount(0)
-		}
+		if (!socket || !user?.id || !correspondent?.userId) return
 
 		const handleTyping = (data: { userId: string; typing: boolean }) => {
-			if (data.userId === correspondent?.userId) {
+			if (data.userId === correspondent.userId) {
 				setIsTyping(data.typing)
 			}
 		}
 
-		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
-		socket.on(ChatServerEvent.MESSAGE_READ, handleMessageRead)
 		socket.on(ChatServerEvent.USER_TYPING, handleTyping)
 
 		return () => {
-			socket.off(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
-			socket.off(ChatServerEvent.MESSAGE_READ, handleMessageRead)
 			socket.off(ChatServerEvent.USER_TYPING, handleTyping)
 		}
-	}, [chat.id, correspondent?.userId, socket, user?.id])
+	}, [correspondent?.userId, socket, user?.id])
 
 	return (
 		<div
@@ -119,11 +95,15 @@ export default function ChatListItem({
 						)}
 					</div>
 				</div>
-				<div className='flex flex-col h-full justify-between'>
-					<span className='text-xs opacity-30 flex-shrink-0 pl-2'>
+				<div className='flex flex-col h-full justify-between items-end'>
+					<span className='text-xs opacity-30 flex-shrink-0'>
 						{lastMessage ? formatMessageDate(lastMessage.sentAt) : ''}
 					</span>
-					<UnreadMessageIndicator count={unreadCount} variant='count' />
+					<UnreadMessageIndicator
+						count={chat.unreadMessages || 0}
+						variant='count'
+						className='mt-1'
+					/>
 				</div>
 			</div>
 		</div>
