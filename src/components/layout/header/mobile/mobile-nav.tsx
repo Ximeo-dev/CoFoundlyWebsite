@@ -9,21 +9,27 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import * as m from 'motion/react-client'
 import { LazyMotion, domAnimation } from 'motion/react'
-import { MENU_MORE } from '@/constants/menu.constants'
+import { SIDEBAR_MENU } from '@/constants/menu.constants'
 import { ModeToggle } from '@/components/ui/theme-toggle/theme-toggle'
 import { cn } from '@/lib/utils'
 import DropdownProfile from '@/components/ui/dropdown-profile/dropdown-profile'
 import { useAuth } from '@/hooks/useAuth'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { authService } from '@/services/auth.service'
+import { ResponseError } from '@/types/error.types'
+import { toast } from 'sonner'
 
 export default function MobileNav() {
-  const pathname = usePathname()
+	const pathname = usePathname()
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	const toggleMenu = () => setIsOpen(!isOpen)
 	const { resolvedTheme } = useTheme()
 	const [isMounted, setIsMounted] = useState(false)
-	
+	const queryClient = useQueryClient()
+	const { isAuthenticated, setUser, setIsAuthenticated } = useAuth()
+
 	useEffect(() => {
 		setIsMounted(true)
 	}, [])
@@ -36,7 +42,20 @@ export default function MobileNav() {
 		}
 	}, [isOpen])
 
-	const { isAuthenticated } = useAuth()
+	const { mutate: logout } = useMutation({
+		mutationKey: ['logout'],
+		mutationFn: () => authService.logout(),
+		onSuccess: () => {
+			setIsAuthenticated(false)
+			setUser(null)
+			queryClient.setQueryData(['userProfile'], null)
+			window.location.href = '/welcome'
+		},
+		onError: (error: ResponseError) => {
+			toast.error('Что-то пошло не так')
+			console.log(error)
+		},
+	})
 
 	return (
 		<LazyMotion features={domAnimation}>
@@ -112,44 +131,64 @@ export default function MobileNav() {
 									visible: {
 										transition: {
 											delayChildren: 0.1,
-											staggerChildren: 0.12,
+											staggerChildren: 0.05,
 										},
 									},
 									hidden: {},
 								}}
-								className={styles.open_inner}
+								className={cn(styles.open_inner, 'mt-20')}
 							>
-								{MENU_MORE.map((item, index) => (
-									<m.div
-										key={index}
-										variants={{
-											hidden: { opacity: 0, x: -50 },
-											visible: { opacity: 1, x: 0 },
-										}}
-										transition={{ duration: 0.4, ease: 'easeInOut' }}
-										className='border border-border rounded-[15px] bg-background p-3'
-									>
-										<Link
-											onClick={toggleMenu}
-											href={item.href}
-											className={cn(
-												styles.list_item,
-												'text-black dark:text-white',
-												pathname === item.href
-													? 'bg-[#E0E0E0] dark:bg-[#222]'
-													: ''
-											)}
+								{SIDEBAR_MENU.flatMap((section, sectionIndex) => [
+
+									...section.items.map((item, itemIndex) => (
+										<m.div
+											key={`item-${sectionIndex}-${itemIndex}`}
+											variants={{
+												hidden: { opacity: 0, x: -20 },
+												visible: { opacity: 1, x: 0 },
+											}}
+											transition={{ duration: 0.3, ease: 'easeInOut' }}
 										>
-											{item.label}
-										</Link>
-									</m.div>
-								))}
+											{item.href === '/logout' ? (
+												<button
+													onClick={() => {
+														logout()
+														toggleMenu()
+													}}
+													className={cn(
+														styles.list_item,
+														'text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white'
+													)}
+												>
+													<item.icon size={20} />
+													<span>{item.label}</span>
+												</button>
+											) : (
+												<Link
+													onClick={toggleMenu}
+													href={item.href}
+													className={cn(
+														styles.list_item,
+														'text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white',
+														pathname === item.href &&
+															'text-black dark:text-white font-medium'
+													)}
+												>
+													<item.icon size={20} />
+													<span>{item.label}</span>
+												</Link>
+											)}
+										</m.div>
+									)),
+								])}
+
 								<m.div
 									variants={{
-										hidden: { opacity: 0, x: -50 },
+										hidden: { opacity: 0, x: -20 },
 										visible: { opacity: 1, x: 0 },
 									}}
-									transition={{ duration: 0.4, ease: 'easeInOut' }}
+									transition={{ duration: 0.3, ease: 'easeInOut' }}
+									className='mt-6'
 								>
 									<ModeToggle />
 								</m.div>

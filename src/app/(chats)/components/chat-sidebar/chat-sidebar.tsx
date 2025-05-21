@@ -2,7 +2,7 @@
 
 import { IParticipant } from '@/types/chat.types'
 import { CircleUser, Info, X } from 'lucide-react'
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { Button } from '@/components/ui/shadcn/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect } from 'react'

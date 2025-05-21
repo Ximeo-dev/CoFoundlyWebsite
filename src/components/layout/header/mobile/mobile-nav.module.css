@@ -23,7 +23,7 @@
     }
 
     .open_inner {
-      @apply flex flex-col gap-8 px-3 sm:px-8 mt-40;
+      @apply flex flex-col gap-6 px-6 mt-26;
 
       .list_item {
         @apply flex items-center gap-3 text-lg p-1 rounded-[15px] transition-colors duration-300;

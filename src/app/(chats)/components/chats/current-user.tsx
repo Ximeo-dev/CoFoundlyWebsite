@@ -1,6 +1,6 @@
 'use client'
 
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function CurrentUser() {

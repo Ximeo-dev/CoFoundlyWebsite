@@ -87,23 +87,23 @@ export const SIDEBAR_MENU: IMenuSection[] = [
 		label: 'Основное',
 		items: [
 			{
-				href: '/profile',
+				href: '/',
 				icon: LayoutDashboard,
 				label: 'Моя анкета',
 			},
 			{
-				href: '/profile/projects',
+				href: '/projects',
 				icon: Briefcase,
 				label: 'Проекты',
 			},
 			{
-				href: 'swipes',
+				href: '/swipes',
 				icon: HeartHandshake,
 				label: 'Свайпы',
 			},
 			{
 				href: '/chats',
-				icon: MessageSquare,
+				icon: MessagesSquare,
 				label: 'Чаты',
 			},
 		],
@@ -112,8 +112,8 @@ export const SIDEBAR_MENU: IMenuSection[] = [
 		label: 'Управление',
 		items: [
 			{
-				href: '/profile/security',
-				icon: Shield,
+				href: '/security',
+				icon: Fingerprint,
 				label: 'Безопасность',
 			},
 			{

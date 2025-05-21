@@ -1,6 +1,6 @@
 'use client'
 
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { Button } from '@/components/ui/shadcn/button'
 import { useSocket } from '@/hooks/useSocket'
 import { ChatServerEvent, IParticipant } from '@/types/chat.types'
@@ -60,7 +60,7 @@ export default function ChatHeader({
 	}, [correspondent?.userId, socket])
 
 	return (
-		<div className='p-5 flex items-center justify-between'>
+		<div className='ml-14 md:ml-0 p-5 flex items-center justify-between'>
 			<div className='flex items-center gap-3'>
 				<Avatar
 					size={64}

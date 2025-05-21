@@ -3,7 +3,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { ChatServerEvent, IChat, IMessage } from '@/types/chat.types'
 import dayjs from 'dayjs'
-import Avatar from '@/app/profile/components/profile-info/avatar'
+import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { useSocket } from '@/hooks/useSocket'
 import { useEffect, useRef, useState } from 'react'
 import UnreadMessageIndicator from './unread-message-indicator'
@@ -99,33 +99,32 @@ export default function ChatListItem({
 				isActive ? 'bg-border' : ''
 			}`}
 		>
-			<div className='flex items-center gap-x-3 min-w-0'>
-				<Avatar
-					size={64}
-					id={correspondent?.userId}
-					hasAvatar={correspondent?.profile?.hasAvatar ?? false}
-					className='flex-shrink-0'
-					name={correspondent?.displayUsername}
-				/>
-				<div className='text-sm flex flex-col gap-y-2 min-w-0'>
-					<span className='font-medium truncate'>
-						{correspondent?.displayUsername || 'Неизвестный пользователь'}
-					</span>
-					{isTyping ? (
-						<span className='opacity-50 italic text-xs'>печатает...</span>
-					) : (
-						<span className='opacity-30 truncate'>{lastMessageContent}</span>
-					)}
+			<div className='border-b lg:border-none border-border flex w-full justify-between pb-2.5 lg:pb-0'>
+				<div className='flex items-center gap-x-3 min-w-0'>
+					<Avatar
+						size={64}
+						id={correspondent?.userId}
+						hasAvatar={correspondent?.profile?.hasAvatar ?? false}
+						className='flex-shrink-0'
+						name={correspondent?.displayUsername}
+					/>
+					<div className='text-sm flex flex-col gap-y-2 min-w-0'>
+						<span className='font-medium truncate'>
+							{correspondent?.displayUsername || 'Неизвестный пользователь'}
+						</span>
+						{isTyping ? (
+							<span className='opacity-50 italic text-xs'>печатает...</span>
+						) : (
+							<span className='opacity-30 truncate'>{lastMessageContent}</span>
+						)}
+					</div>
 				</div>
-			</div>
-			<div className='flex flex-col h-full justify-between'>
-				<span className='text-xs opacity-30 flex-shrink-0 pl-2'>
-					{lastMessage ? formatMessageDate(lastMessage.sentAt) : ''}
-				</span>
-				<UnreadMessageIndicator
-					count={unreadCount}
-					variant='count'
-				/>
+				<div className='flex flex-col h-full justify-between'>
+					<span className='text-xs opacity-30 flex-shrink-0 pl-2'>
+						{lastMessage ? formatMessageDate(lastMessage.sentAt) : ''}
+					</span>
+					<UnreadMessageIndicator count={unreadCount} variant='count' />
+				</div>
 			</div>
 		</div>
 	)

@@ -7,11 +7,12 @@ import HeaderNav from './header-nav'
 import { cn } from '@/lib/utils'
 import MobileNav from './mobile/mobile-nav'
 import { usePathname } from 'next/navigation'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Header() {
   const scrollDirection = useScrollDirection()
   const [isVisible, setIsVisible] = useState<boolean>(true)
-  const pathname = usePathname()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     if (scrollDirection === 'up') {
@@ -21,7 +22,7 @@ export default function Header() {
     }
   }, [scrollDirection])
 
-  if (pathname === '/login' || pathname === '/register' || pathname === '/reset-password' || pathname.startsWith('/chats')) return null
+  if (isAuthenticated) return null
 
   return (
 		<>

@@ -34,7 +34,7 @@ export default function LoginForm() {
 			queryClient.invalidateQueries({
 				queryKey: ['userProfile'],
 			})
-			router.push('/profile')
+			router.push('/')
 			toast.success('Успешный вход')
 		},
 		onError: (error: ResponseError) => {

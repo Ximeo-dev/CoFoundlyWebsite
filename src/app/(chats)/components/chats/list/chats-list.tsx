@@ -5,7 +5,7 @@ import ChatListItem from './chat-list-item'
 import CurrentUser from '../current-user'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { chatService } from '@/services/chat.service'
-import { Loader } from 'lucide-react'
+import { Loader, Search } from 'lucide-react'
 import { IChat } from '@/types/chat.types'
 import { useSocket } from '@/hooks/useSocket'
 import { ChatServerEvent } from '@/types/chat.types'
@@ -88,12 +88,15 @@ export default function ChatsList({
 		<div className='flex flex-col h-full w-full'>
 			<CurrentUser />
 			<div className='border-t border-b border-border p-3'>
-				<input
-					value={searchTerm}
-					onChange={e => setSearchTerm(e.target.value)}
-					className='outline-none w-full bg-transparent text-white placeholder-gray-500'
-					placeholder='Поиск...'
-				/>
+				<div className='flex justify-between items-center'>
+					<input
+						value={searchTerm}
+						onChange={e => setSearchTerm(e.target.value)}
+						className='outline-none w-full bg-transparent opacity-50'
+						placeholder='Поиск...'
+					/>
+					<Search className='opacity-50' size={20} />
+				</div>
 			</div>
 			<div className='overflow-y-auto flex-1 p-2'>
 				{isLoading ? (
@@ -113,7 +116,7 @@ export default function ChatsList({
 						</div>
 					))
 				) : (
-					<p className='p-5 text-gray-500'>Нет результатов</p>
+					<p className='p-5 opacity-50'>Нет результатов</p>
 				)}
 			</div>
 		</div>
