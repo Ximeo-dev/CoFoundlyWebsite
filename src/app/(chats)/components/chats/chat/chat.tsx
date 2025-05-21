@@ -17,6 +17,7 @@ import MessageField from './message-field'
 import { useSocket } from '@/hooks/useSocket'
 import { cn } from '@/lib/utils'
 import ChatSidebar from '../../chat-sidebar/chat-sidebar'
+import { Loader } from 'lucide-react'
 
 interface ChatProps {
 	id: string
@@ -30,19 +31,16 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const { user } = useAuth()
 	const [messages, setMessages] = useState<IMessage[]>([])
 	const [editingMessage, setEditingMessage] = useState<IMessage | null>(null)
+	const [page, setPage] = useState(1)
+	const [hasMore, setHasMore] = useState(true)
+	const [isLoadingMore, setIsLoadingMore] = useState(false)
 	const socket = useSocket()
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 	const queryClient = useQueryClient()
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 	const messagesContainerRef = useRef<HTMLDivElement>(null)
-
-	useEffect(() => {
-		scrollToBottom()
-	}, [messages])
-
-	const scrollToBottom = useCallback(() => {
-		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-	}, [])
+	const isInitialMount = useRef(true)
+	const isLoadingInitial = useRef(true)
 
 	useEffect(() => {
 		localStorage.setItem(ACTIVE_CHAT_KEY, id)
@@ -51,46 +49,182 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		}
 	}, [id])
 
+	const scrollToBottom = useCallback((behavior: ScrollBehavior = 'auto') => {
+		if (messagesEndRef.current && !isLoadingInitial.current) {
+			messagesEndRef.current.scrollIntoView({ behavior })
+		}
+	}, [])
+
+	const markMessagesAsRead = useCallback(() => {
+		if (!user?.id || !messagesContainerRef.current) return
+
+		const unreadMessages: IMessage[] = []
+		messages.forEach(message => {
+			if (
+				message.senderId !== user.id &&
+				Array.isArray(message.readReceipt) &&
+				message.readReceipt.length === 0
+			) {
+				const messageElement = document.getElementById(`message-${message.id}`)
+				if (messageElement) {
+					const rect = messageElement.getBoundingClientRect()
+					const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
+					if (isVisible) {
+						unreadMessages.push(message)
+					}
+				}
+			}
+		})
+
+		if (unreadMessages.length > 0) {
+			socket.emit(ChatClientEvent.MARK_READ, {
+				chatId: id,
+				messageIds: unreadMessages.map(m => m.id),
+				userId: user.id,
+			})
+		}
+	}, [messages, id, user, socket])
+
 	const {
 		data: initialMessages,
 		isLoading,
 		error,
 	} = useQuery({
-		queryKey: ['get-messages', id],
-		queryFn: async () => await chatService.getChatMessages(id, 1),
+		queryKey: ['get-messages', id, 1],
+		queryFn: async () => await chatService.getChatMessages(id, 1, 30),
 		enabled: !!id,
 		initialData: [],
 	})
 
 	useEffect(() => {
 		if (initialMessages) {
-			setMessages(initialMessages)
+			const sorted = [...initialMessages].sort(
+				(a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
+			)
+			setMessages(sorted)
+			setPage(1)
+			setHasMore(initialMessages.length === 30)
+			isLoadingInitial.current = false
+
+			if (isInitialMount.current) {
+				setTimeout(() => scrollToBottom('auto'), 0)
+				isInitialMount.current = false
+			}
 		}
-	}, [initialMessages])
+	}, [initialMessages, scrollToBottom])
+
+	const loadMoreMessages = useCallback(async () => {
+		if (isLoadingMore || !hasMore) return
+
+		setIsLoadingMore(true)
+		try {
+			const newMessages = await chatService.getChatMessages(id, page + 1, 30)
+			if (newMessages.length === 0) {
+				setHasMore(false)
+			} else {
+				const container = messagesContainerRef.current
+				const prevScrollHeight = container?.scrollHeight || 0
+				const prevScrollTop = container?.scrollTop || 0
+
+				setMessages(prev => {
+					const merged = [...newMessages, ...prev]
+					return merged.sort(
+						(a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
+					)
+				})
+
+				if (newMessages.length > 0) {
+					setPage(prev => prev + 1)
+				}
+
+				setTimeout(() => {
+					if (container) {
+						const newScrollHeight = container.scrollHeight
+						container.scrollTop =
+							newScrollHeight - prevScrollHeight + prevScrollTop
+					}
+				}, 0)
+			}
+		} catch (error) {
+			console.error('Error loading more messages:', error)
+		} finally {
+			setIsLoadingMore(false)
+		}
+	}, [id, page, isLoadingMore, hasMore])
+
+	const handleScroll = useCallback(() => {
+		const container = messagesContainerRef.current
+		if (!container) return
+
+		markMessagesAsRead()
+
+		if (
+			container.scrollTop < 50 &&
+			hasMore &&
+			!isLoadingMore &&
+			messages.length >= page * 30
+		) {
+			loadMoreMessages()
+		}
+	}, [markMessagesAsRead, hasMore, isLoadingMore, loadMoreMessages, messages.length, page])
 
 	useEffect(() => {
-		const handleNewMessage = (message: any) => {
-			console.log('[Chat] New message received:', message)
+		const container = messagesContainerRef.current
+		if (!container) return
+
+		container.addEventListener('scroll', handleScroll)
+		return () => {
+			container.removeEventListener('scroll', handleScroll)
+		}
+	}, [handleScroll])
+
+	useEffect(() => {
+		setPage(1)
+		setHasMore(true)
+		setMessages([])
+		isInitialMount.current = true
+		isLoadingInitial.current = true
+	}, [id])
+
+	useEffect(() => {
+		const handleNewMessage = (message: IMessage) => {
 			if (message.chatId === id) {
 				setMessages(prev => {
-					if (!prev.some(m => m.id === message.id)) {
-						console.log('[Chat] Adding new message:', message)
-						return [...prev, message]
-					}
-					return prev
+					if (prev.some(m => m.id === message.id)) return prev
+					const merged = [...prev, message]
+					return merged.sort(
+						(a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
+					)
 				})
-				queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
-			} else {
-				console.log('[Chat] chatId mismatch:', message.chatId, id)
+
+				queryClient.setQueryData(['get-direct-chats'], (oldData: IChat[] | undefined) => {
+					if (!oldData) return []
+					return oldData.map(chat =>
+						chat.id === id
+							? { ...chat, messages: [...chat.messages, message] }
+							: chat
+					)
+				})
+
+				const container = messagesContainerRef.current
+				if (container) {
+					const isNearBottom =
+						container.scrollHeight -
+							container.scrollTop -
+							container.clientHeight <
+						100
+					if (isNearBottom) {
+						setTimeout(() => scrollToBottom('smooth'), 0)
+					}
+				}
 			}
 		}
 
 		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
-
 		return () => {
 			socket.off(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
 		}
-	}, [id, queryClient])
+	}, [id, queryClient, socket, scrollToBottom])
 
 	useEffect(() => {
 		const handleDeletedMessage = (deletedMessage: IMessage) => {
@@ -101,11 +235,10 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		}
 
 		socket.on(ChatServerEvent.MESSAGE_DELETED, handleDeletedMessage)
-
 		return () => {
 			socket.off(ChatServerEvent.MESSAGE_DELETED, handleDeletedMessage)
 		}
-	}, [id, queryClient])
+	}, [id, queryClient, socket])
 
 	const handleDeleteMessage = (messageId: string) => {
 		const messageToDelete = messages.find(m => m.id === messageId)
@@ -131,11 +264,10 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		}
 
 		socket.on(ChatServerEvent.MESSAGE_EDITED, handleEditedMessage)
-
 		return () => {
 			socket.off(ChatServerEvent.MESSAGE_EDITED, handleEditedMessage)
 		}
-	}, [id, queryClient])
+	}, [id, queryClient, socket])
 
 	const handleEditMessage = (messageId: string, newContent: string) => {
 		const messageToEdit = messages.find(m => m.id === messageId)
@@ -156,42 +288,6 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 	}
 
-	const markMessagesAsRead = useCallback(() => {
-		if (!user?.id || !messagesContainerRef.current) {
-			console.log(
-				'[Chat] Cannot mark messages as read: user.id or container missing'
-			)
-			return
-		}
-
-		const unreadMessages: IMessage[] = []
-		messages.forEach(message => {
-			if (
-				message.senderId !== user.id &&
-				Array.isArray(message.readReceipt) &&
-				message.readReceipt.length === 0
-			) {
-				const messageElement = document.getElementById(`message-${message.id}`)
-				if (messageElement) {
-					const rect = messageElement.getBoundingClientRect()
-					const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
-					if (isVisible) {
-						unreadMessages.push(message)
-						console.log('[Chat] Marking message as read:', message.id)
-					}
-				}
-			}
-		})
-
-		if (unreadMessages.length > 0) {
-			socket.emit(ChatClientEvent.MARK_READ, {
-				chatId: id,
-				messageIds: unreadMessages.map(m => m.id),
-				userId: user.id,
-			})
-		}
-	}, [messages, id, user, socket])
-
 	useEffect(() => {
 		const container = messagesContainerRef.current
 		if (!container) return
@@ -201,7 +297,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		}
 
 		container.addEventListener('scroll', handleScroll)
-		window.addEventListener('resize', handleScroll) // Обновление при изменении размера окна
+		window.addEventListener('resize', handleScroll)
 
 		return () => {
 			container.removeEventListener('scroll', handleScroll)
@@ -213,7 +309,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
 			console.log('[Chat] Received read receipts:', readReceipts)
 			setMessages(prev =>
-				prev.map((m: any) => {
+				prev.map(m => {
 					const receipt = readReceipts.find(r => r.messageId === m.id)
 					return receipt ? { ...m, readReceipt: [receipt] } : m
 				})
@@ -262,8 +358,13 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 						ref={messagesContainerRef}
 						className='px-5 py-3 overflow-y-auto border-t border-border'
 					>
-						{messages.map(message => (
-							<div key={message.id} id={`message-${message.id}`}>
+						{isLoadingMore && (
+							<div className='text-center py-2'>
+								<Loader />
+							</div>
+						)}
+						{messages.map((message, i) => (
+							<div key={`${message.id}-${i}`} id={`message-${message.id}`}>
 								<Message
 									message={message}
 									onDelete={handleDeleteMessage}

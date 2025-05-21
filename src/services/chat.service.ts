@@ -17,7 +17,7 @@ class ChatService {
 		return response.data
 	}
 
-	async getChatMessages(chatId: string, page: number = 1, limit: number = 30) {
+	async getChatMessages(chatId: string, page: number, limit: number = 30) {
 		const response = await axiosWithAuth.get<IMessage[]>(
 			`${this.BASE_URL}/${chatId}/messages`,
 			{
