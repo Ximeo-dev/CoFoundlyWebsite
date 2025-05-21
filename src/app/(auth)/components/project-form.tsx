@@ -48,7 +48,7 @@ export default function ProjectForm({
 		} catch {
 			return undefined
 		}
-	}, [])
+	}, [localStorageKey])
 
 	const savedStep = useMemo(() => {
 		try {
@@ -57,7 +57,12 @@ export default function ProjectForm({
 		} catch {
 			return 0
 		}
-	}, [])
+	}, [stepStorageKey])
+
+	console.log(
+		'[ProjectForm] initialValues:',
+		JSON.stringify(initialValues, null, 2)
+	)
 
 	const methods = useForm<ProjectFormType>({
 		defaultValues: {
@@ -69,24 +74,31 @@ export default function ProjectForm({
 			languages: [],
 			...(savedData && mode !== 'edit' ? savedData : {}),
 			...(initialValues && {
-				name: initialValues.name,
-				description: initialValues.description,
+				name: initialValues.name || '',
+				description: initialValues.description || '',
 				industry:
-					initialValues.industry && typeof initialValues.industry === 'object'
+					typeof initialValues.industry === 'object' &&
+					initialValues.industry?.name
 						? initialValues.industry.name
 						: initialValues.industry || '',
 				skills:
-					initialValues.skills?.map((skill: any) =>
-						typeof skill === 'object' ? skill.name : skill
-					) || [],
+					initialValues.skills
+						?.map((skill: any) =>
+							typeof skill === 'object' && skill?.name ? skill.name : skill
+						)
+						?.filter(Boolean) || [],
 				languages:
-					initialValues.languages?.map((lang: any) =>
-						typeof lang === 'object' ? lang.name : lang
-					) || [],
+					initialValues.languages
+						?.map((lang: any) =>
+							typeof lang === 'object' && lang?.name ? lang.name : lang
+						)
+						?.filter(Boolean) || [],
 				jobs:
-					initialValues.jobs?.map((job: any) =>
-						typeof job === 'object' ? job.name : job
-					) || [],
+					initialValues.jobs
+						?.map((job: any) =>
+							typeof job === 'object' && job?.name ? job.name : job
+						)
+						?.filter(Boolean) || [],
 			}),
 		},
 		resolver: zodResolver(ProjectFormSchema),
@@ -102,11 +114,11 @@ export default function ProjectForm({
 			localStorage.setItem(localStorageKey, JSON.stringify(value))
 		})
 		return () => subscription.unsubscribe()
-	}, [methods])
+	}, [methods, localStorageKey])
 
 	useEffect(() => {
 		localStorage.setItem(stepStorageKey, currentStep.toString())
-	}, [currentStep])
+	}, [currentStep, stepStorageKey])
 
 	const steps = [
 		{ component: <MainDataStep key='0' />, title: 'Основная информация' },
@@ -118,7 +130,7 @@ export default function ProjectForm({
 	]
 
 	const stepFields: (keyof ProjectFormType)[][] = [
-		['name', 'industry'], // Добавили industry для валидации
+		['name', 'industry'],
 		['description'],
 		['jobs', 'skills', 'languages'],
 	]
@@ -128,7 +140,6 @@ export default function ProjectForm({
 	const nextStep = async () => {
 		const fieldsToValidate = stepFields[currentStep]
 		const isValid = await methods.trigger(fieldsToValidate)
-
 		if (isValid) {
 			setCurrentStep(prev => Math.min(prev + 1, totalSteps - 1))
 		}
@@ -141,17 +152,43 @@ export default function ProjectForm({
 	const submitHandler = async (data: ProjectFormType) => {
 		try {
 			setIsFormSubmitting(true)
-			const transformedData = {
-				...data,
-				skills: data.skills?.map((skill: any) =>
-					typeof skill === 'object' ? skill.id : skill
-				),
+			console.log('[ProjectForm] Raw form data:', JSON.stringify(data, null, 2))
+			const transformedData: IProjectRequest = {
+				name: data.name,
+				description: data.description,
+				industry:
+					typeof data.industry === 'object' && data.industry
+						? data.industry
+						: data.industry,
+				skills:
+					data.skills
+						?.map((skill: any) =>
+							typeof skill === 'object' && skill?.id ? skill.id : skill
+						)
+						?.filter(Boolean) || [],
+				jobs:
+					data.jobs
+						?.map((job: any) =>
+							typeof job === 'object' && job?.id ? job.id : job
+						)
+						?.filter(Boolean) || [],
+				languages:
+					data.languages
+						?.map((lang: any) =>
+							typeof lang === 'object' && lang?.id ? lang.id : lang
+						)
+						?.filter(Boolean) || [],
 			}
+			console.log(
+				'[ProjectForm] Transformed data:',
+				JSON.stringify(transformedData, null, 2)
+			)
 			await onSubmit(transformedData)
 			localStorage.removeItem(localStorageKey)
 			localStorage.removeItem(stepStorageKey)
 		} catch (error) {
-			console.error('Submit error:', error)
+			console.error('[ProjectForm] Submit error:', error)
+			throw error
 		} finally {
 			setIsFormSubmitting(false)
 		}
@@ -168,12 +205,11 @@ export default function ProjectForm({
 	const progress = useMemo(() => {
 		const values = methods.getValues()
 		return calculateProjectProgress(values)
-	}, [methods.watch()])
+	}, [methods])
 
 	const confirm = async () => {
 		const fieldsToValidate = stepFields[currentStep]
 		const isValid = await methods.trigger(fieldsToValidate)
-
 		if (isValid) {
 			methods.handleSubmit(submitHandler)()
 		}

@@ -23,14 +23,14 @@ export default function ProjectCard({ project }: { project: IProject }) {
 
 			<div className='flex justify-between items-center mt-7'>
 				<Link
-					href={`/profile/projects/${project.id}/preview`}
+					href={`projects/${project.id}/preview`}
 					className='text-sm transition-colors duration-300 ease-linear border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white'
 				>
 					Предпросмотр →
 				</Link>
 				<button disabled={project.ownerId === user?.id}>
 					<Link
-						href={`/profile/projects/${project.id}`}
+						href={`/projects/${project.id}`}
 						className='px-3 py-2 text-sm font-medium rounded-md bg-black text-white dark:bg-white dark:text-black transition hover:opacity-90'
 					>
 						Управление

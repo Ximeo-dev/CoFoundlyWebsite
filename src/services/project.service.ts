@@ -21,7 +21,7 @@ class ProjectService {
 		return response.data
 	}
 
-	async deleteProject(projectId: string) {
+	async removeProject(projectId: string) {
 		const response = await axiosWithAuth.delete(`${this.BASE_URL}/${projectId}`)
 		return response.data
 	}

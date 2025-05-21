@@ -23,6 +23,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/shadcn/select'
+import { ResponseError } from '@/types/error.types'
+import TwoFA from '@/components/ui/2fa/2fa'
 
 export default function AnketView({
 	anket,
@@ -44,6 +46,7 @@ export default function AnketView({
 	handleSwipeAction?: (action: 'skip' | 'like') => void
 }) {
 	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [isBotModalOpen, setIsBotModalOpen] = useState(false)
 
 	const progress = calculateProgress({
 		name: anket?.name,
@@ -64,16 +67,21 @@ export default function AnketView({
 			setIsModalOpen(false)
 			window.location.reload()
 		},
-		onError: (error: any) => {
-			toast.error(
-				error?.response?.data?.message || 'Ошибка при удалении анкеты'
-			)
+		onError: (error: ResponseError | any) => {
+			if (error.status === 403) {
+				toast.error('Требуется подтверждение 2FA')
+			} else {
+				toast.error(error?.response?.data?.message)
+			}
 		},
 	})
 
-	const handleAnketDelete = () => {
+	const handleDeleteAnket = () => {
+		setIsBotModalOpen(true)
+		setIsModalOpen(false)
 		deleteAnket()
 	}
+
 
 	const displayAge =
 		anket?.age !== undefined && anket?.age !== null
@@ -445,11 +453,17 @@ export default function AnketView({
 						<Button onClick={() => setIsModalOpen(false)}>
 							Оставить анкету
 						</Button>
-						<Button variant={'destructive'} onClick={handleAnketDelete}>
+						<Button variant={'destructive'} onClick={handleDeleteAnket}>
 							Удалить
 						</Button>
 					</div>
 				</Modal>
+			)}
+			{isBotModalOpen && (
+				<TwoFA
+					isOpen={isBotModalOpen}
+					onClose={() => setIsBotModalOpen(false)}
+				/>
 			)}
 		</LazyMotion>
 	)

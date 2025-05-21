@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '@/config/endpoints.config'
-import { Briefcase, BriefcaseBusiness, CircleUser, Fingerprint, HeartHandshake, HelpCircle, House, LayoutDashboard, LogOut, LucideIcon, MessageSquare, MessagesSquare, Settings, Shield, User, Users2 } from 'lucide-react'
+import { Briefcase, BriefcaseBusiness, CircleUser, Fingerprint, Handshake, HeartHandshake, HelpCircle, House, LayoutDashboard, LogOut, LucideIcon, MessageSquare, MessagesSquare, Settings, Shield, User, Users2 } from 'lucide-react'
 import { ReactNode } from 'react'
 
 export interface IMenuItem {
@@ -98,7 +98,7 @@ export const SIDEBAR_MENU: IMenuSection[] = [
 			},
 			{
 				href: '/swipes',
-				icon: HeartHandshake,
+				icon: Handshake,
 				label: 'Свайпы',
 			},
 			{

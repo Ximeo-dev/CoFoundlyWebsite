@@ -4,14 +4,60 @@ import { IProject } from '@/types/project.types'
 import styles from './project-preview-card.module.css'
 import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { Pencil, Trash } from 'lucide-react'
+import { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { projectService } from '@/services/project.service'
+import { toast } from 'sonner'
+import Modal from '@/components/ui/modal/modal'
+import { Button } from '@/components/ui/shadcn/button'
+import Tooltip from '@/components/ui/tooltip/tooltip'
+import TwoFA from '@/components/ui/2fa/2fa'
+import { ResponseError } from '@/types/error.types'
 
-export default function ProjectPreviewCard({ project }: { project: IProject | any }) {
-  const textVariants = {
+export default function ProjectPreviewCard({
+	project,
+	editable = false,
+	onEdit,
+	onDelete,
+}: {
+	project: IProject | any
+	editable?: boolean
+	onEdit?: () => void
+	onDelete?: () => void
+}) {
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [isBotModalOpen, setIsBotModalOpen] = useState(false)
+
+	const { mutate: deleteProject } = useMutation({
+		mutationKey: ['project delete', project.id],
+		mutationFn: () => projectService.removeProject(project.id),
+		onSuccess: () => {
+			toast.success('Проект успешно удален')
+			setIsModalOpen(false)
+			onDelete?.()
+		},
+		onError: (error: ResponseError | any) => {
+			if (error.status === 403) {
+				toast.error('Требуется подтверждение 2FA')
+			} else {
+				toast.error(error?.response?.data?.message)
+			}
+		},
+	})
+
+	const handleDeleteProject = () => {
+		setIsBotModalOpen(true)
+		setIsModalOpen(false)
+		deleteProject()
+	}
+
+	const textVariants = {
 		initial: { x: 15, opacity: 0 },
 		animate: { x: 0, opacity: 1 },
 	}
 
-  const industryName =
+	const industryName =
 		typeof project.industry === 'string'
 			? project.industry
 			: project.industry?.name
@@ -26,7 +72,30 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 			>
 				<div className={cn(styles.view_inner, 'border-b border-border')}>
 					<div className={styles.view_top}>
-						<h2 className={styles.view_top_text}>Проект</h2>
+						<h2 className={styles.view_top_text}>
+							{editable ? 'Ваш проект' : 'Проект'}
+						</h2>
+						{editable && (
+							<div className='flex items-center gap-x-5'>
+								<button
+									onClick={onEdit}
+									className='text-muted-foreground hover:text-foreground transition-colors duration-300 cursor-pointer inline-flex items-center'
+									aria-label='Редактировать'
+								>
+									<Tooltip text='Редактировать' position='bottom'>
+										<Pencil className='w-5 h-5' />
+									</Tooltip>
+								</button>
+								<button
+									onClick={() => setIsModalOpen(true)}
+									className='text-muted-foreground hover:text-rose-500 transition-colors duration-300 cursor-pointer inline-flex items-center'
+								>
+									<Tooltip text='Удалить' position='bottom'>
+										<Trash className='w-5 h-5' />
+									</Tooltip>
+								</button>
+							</div>
+						)}
 					</div>
 				</div>
 				<div className={styles.info_block}>
@@ -37,7 +106,6 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 						)}
 					>
 						<div className={styles.left_block_inner}>
-							{/* <Avatar key={id} id={id} size={512} name={anket.name} /> */}
 							<div className='relative w-1/2 h-32 rounded-md overflow-hidden mb-7 border border-border' />
 							<m.h1
 								variants={textVariants}
@@ -81,7 +149,7 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 										!project?.description && 'text-muted-foreground'
 									)}
 								>
-									{project.description}
+									{project.description || 'Не указано'}
 								</m.span>
 							</div>
 							<div>
@@ -101,10 +169,10 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.38 }}
 									className={cn(
 										'mt-1',
-										!project?.industry && 'text-muted-foreground'
+										!industryName && 'text-muted-foreground'
 									)}
 								>
-									{industryName}
+									{industryName || 'Не указано'}
 								</m.p>
 							</div>
 							<div>
@@ -120,7 +188,7 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 								<div className='mt-2'>
 									{project.jobs?.length ? (
 										<div className='flex flex-wrap gap-2'>
-											{project.jobs?.map((job: any, i: number) => (
+											{project.jobs.map((job: any, i: number) => (
 												<m.span
 													key={i}
 													variants={textVariants}
@@ -166,7 +234,7 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 									Навыки, необходимые для проекта
 								</m.p>
 								<div className='mt-2'>
-									{project?.skills?.length ? (
+									{project.skills?.length ? (
 										<div className='flex flex-wrap gap-x-2 gap-y-3'>
 											{project.skills.map((skill: any, i: number) => (
 												<m.span
@@ -213,7 +281,7 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 									Языки общения
 								</m.p>
 								<div className='mt-2'>
-									{project?.languages?.length ? (
+									{project.languages?.length ? (
 										<div className='flex flex-wrap gap-2'>
 											{project.languages.map((language: any, i: number) => (
 												<m.span
@@ -256,6 +324,31 @@ export default function ProjectPreviewCard({ project }: { project: IProject | an
 					</div>
 				</div>
 			</div>
+			{isModalOpen && (
+				<Modal
+					className='py-3 px-4'
+					isOpen={isModalOpen}
+					onClose={() => setIsModalOpen(false)}
+				>
+					<h2 className='text-lg mb-10'>
+						Вы действительно хотите удалить проект?
+					</h2>
+					<div className='flex justify-end gap-x-4 items-center'>
+						<Button onClick={() => setIsModalOpen(false)}>
+							Оставить проект
+						</Button>
+						<Button variant='destructive' onClick={handleDeleteProject}>
+							Удалить
+						</Button>
+					</div>
+				</Modal>
+			)}
+			{isBotModalOpen && (
+				<TwoFA
+					isOpen={isBotModalOpen}
+					onClose={() => setIsBotModalOpen(false)}
+				/>
+			)}
 		</LazyMotion>
 	)
 }
