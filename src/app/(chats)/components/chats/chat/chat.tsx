@@ -169,7 +169,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 			if (
 				message.senderId !== user.id &&
 				Array.isArray(message.readReceipt) &&
-				!message.readReceipt.some(r => r.userId === user.id)
+				message.readReceipt.length === 0
 			) {
 				const messageElement = document.getElementById(`message-${message.id}`)
 				if (messageElement) {
@@ -184,41 +184,30 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		})
 
 		if (unreadMessages.length > 0) {
-			const readReceipts = unreadMessages.map(message => ({
+			socket.emit(ChatClientEvent.MARK_READ, {
 				chatId: id,
-				messageId: message.id,
+				messageIds: unreadMessages.map(m => m.id),
 				userId: user.id,
-				readAt: new Date().toISOString(),
-			}))
-			socket.emit(ChatClientEvent.MARK_READ, readReceipts)
+			})
 		}
 	}, [messages, id, user, socket])
 
 	useEffect(() => {
-		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
-			console.log('[Chat] Received read receipts:', readReceipts)
-			setMessages(prev =>
-				prev.map(m => {
-					const receiptsForMessage = readReceipts.filter(
-						r => r.messageId === m.id
-					)
-					if (receiptsForMessage.length > 0) {
-						return {
-							...m,
-							readReceipt: [...m.readReceipt, ...receiptsForMessage],
-						}
-					}
-					return m
-				})
-			)
-			queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
+		const container = messagesContainerRef.current
+		if (!container) return
+
+		const handleScroll = () => {
+			markMessagesAsRead()
 		}
 
-		socket.on(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
+		container.addEventListener('scroll', handleScroll)
+		window.addEventListener('resize', handleScroll) // Обновление при изменении размера окна
+
 		return () => {
-			socket.off(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
+			container.removeEventListener('scroll', handleScroll)
+			window.removeEventListener('resize', handleScroll)
 		}
-	}, [socket, id, queryClient])
+	}, [markMessagesAsRead])
 
 	useEffect(() => {
 		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
