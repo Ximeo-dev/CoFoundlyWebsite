@@ -11,7 +11,7 @@ import Footer from '@/components/layout/footer/footer'
 import { SocketProvider } from '@/providers/socket-provider'
 import { NotificationProvider } from '@/providers/notifications-provider'
 import NotificationList from '@/components/layout/notification-list/notification-list'
-import AuthWrapper from '@/components/layout/auth-wrapper/auth-wrapper'
+import { AuthWrapper } from '@/components/layout/auth-wrapper/auth-wrapper'
 
 const inter = Inter({
 	subsets: ['latin', 'cyrillic'],
@@ -44,7 +44,7 @@ export default function RootLayout({
 							<SocketProvider>
 								<NotificationProvider>
 									<Toaster duration={3000} />
-									<main>{children}</main>
+									<AuthWrapper>{children}</AuthWrapper>
 								</NotificationProvider>
 							</SocketProvider>
 						</AuthProvider>

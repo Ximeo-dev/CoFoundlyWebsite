@@ -57,7 +57,7 @@ export default function ProfileSidebar() {
 			setIsAuthenticated(false)
 			setUser(null)
 			queryClient.setQueryData(['userProfile'], null)
-			window.location.href = '/welcome'
+			window.location.href = ENDPOINTS.WELCOME
 		},
 		onError: (error: ResponseError) => {
 			toast.error('Что-то пошло не так')
