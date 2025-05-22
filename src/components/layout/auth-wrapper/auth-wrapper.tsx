@@ -1,44 +1,38 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
-import NotificationList from '@/components/layout/notification-list/notification-list'
-import ContainerWrapper from '@/components/layout/container/container-wrapper'
-import { cn } from '@/lib/utils'
-import styles from '@/app/profile/components/profile.module.css'
-import Home from '@/app/(public)/home'
-import ProfileSidebar from '@/app/(auth)/components/profile-sidebar/profile-sidebar'
-import { useEffect, useState } from 'react'
+import { ENDPOINTS } from '@/config/endpoints.config'
 
-export default function AuthWrapper({
-	children,
-}: {
-	children: React.ReactNode
-}) {
-	const { isAuthenticated } = useAuth()
-	const [isClient, setIsClient] = useState(false)
+export function AuthWrapper({ children }: { children: React.ReactNode }) {
+	const { isAuthenticated, isLoading } = useAuth()
+	const router = useRouter()
+	const pathname = usePathname()
 
 	useEffect(() => {
-		setIsClient(true)
-		console.log('[AuthWrapper] isAuthenticated:', isAuthenticated)
-	}, [isAuthenticated])
+		if (isLoading) return
 
+		const isAuthPage =
+			pathname.startsWith(ENDPOINTS.LOGIN) ||
+			pathname.startsWith(ENDPOINTS.REGISTER)
+		const isWelcomePage = pathname.startsWith(ENDPOINTS.WELCOME)
 
-	if (!isAuthenticated) {
-		return (
-			<ContainerWrapper>
-				<Home />
-			</ContainerWrapper>
-		)
+		if (isAuthenticated) {
+			if (isAuthPage || isWelcomePage) {
+				router.push(ENDPOINTS.HOME)
+			}
+		}
+		else {
+			if (!isAuthPage && !isWelcomePage) {
+				router.push(ENDPOINTS.WELCOME)
+			}
+		}
+	}, [isAuthenticated, isLoading, pathname, router])
+
+	if (isLoading) {
+		return <div></div>
 	}
 
-	return (
-		<ContainerWrapper>
-			<div className={styles.profile_main}>
-				<ProfileSidebar />
-				<div className={cn(styles.profile_section, '')}>{children}</div>
-				<NotificationList />
-				{/* <EmailConfirmationNotification /> */}
-			</div>
-		</ContainerWrapper>
-	)
+	return <>{children}</>
 }
