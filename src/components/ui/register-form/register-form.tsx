@@ -49,7 +49,7 @@ export default function RegisterForm() {
 				queryKey: ['userProfile'],
 			})
 			window.location.href = ENDPOINTS.HOME
-			toast.success('Успешная регистрация')
+			// toast.success('Успешная регистрация')
 			reset()
 		},
 		onError: error => {

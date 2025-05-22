@@ -78,6 +78,7 @@ export default function ChatSidebar({
 										<Avatar
 											size={128}
 											id={correspondent.userId}
+											name={correspondent.displayUsername}
 											hasAvatar={correspondent.profile?.hasAvatar ?? false}
 											bigChatAvatar
 										/>

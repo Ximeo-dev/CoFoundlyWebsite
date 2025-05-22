@@ -2,7 +2,7 @@
 
 import { FormEvent, useState, useCallback, useEffect, useRef } from 'react'
 import { ChatClientEvent, IMessage } from '@/types/chat.types'
-import { Send } from 'lucide-react'
+import { Check, Send, X } from 'lucide-react'
 import { useSocket } from '@/hooks/useSocket'
 
 interface MessageFieldProps {
@@ -129,16 +129,16 @@ export default function MessageField({
 					<button
 						type='button'
 						onClick={onCancelEdit}
-						className='rounded-lg border px-4 py-2 text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30'
+						className='cursor-pointer rounded-lg border px-2 py-1 text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30'
 					>
-						Отмена
+						<X />
 					</button>
 					<button
 						type='submit'
-						className='cursor-pointer rounded-lg border px-4 py-2 text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 disabled:opacity-50'
+						className='cursor-pointer rounded-lg border px-2 py-1 text-gray-900 dark:text-gray-100 hover:border-black/40 dark:hover:border-neutral-700 transition-colors duration-300 focus-within:border-black/40 dark:focus-within:border-neutral-700 bg-transparent dark:bg-input/30 disabled:opacity-50'
 						disabled={!userId || !message.trim()}
 					>
-						Сохранить
+						<Check />
 					</button>
 				</>
 			) : (

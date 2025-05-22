@@ -59,6 +59,15 @@ export default function TwoFactor() {
     toast.success('Команда скопирована')
   }
 
+	const formatToken = (token: string) => {
+		if (!token) return ''
+		if (token.length > 15) {
+			return `${token.substring(0, 12)}...${token.substring(token.length - 4)}`
+		}
+		return token
+	}
+
+
   return (
 		<>
 			<div className={cn(styles.change_block, 'border-border')}>
@@ -142,7 +151,7 @@ export default function TwoFactor() {
 								)}
 							>
 								<span className='font-mono select-all text-center'>
-									/2fa {generatedToken}
+									/2fa {formatToken(generatedToken)}
 								</span>
 								<Button variant='ghost' size='icon'>
 									{isCopied ? <Check size={18} /> : <Copy size={18} />}

@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useNotifications } from '@/hooks/useNotifications'
 import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { X } from 'lucide-react'
+import { useNotifications } from '@/hooks/notifications/useNotifications'
 
 const MAX_CONTENT_LENGTH = 40
 
@@ -26,7 +26,7 @@ export default function NotificationList() {
 	}, [notifications, removeNotification])
 
 	return (
-		<div className='fixed top-5 right-5 z-[100]'>
+		<div className='left-1/2 -translate-x-1/2 fixed top-5 lg:right-5 z-[100]'>
 			{notifications.map(notification => (
 				<div
 					key={notification.notification.id}

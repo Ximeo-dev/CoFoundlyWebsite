@@ -36,7 +36,7 @@ export default function LoginForm() {
 				queryKey: ['userProfile'],
 			})
 			window.location.href = ENDPOINTS.HOME
-			toast.success('Успешный вход')
+			// toast.success('Успешный вход')
 		},
 		onError: (error: ResponseError) => {
 			toast.dismiss()
