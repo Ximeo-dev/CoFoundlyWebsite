@@ -48,7 +48,7 @@ export default function RegisterForm() {
 			queryClient.invalidateQueries({
 				queryKey: ['userProfile'],
 			})
-			router.replace(ENDPOINTS.HOME)
+			window.location.href = ENDPOINTS.HOME
 			toast.success('Успешная регистрация')
 			reset()
 		},
