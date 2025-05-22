@@ -11,10 +11,13 @@ export default function CreateAnket({
 	onCreated: (created: any) => void
 }) {
 
-	const handleSubmit = async (data: IAnketRequest) => {
+	const handleSubmit = async (data: IAnketRequest, avatarFile?: File | null) => {
     console.log('handleSubmit called with', data)
     try {
       const response = await anketService.createAnket(data)
+      if (avatarFile) {
+				await anketService.uploadAvatar(avatarFile)
+			}
       toast.success('Анкета успешно создана')
       onCreated(response)
     } catch {
