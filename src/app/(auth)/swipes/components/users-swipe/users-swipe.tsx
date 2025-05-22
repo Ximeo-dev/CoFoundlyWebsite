@@ -10,6 +10,9 @@ import { Button } from '@/components/ui/shadcn/button'
 import SkeletonView from '@/app/(auth)/components/user-anket/anket-view/skeleton-view'
 import { useSocket } from '@/hooks/useSocket'
 import { ChatServerEvent, IChat } from '@/types/chat.types'
+import { useProfile } from '@/hooks/anket/useProfile'
+import Link from 'next/link'
+import { ENDPOINTS } from '@/config/endpoints.config'
 
 export default function UsersSwipe() {
 	const [intent, setIntent] = useState<'similar' | 'complement'>('similar')
@@ -18,14 +21,17 @@ export default function UsersSwipe() {
 	const [isResetting, setIsResetting] = useState(false)
 	const socket = useSocket()
 	const queryClient = useQueryClient()
+	const { anket, isLoading: isLoadingProfile } = useProfile()
 
 	const { data, refetch, isLoading, isError, error, isSuccess } = useQuery({
 		queryKey: ['swipe users', intent],
 		queryFn: () => swipeService.swipeUsers(intent),
+		enabled: !!anket && !isLoadingProfile,
+		retry: false
 	})
 
 	useEffect(() => {
-		if (isSuccess && data) {
+		if (isSuccess && data && anket) {
 			if (data?.userId) {
 				setCurrentAnket(data)
 				setRemainingAnkets([])
@@ -34,7 +40,7 @@ export default function UsersSwipe() {
 				setRemainingAnkets([])
 			}
 		}
-	}, [isSuccess, data])
+	}, [isSuccess, data, anket])
 
 	const { mutate: swipeAction } = useMutation({
 		mutationFn: ({
@@ -45,7 +51,7 @@ export default function UsersSwipe() {
 			action: 'like' | 'skip'
 		}) => swipeService.swipeAction(userId, action),
 		onSuccess: async () => {
-			if (remainingAnkets.length > 0) {
+			if (remainingAnkets.length > 0 && anket) {
 				setCurrentAnket(remainingAnkets[0])
 				setRemainingAnkets(remainingAnkets.slice(1))
 			} else {
@@ -60,22 +66,6 @@ export default function UsersSwipe() {
 			toast.error(error.message || 'Не удалось выполнить действие')
 		},
 	})
-
-	// const { mutate: resetSwipe } = useMutation({
-	// 	mutationFn: () => swipeService.resetSwipe(),
-	// 	onSuccess: () => {
-	// 		toast.success('История свайпов сброшена')
-	// 		setCurrentAnket(null)
-	// 		setRemainingAnkets([])
-	// 		setIsResetting(false)
-	// 		refetch()
-	// 	},
-	// 	onError: (error: any) => {
-	// 		console.error('[UsersSwipe] Ошибка при сбросе свайпов:', error)
-	// 		toast.error(error.message || 'Failed to reset swipe history')
-	// 		setIsResetting(false)
-	// 	},
-	// })
 
 	useEffect(() => {
 		console.log('[UsersSwipe] Устанавливаю обработчик NEW_CHAT')
@@ -128,15 +118,24 @@ export default function UsersSwipe() {
 		swipeAction({ userId: currentAnket.userId, action })
 	}
 
-	// const handleResetSwipe = () => {
-	// 	console.log('[UsersSwipe] Запуск сброса истории свайпов')
-	// 	setIsResetting(true)
-	// 	resetSwipe()
-	// }
-
 	return (
 		<div className=''>
-			{isLoading ? (
+			{isLoadingProfile ? (
+				<div className='text-center'>Загрузка...</div>
+			) : !anket ? (
+				<div className='h-[550px] border border-border rounded-[15px]'>
+					<div className='flex items-center justify-center h-full flex-col gap-y-4'>
+						<div className='text-center text-lg font-semibold text-gray-800 dark:text-white'>
+							Сперва создайте свою анкету
+						</div>
+						<Link href={ENDPOINTS.HOME}>
+							<Button>
+								Создать
+							</Button>
+						</Link>
+					</div>
+				</div>
+			) : isLoading ? (
 				<SkeletonView />
 			) : isError ? (
 				<div className='text-center text-red-500'>
