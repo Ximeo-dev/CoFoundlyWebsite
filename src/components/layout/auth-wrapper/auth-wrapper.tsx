@@ -17,13 +17,17 @@ export function AuthWrapper({ children }: { children: React.ReactNode }) {
 			pathname.startsWith(ENDPOINTS.LOGIN) ||
 			pathname.startsWith(ENDPOINTS.REGISTER)
 		const isWelcomePage = pathname.startsWith(ENDPOINTS.WELCOME)
+		const isPasswordResetPage =
+			pathname.startsWith('/reset-password') ||
+			pathname.startsWith('/reset-password/confirm')
+
+		if (isPasswordResetPage) return
 
 		if (isAuthenticated) {
 			if (isAuthPage || isWelcomePage) {
 				router.push(ENDPOINTS.HOME)
 			}
-		}
-		else {
+		} else {
 			if (!isAuthPage && !isWelcomePage) {
 				router.push(ENDPOINTS.WELCOME)
 			}
