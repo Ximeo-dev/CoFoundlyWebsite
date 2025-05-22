@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 import { ResponseError } from '@/types/error.types'
 import zxcvbn from 'zxcvbn'
 import InputField from '../input-field/input-field'
+import { ENDPOINTS } from '@/config/endpoints.config'
 
 export default function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
@@ -34,7 +35,7 @@ export default function LoginForm() {
 			queryClient.invalidateQueries({
 				queryKey: ['userProfile'],
 			})
-			router.push('/')
+			window.location.href = ENDPOINTS.HOME
 			toast.success('Успешный вход')
 		},
 		onError: (error: ResponseError) => {
