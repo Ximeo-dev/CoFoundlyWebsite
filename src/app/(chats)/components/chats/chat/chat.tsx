@@ -371,7 +371,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 						{Object.entries(groupMessagesByDate(messages)).map(
 							([date, messagesForDate]) => (
 								<div key={date}>
-									<div className='text-center text-sm opacity-50 py-2'>
+									<div className='text-center text-sm opacity-50 py-5'>
 										<span className='bg-background border border-border py-1.5 px-2.5 rounded-[15px]'>
 											{isToday(new Date(date))
 												? 'Сегодня'

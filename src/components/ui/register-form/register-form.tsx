@@ -25,6 +25,7 @@ import { toast } from 'sonner'
 import zxcvbn from 'zxcvbn'
 import debounce from 'lodash.debounce'
 import InputField from '../input-field/input-field'
+import { ENDPOINTS } from '@/config/endpoints.config'
 
 export default function RegisterForm() {
 	const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
@@ -47,7 +48,7 @@ export default function RegisterForm() {
 			queryClient.invalidateQueries({
 				queryKey: ['userProfile'],
 			})
-			router.replace('/profile')
+			router.replace(ENDPOINTS.HOME)
 			toast.success('Успешная регистрация')
 			reset()
 		},

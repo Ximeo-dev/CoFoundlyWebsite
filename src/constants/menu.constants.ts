@@ -31,18 +31,18 @@ export interface ISettingsItem {
 export const MENU = [
 	{
 		id: 1,
-		label: 'Свайпы',
-		href: ENDPOINTS.SWIPE_USERS,
+		label: 'О проекте',
+		href: ENDPOINTS.HOME,
+	},
+	{
+		id: 3,
+		label: 'Премиум',
+		href: ENDPOINTS.HOME,
 	},
 	{
 		id: 2,
 		label: 'Чаты',
 		href: ENDPOINTS.CHATS,
-	},
-	{
-		id: 3,
-		label: 'Премиум',
-		href: ENDPOINTS.PRICING,
 	},
 ]
 

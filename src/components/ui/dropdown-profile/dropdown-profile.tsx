@@ -15,6 +15,7 @@ import { toggleMenu } from '@/store/menu-store'
 import { useAtom } from 'jotai'
 import { CircleUserRound, LogOut, Settings } from 'lucide-react'
 import Avatar from '@/app/(auth)/components/profile-info/avatar'
+import { ENDPOINTS } from '@/config/endpoints.config'
 
 export default function DropdownProfile() {
   const queryClient = useQueryClient()
@@ -69,7 +70,7 @@ export default function DropdownProfile() {
 			}
 			className={cn(isAuthenticated ? styles.dropdown : '')}
 		>
-			<Avatar size={64} hasAvatar id={user?.id}  />
+			<Avatar size={64} hasAvatar id={user?.id} />
 			<AnimatePresence>
 				{dropdownOpen && (
 					<>
@@ -96,7 +97,7 @@ export default function DropdownProfile() {
 							>
 								<motion.div variants={itemVariants}>
 									<Link
-										href={isAuthenticated ? '/profile' : '/login'}
+										href={isAuthenticated ? ENDPOINTS.HOME : ENDPOINTS.LOGIN}
 										onClick={() => {
 											setMenuOpen(false)
 											setDropdownOpen(false)
@@ -118,7 +119,7 @@ export default function DropdownProfile() {
 
 								<motion.div variants={itemVariants}>
 									<Link
-										href='/profile'
+										href={ENDPOINTS.HOME}
 										onClick={() => {
 											setMenuOpen(false)
 											setDropdownOpen(false)
@@ -169,7 +170,7 @@ export default function DropdownProfile() {
 						>
 							<motion.div variants={childVariant}>
 								<Link
-									href={isAuthenticated ? '/profile' : '/login'}
+									href={isAuthenticated ? ENDPOINTS.HOME : ENDPOINTS.LOGIN}
 									onClick={() => {
 										setMenuOpen(false)
 										setDropdownOpen(false)
@@ -182,7 +183,7 @@ export default function DropdownProfile() {
 
 							<motion.div variants={childVariant}>
 								<Link
-									href='/profile'
+									href={ENDPOINTS.HOME}
 									onClick={() => {
 										setMenuOpen(false)
 										setDropdownOpen(false)
