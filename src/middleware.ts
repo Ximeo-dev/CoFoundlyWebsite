@@ -17,14 +17,14 @@ export async function middleware(request: NextRequest) {
 
 	const isWelcomePage = url.includes(ENDPOINTS.WELCOME)
 
-  const isPasswordResetPage =
-		url.startsWith('/reset-password') ||
-		url.startsWith('/reset-password/confirm')
+  // const isPasswordResetPage =
+	// 	url.startsWith('/reset-password') ||
+	// 	url.startsWith('/reset-password/confirm')
 
-  if (isPasswordResetPage) {
-    console.log('Allowing access to password reset page')
-    return NextResponse.next()
-  }
+  // if (isPasswordResetPage) {
+  //   console.log('Allowing access to password reset page')
+  //   return NextResponse.next()
+  // }
 
 	if (isAuthPage) {
 		if (refreshToken) return NextResponse.redirect(new URL(ENDPOINTS.HOME, url))
@@ -59,7 +59,5 @@ export const config = {
 		'/swipes',
 		'/chats',
 		'/security',
-		'/reset-password',
-		'/reset-password/confirm'
 	],
 }
