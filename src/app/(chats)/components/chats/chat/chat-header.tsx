@@ -72,6 +72,7 @@ export default function ChatHeader({
 					size={64}
 					id={correspondent?.userId}
 					hasAvatar={correspondent?.profile?.hasAvatar ?? false}
+					name={correspondent?.displayUsername}
 				/>
 				<div>
 					<h3 className='mr-2'>

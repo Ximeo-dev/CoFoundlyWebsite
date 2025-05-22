@@ -23,21 +23,6 @@ interface MessageProps {
 
 export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-	const [isMobile, setIsMobile] = useState(false)
-	const [contextMenuOpen, setContextMenuOpen] = useState(false)
-
-	useEffect(() => {
-		const checkIfMobile = () => {
-			setIsMobile(window.innerWidth <= 768)
-		}
-
-		checkIfMobile()
-		window.addEventListener('resize', checkIfMobile)
-
-		return () => {
-			window.removeEventListener('resize', checkIfMobile)
-		}
-	}, [])
 
 	const handleCopy = () => {
 		navigator.clipboard.writeText(message.content)
@@ -56,26 +41,12 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 		setIsDeleteModalOpen(false)
 	}
 
-	const handleMessageClick = (e: React.MouseEvent) => {
-		if (isMobile) {
-			e.preventDefault()
-			setContextMenuOpen(true)
-		}
-	}
-
 	return (
 		<>
 			<ContextMenu>
 				<ContextMenuTrigger asChild>
 					<div
 						className={`flex mb-3`}
-						onClick={handleMessageClick}
-						onContextMenu={e => {
-							if (!isMobile) {
-								e.preventDefault()
-								setContextMenuOpen(true)
-							}
-						}}
 					>
 						<div className='relative flex flex-col'>
 							<div className={`flex items-end gap-2 flex-row`}>
@@ -83,7 +54,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 									smallChatAvatar
 									size={64}
 									id={message?.sender?.id}
-									hasAvatar={true}
+									hasAvatar
 									className='flex-shrink-0'
 									name={message?.sender?.displayUsername}
 								/>
@@ -146,35 +117,32 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 					</div>
 				</ContextMenuTrigger>
 
-				{contextMenuOpen && (
-					<ContextMenuContent
-						className='w-48'
-						onInteractOutside={() => setContextMenuOpen(false)}
-					>
-						<ContextMenuItem onClick={handleCopy} className='cursor-pointer'>
-							<Copy className='mr-2 h-4 w-4' />
-							Копировать
-						</ContextMenuItem>
-						{isSender && (
-							<>
-								<ContextMenuItem
-									className='cursor-pointer'
-									onClick={handleEdit}
-								>
-									<Edit className='mr-2 h-4 w-4' />
-									Редактировать
-								</ContextMenuItem>
-								<ContextMenuItem
-									className='cursor-pointer'
-									onClick={handleDeleteClick}
-								>
-									<Trash2 className='mr-2 h-4 w-4' />
-									Удалить
-								</ContextMenuItem>
-							</>
-						)}
-					</ContextMenuContent>
-				)}
+				<ContextMenuContent
+					className='w-48'
+				>
+					<ContextMenuItem onClick={handleCopy} className='cursor-pointer'>
+						<Copy className='mr-2 h-4 w-4' />
+						Копировать
+					</ContextMenuItem>
+					{isSender && (
+						<>
+							<ContextMenuItem
+								className='cursor-pointer'
+								onClick={handleEdit}
+							>
+								<Edit className='mr-2 h-4 w-4' />
+								Редактировать
+							</ContextMenuItem>
+							<ContextMenuItem
+								className='cursor-pointer'
+								onClick={handleDeleteClick}
+							>
+								<Trash2 className='mr-2 h-4 w-4' />
+								Удалить
+							</ContextMenuItem>
+						</>
+					)}
+				</ContextMenuContent>
 			</ContextMenu>
 
 			<Modal

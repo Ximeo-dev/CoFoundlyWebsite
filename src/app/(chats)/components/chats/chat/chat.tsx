@@ -52,6 +52,18 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		}
 	}, [id])
 
+	const findFirstUnreadMessage = useCallback(
+		(messages: IMessage[]) => {
+			if (!user?.id) return null
+			return messages.find(
+				message =>
+					message.senderId !== user.id &&
+					(!message.readReceipt || message.readReceipt.length === 0)
+			)
+		},
+		[user?.id]
+	)
+
 	const scrollToBottom = useCallback((behavior: ScrollBehavior = 'auto') => {
 		if (messagesEndRef.current && !isLoadingInitial.current) {
 			messagesEndRef.current.scrollIntoView({ behavior })
@@ -61,17 +73,24 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const markMessagesAsRead = useCallback(() => {
 		if (!user?.id || !messagesContainerRef.current) return
 
+		const container = messagesContainerRef.current
+		const viewportHeight = container.clientHeight
+		const scrollPosition = container.scrollTop
+		const totalHeight = container.scrollHeight
+
 		const unreadMessages: IMessage[] = []
 		messages.forEach(message => {
 			if (
 				message.senderId !== user.id &&
-				Array.isArray(message.readReceipt) &&
-				message.readReceipt.length === 0
+				(!message.readReceipt || message.readReceipt.length === 0)
 			) {
-				const messageElement = document.getElementById(`message-${message.id}`)
-				if (messageElement) {
-					const rect = messageElement.getBoundingClientRect()
-					const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
+				const element = document.getElementById(`message-${message.id}`)
+				if (element) {
+					const rect = element.getBoundingClientRect()
+					const isVisible =
+						rect.top >= container.getBoundingClientRect().top &&
+						rect.bottom <= container.getBoundingClientRect().bottom
+
 					if (isVisible) {
 						unreadMessages.push(message)
 					}
@@ -79,7 +98,21 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 			}
 		})
 
-		if (unreadMessages.length > 0) {
+		if (totalHeight - (scrollPosition + viewportHeight) < 100) {
+			const allUnread = messages.filter(
+				m =>
+					m.senderId !== user.id &&
+					(!m.readReceipt || m.readReceipt.length === 0)
+			)
+			if (allUnread.length > 0) {
+				socket.emit(ChatClientEvent.MARK_READ, {
+					chatId: id,
+					messageIds: allUnread.map(m => m.id),
+					userId: user.id,
+				})
+			}
+		}
+		else if (unreadMessages.length > 0) {
 			socket.emit(ChatClientEvent.MARK_READ, {
 				chatId: id,
 				messageIds: unreadMessages.map(m => m.id),
@@ -112,11 +145,44 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 			isLoadingInitial.current = false
 
 			if (isInitialMount.current) {
-				setTimeout(() => scrollToBottom('auto'), 0)
+				const firstUnread = findFirstUnreadMessage(sorted)
+				setTimeout(() => {
+					if (firstUnread) {
+						const element = document.getElementById(`message-${firstUnread.id}`)
+						if (element) {
+							element.scrollIntoView({ behavior: 'auto', block: 'center' })
+						}
+						const unreadIds = sorted
+							.filter(
+								m =>
+									new Date(m.sentAt) <= new Date(firstUnread.sentAt) &&
+									m.senderId !== user?.id &&
+									(!m.readReceipt || m.readReceipt.length === 0)
+							)
+							.map(m => m.id)
+
+						if (unreadIds.length > 0 && user?.id) {
+							socket.emit(ChatClientEvent.MARK_READ, {
+								chatId: id,
+								messageIds: unreadIds,
+								userId: user.id,
+							})
+						}
+					} else {
+						scrollToBottom('auto')
+					}
+				}, 100)
 				isInitialMount.current = false
 			}
 		}
-	}, [initialMessages, scrollToBottom])
+	}, [
+		initialMessages,
+		scrollToBottom,
+		findFirstUnreadMessage,
+		id,
+		socket,
+		user?.id,
+	])
 
 	const loadMoreMessages = useCallback(async () => {
 		if (isLoadingMore || !hasMore) return
@@ -312,7 +378,6 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 
 	useEffect(() => {
 		const handleMessagesRead = (readReceipts: IReadReceipt[]) => {
-			console.log('[Chat] Received read receipts:', readReceipts)
 			setMessages(prev =>
 				prev.map(m => {
 					const receipt = readReceipts.find(r => r.messageId === m.id)
