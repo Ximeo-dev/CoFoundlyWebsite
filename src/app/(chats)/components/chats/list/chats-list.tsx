@@ -85,7 +85,7 @@ export default function ChatsList({
 	}, [sortedChats, searchTerm])
 
 	return (
-		<div className='flex flex-col h-full w-full'>
+		<div className='flex flex-col h-full w-full pb-12 lg:pb-0'>
 			<CurrentUser />
 			<div className='border-t border-b border-border p-3'>
 				<div className='flex justify-between items-center'>

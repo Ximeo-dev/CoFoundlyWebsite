@@ -15,12 +15,12 @@ export default function AuthLayout({
 	return (
 		<>
 			<ContainerWrapper>
+				<NotificationList />
 				<div className={styles.profile_main}>
 					<ProfileSidebar />
 					<div className={cn(styles.profile_section, '')}>{children}</div>
 				</div>
 				<EmailConfirmationNotification />
-				<NotificationList />
 			</ContainerWrapper>
 		</>
 	)

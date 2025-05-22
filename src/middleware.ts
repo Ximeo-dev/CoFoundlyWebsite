@@ -5,10 +5,10 @@ import { EnumTokens } from './services/auth-token.services'
 export async function middleware(request: NextRequest) {
 	const { url, cookies } = request
 
-	// if (process.env.NODE_ENV !== 'production') {
-	// 	console.log('Skipping middleware in development mode', url)
-	// 	return NextResponse.next()
-	// }
+	if (process.env.NODE_ENV !== 'production') {
+		console.log('Skipping middleware in development mode', url)
+		return NextResponse.next()
+	}
 
 	const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
 
