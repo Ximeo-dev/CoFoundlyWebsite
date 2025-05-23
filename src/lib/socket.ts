@@ -7,7 +7,7 @@ let socket: Socket | null = null
  * Инициализирует или возвращает существующий экземпляр Socket.IO.
  * @param token - JWT для авторизации при подключении
  */
-export function getSocket(token: string): Socket {
+export function getSocket(token: string | null): Socket {
 	if (!socket) {
 		socket = io(WS_URL, {
 			auth: { token },
