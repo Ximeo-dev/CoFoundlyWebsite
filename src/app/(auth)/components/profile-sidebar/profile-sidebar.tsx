@@ -174,7 +174,7 @@ export default function ProfileSidebar() {
 								(section.collapsible
 									? expandedSections.includes(section.label)
 									: true) && (
-									<ul className='space-y-1'>
+									<ul className={`${isChatPage && 'flex flex-col items-center'} space-y-1`}>
 										{section.items.map(item => (
 											<li key={item.href}>
 												{item.href === '/logout' ? (
@@ -200,36 +200,48 @@ export default function ProfileSidebar() {
 														</span>
 													</button>
 												) : (
-													<Link
-														href={item.href}
-														className={cn(
-															'flex items-center gap-x-3 py-3.5 px-2 rounded-lg',
-															'text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white',
-															'transition-all duration-300 hover:-translate-y-0.5',
-															pathname === item.href &&
-																'text-black dark:text-white font-medium',
-															!isExpanded && 'justify-center'
-														)}
-													>
+													<>
 														{!isExpanded ? (
 															<Tooltip text={item.label} position='right'>
-																<item.icon
-																	size={20}
-																	className='flex-shrink-0'
-																/>
-																<span
+																<Link
+																	href={item.href}
 																	className={cn(
-																		'whitespace-nowrap overflow-hidden transition-opacity duration-300',
-																		isExpanded
-																			? 'opacity-100 block'
-																			: 'opacity-0 hidden'
+																		'flex items-center gap-x-3 py-3.5 px-2 rounded-lg',
+																		'text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white',
+																		'transition-all duration-300 hover:-translate-y-0.5',
+																		pathname === item.href &&
+																			'text-black dark:text-white font-medium',
+																		!isExpanded && 'justify-center'
 																	)}
 																>
-																	{item.label}
-																</span>
+																	<item.icon
+																		size={20}
+																		className='flex-shrink-0'
+																	/>
+																	<span
+																		className={cn(
+																			'whitespace-nowrap overflow-hidden transition-opacity duration-300',
+																			isExpanded
+																				? 'opacity-100 block'
+																				: 'opacity-0 hidden'
+																		)}
+																	>
+																		{item.label}
+																	</span>
+																</Link>
 															</Tooltip>
 														) : (
-															<>
+															<Link
+																href={item.href}
+																className={cn(
+																	'flex items-center gap-x-3 py-3.5 px-2 rounded-lg',
+																	'text-neutral-500 hover:text-black dark:text-[#939393] dark:hover:text-white',
+																	'transition-all duration-300 hover:-translate-y-0.5',
+																	pathname === item.href &&
+																		'text-black dark:text-white font-medium',
+																	!isExpanded && 'justify-center'
+																)}
+															>
 																<item.icon
 																	size={20}
 																	className='flex-shrink-0'
@@ -244,9 +256,9 @@ export default function ProfileSidebar() {
 																>
 																	{item.label}
 																</span>
-															</>
+															</Link>
 														)}
-													</Link>
+													</>
 												)}
 											</li>
 										))}

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Socket } from 'socket.io-client'
 import { useSocket } from '@/hooks/useSocket'
 import {
 	INotification,
@@ -11,6 +10,8 @@ import {
 interface NotificationContextType {
 	notifications: INotification[]
 	removeNotification: (id: string) => void
+	activeChatUserId: string | null
+	setActiveChatUserId: (userId: string | null) => void
 }
 
 export const NotificationContext = createContext<
@@ -24,32 +25,22 @@ export const NotificationProvider = ({
 }) => {
 	const socket = useSocket()
 	const [notifications, setNotifications] = useState<INotification[]>([])
+	const [activeChatUserId, setActiveChatUserId] = useState<string | null>(null)
 
 	useEffect(() => {
 		const handleNewNotification = (notification: INotification) => {
-			console.log('[Notification] New notification received:', {
-				id: notification.notification.id,
-				type: notification.notification.type,
-				content: notification.notification.content,
-				isRead: notification.notification.isRead,
-				createdAt: notification.notification.createdAt,
-			})
+			if (notification?.data.sender.id === activeChatUserId) {
+				return
+			}
 
 			try {
 				const audio = new Audio('/sounds/notification.mp3')
 				audio
 					.play()
-					.then(() =>
-						console.log(
-							'[Notification] Sound played successfully:',
-							notification.notification.id
-						)
-					)
 					.catch(error =>
 						console.error('[Notification] Error playing sound:', error)
 					)
 			} catch (error) {
-				console.error('[Notification] Failed to initialize audio:', error)
 			}
 
 			setNotifications(prev => [notification, ...prev])
@@ -66,12 +57,11 @@ export const NotificationProvider = ({
 	}, [socket])
 
 	const removeNotification = (id: string) => {
-		console.log('[Notification] Removing notification:', { id })
 		setNotifications(prev => prev.filter(n => n.notification.id !== id))
 	}
 
 	return (
-		<NotificationContext.Provider value={{ notifications, removeNotification }}>
+		<NotificationContext.Provider value={{ notifications, removeNotification, activeChatUserId, setActiveChatUserId }}>
 			{children}
 		</NotificationContext.Provider>
 	)

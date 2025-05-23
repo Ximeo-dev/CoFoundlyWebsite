@@ -406,22 +406,24 @@ export default function AnketView({
 								</m.p>
 								{anket?.portfolio?.length ? (
 									anket.portfolio.map((link: string, index: number) => (
-										<m.a
-											key={index}
-											href={link}
-											target='_blank'
-											variants={textVariants}
-											initial='initial'
-											animate='animate'
-											transition={{
-												duration: 0.3,
-												ease: 'easeOut',
-												delay: 0.56,
-											}}
-											className='mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white'
-										>
-											{link}
-										</m.a>
+										<div className='flex flex-col overflow-hidden'>
+											<m.a
+												key={index}
+												href={link}
+												target='_blank'
+												variants={textVariants}
+												initial='initial'
+												animate='animate'
+												transition={{
+													duration: 0.3,
+													ease: 'easeOut',
+													delay: 0.56,
+												}}
+												className='whitespace-nowrap truncate mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white w-fit'
+											>
+												{link}
+											</m.a>
+										</div>
 									))
 								) : (
 									<m.p
