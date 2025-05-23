@@ -73,34 +73,23 @@ export default function UsersSwipe() {
 	})
 
 	useEffect(() => {
-		console.log('[UsersSwipe] Устанавливаю обработчик NEW_CHAT')
-
 		const handleNewChat = async ({ chatId }: { chatId: string }) => {
-			console.log('[UsersSwipe] Получено событие NEW_CHAT с chatId:', chatId)
-
 			try {
-				console.log('[UsersSwipe] Запрашиваю данные чата по chatId:', chatId)
 				const newChat = await chatService.getChatById(chatId)
-				console.log('[UsersSwipe] Данные нового чата получены:', newChat)
-
-				console.log('[UsersSwipe] Обновляю кэш чатов...')
 				queryClient.setQueryData<IChat[]>(
 					['get-direct-chats'],
 					(oldChats = []) => {
 						const exists = oldChats.some(c => c.id === chatId)
-						console.log('[UsersSwipe] Чат уже существует:', exists)
 						return exists ? oldChats : [newChat, ...oldChats]
 					}
 				)
 			} catch (error) {
-				console.error('[UsersSwipe] Ошибка обработки NEW_CHAT:', error)
 			}
 		}
 
 		socket?.on(ChatServerEvent.NEW_CHAT, handleNewChat)
 
 		return () => {
-			console.log('[UsersSwipe] Удаляю обработчик NEW_CHAT')
 			socket?.off(ChatServerEvent.NEW_CHAT, handleNewChat)
 		}
 	}, [socket, queryClient, currentAnket])
@@ -116,7 +105,6 @@ export default function UsersSwipe() {
 
 	const handleSwipeAction = (action: 'like' | 'skip') => {
 		if (!currentAnket?.userId) {
-			console.log('[UsersSwipe] Ошибка: userId не определен для текущей анкеты')
 			toast.error('Не удалось определить пользователя для действия')
 			return
 		}

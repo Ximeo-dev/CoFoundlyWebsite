@@ -21,6 +21,7 @@ import { Loader } from 'lucide-react'
 import { groupMessagesByDate } from '@/utils/groupMessagesByDate'
 import { isToday, isYesterday, format } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import { useNotifications } from '@/hooks/notifications/useNotifications'
 
 interface ChatProps {
 	id: string
@@ -44,6 +45,11 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const messagesContainerRef = useRef<HTMLDivElement>(null)
 	const isInitialMount = useRef(true)
 	const isLoadingInitial = useRef(true)
+	const { setActiveChatUserId } = useNotifications()
+
+	const correspondent = initialData.participants.find(
+		p => p.userId !== user?.id
+	)
 
 	useEffect(() => {
 		localStorage.setItem(ACTIVE_CHAT_KEY, id)
@@ -51,6 +57,16 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 			localStorage.removeItem(ACTIVE_CHAT_KEY)
 		}
 	}, [id])
+
+	useEffect(() => {
+		if (correspondent?.userId) {
+			setActiveChatUserId(correspondent.userId)
+		}
+
+		return () => {
+			setActiveChatUserId(null)
+		}
+	}, [correspondent, setActiveChatUserId])
 
 	const findFirstUnreadMessage = useCallback(
 		(messages: IMessage[]) => {
@@ -402,10 +418,6 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 			socket.off(ChatServerEvent.MESSAGE_READ, handleMessagesRead)
 		}
 	}, [socket, id, queryClient])
-
-	const correspondent = initialData.participants.find(
-		p => p.userId !== user?.id
-	)
 
 	if (!user?.id) {
 		return (

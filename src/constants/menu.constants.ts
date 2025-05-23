@@ -35,13 +35,8 @@ export const MENU = [
 		href: ENDPOINTS.WELCOME,
 	},
 	{
-		id: 3,
-		label: 'Премиум',
-		href: ENDPOINTS.WELCOME,
-	},
-	{
 		id: 2,
-		label: 'Чаты',
+		label: 'Контакты',
 		href: ENDPOINTS.WELCOME,
 	},
 ]
@@ -56,16 +51,6 @@ export const MENU_MORE = [
 		id: 2,
 		label: 'Конфиденциальность',
 		href: ENDPOINTS.PRIVACY,
-	},
-	{
-		id: 3,
-		label: 'Проекты',
-		href: ENDPOINTS.SWIPE_USERS,
-	},
-	{
-		id: 4,
-		label: 'Исполнители',
-		href: ENDPOINTS.SWIPE_USERS,
 	},
 ]
 
