@@ -9,11 +9,12 @@ import { authService } from '@/services/auth.service'
 export const SocketContext = createContext<Socket | null>(null)
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-	const [token, setToken] = useState<string>(getAccessToken() ?? '')
+	const [token, setToken] = useState<string | null>(getAccessToken())
 	const [socket, setSocket] = useState<Socket>(getSocket(token))
 
 	useEffect(() => {
 		let isMounted = true
+		const token = getAccessToken()
 		socket.auth = { token }
 		socket.connect()
 
@@ -21,9 +22,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 			console.log('Socket disconnected', reason)
 			if (!isMounted) return
 			try {
-				const response = await authService.getNewTokens()
-				setToken(response.data.accessToken)
-				socket.auth = { token }
+				await authService.getNewTokens()
+				const newToken = getAccessToken()
+				socket.auth = { token: newToken }
 				setTimeout(() => {
 					socket.connect()
 				}, 2000)
