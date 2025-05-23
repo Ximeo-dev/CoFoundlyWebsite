@@ -32,17 +32,17 @@ export const MENU = [
 	{
 		id: 1,
 		label: 'О проекте',
-		href: ENDPOINTS.HOME,
+		href: ENDPOINTS.WELCOME,
 	},
 	{
 		id: 3,
 		label: 'Премиум',
-		href: ENDPOINTS.HOME,
+		href: ENDPOINTS.WELCOME,
 	},
 	{
 		id: 2,
 		label: 'Чаты',
-		href: ENDPOINTS.CHATS,
+		href: ENDPOINTS.WELCOME,
 	},
 ]
 
@@ -123,22 +123,22 @@ export const SIDEBAR_MENU: IMenuSection[] = [
 			},
 		],
 	},
-	{
-		label: 'Ещё',
-		collapsible: true,
-		items: [
-			{
-				href: '/settings',
-				icon: Settings,
-				label: 'Настройки',
-			},
-			{
-				href: '/support',
-				icon: HelpCircle,
-				label: 'Поддержка',
-			},
-		],
-	},
+	// {
+	// 	label: 'Ещё',
+	// 	collapsible: true,
+	// 	items: [
+	// 		{
+	// 			href: '/settings',
+	// 			icon: Settings,
+	// 			label: 'Настройки',
+	// 		},
+	// 		{
+	// 			href: '/support',
+	// 			icon: HelpCircle,
+	// 			label: 'Поддержка',
+	// 		},
+	// 	],
+	// },
 ]
 
 export const TABS = [

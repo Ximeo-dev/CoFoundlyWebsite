@@ -140,7 +140,7 @@ export default function ProfileSidebar() {
 									</span>
 								)}
 
-								{section.label === 'Ещё' && isMoreHovered && isExpanded && (
+								{/* {section.label === 'Ещё' && isMoreHovered && isExpanded && (
 									<LazyMotion features={domAnimation}>
 										<m.div
 											className='absolute left-0 top-4 rounded-[20px] shadow-lg bg-white dark:bg-[#1A1A1A] border border-border z-50 w-[200px]'
@@ -167,7 +167,7 @@ export default function ProfileSidebar() {
 											</ul>
 										</m.div>
 									</LazyMotion>
-								)}
+								)} */}
 							</div>
 
 							{section.label !== 'Ещё' &&

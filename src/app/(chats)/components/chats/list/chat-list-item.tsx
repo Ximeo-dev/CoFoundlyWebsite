@@ -8,6 +8,7 @@ import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { useSocket } from '@/hooks/useSocket'
 import UnreadMessageIndicator from './unread-message-indicator'
 import { useEffect, useState } from 'react'
+import { Check, CheckCheck } from 'lucide-react'
 
 interface IChatListItem {
 	chat: IChat
@@ -51,6 +52,13 @@ export default function ChatListItem({
 	const lastMessageContent = lastMessage
 		? truncateMessage(lastMessage.content)
 		: 'Начните общение'
+
+	const isLastMessageFromCurrentUser = lastMessage?.senderId === user?.id
+
+	const isLastMessageRead =
+		isLastMessageFromCurrentUser &&
+		lastMessage?.readReceipt &&
+		lastMessage.readReceipt.length > 0
 
 	useEffect(() => {
 		if (!socket || !user?.id || !correspondent?.userId) return
@@ -96,9 +104,20 @@ export default function ChatListItem({
 					</div>
 				</div>
 				<div className='flex flex-col h-full justify-between items-end'>
-					<span className='text-xs opacity-30 flex-shrink-0'>
-						{lastMessage ? formatMessageDate(lastMessage.sentAt) : ''}
-					</span>
+					<div className='flex gap-x-1.5 items-center'>
+						{isLastMessageFromCurrentUser && (
+							<span className='flex items-center'>
+								{isLastMessageRead ? (
+									<CheckCheck className='h-4 w-4 text-zinc-100' />
+								) : (
+									<Check className='h-4 w-4 text-gray-300' />
+								)}
+							</span>
+						)}
+						<span className='text-xs opacity-30 flex-shrink-0'>
+							{lastMessage ? formatMessageDate(lastMessage.sentAt) : ''}
+						</span>
+					</div>
 					<UnreadMessageIndicator
 						count={chat.unreadMessages || 0}
 						variant='count'

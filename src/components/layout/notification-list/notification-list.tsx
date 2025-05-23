@@ -26,11 +26,11 @@ export default function NotificationList() {
 	}, [notifications, removeNotification])
 
 	return (
-		<div className='left-1/2 -translate-x-1/2 fixed top-5 lg:right-5 z-[100]'>
+		<div className='left-1/2 -translate-x-1/2 lg:left-[89%] fixed top-5 z-[100]'>
 			{notifications.map(notification => (
 				<div
 					key={notification.notification.id}
-					className='bg-[#292A2E] rounded-lg border border-border mb-3 px-3.5 py-2 relative min-w-[350px] max-h-[95px] animation-slide-left transition-transform duration-300'
+					className='bg-[#292A2E] rounded-lg border border-border mb-3 px-3.5 py-2 relative min-w-[350px] max-h-[95px] max-w-[400px] animation-slide-left transition-transform duration-300'
 					draggable
 					onDragEnd={e => {
 						if (e.clientX > window.innerWidth * 0.7) {

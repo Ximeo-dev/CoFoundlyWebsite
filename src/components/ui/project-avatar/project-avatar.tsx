@@ -166,7 +166,7 @@ export default function ProjectAvatar({
 						type='button'
 						onClick={handleClick}
 						disabled={isUploading || isDeleting}
-						className='cursor-pointer absolute -bottom-2 right-2 flex items-center w-6 h-6 rounded-full bg-black/70 text-white text-[10px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
+						className='cursor-pointer absolute -bottom-2 -left-2 flex items-center w-6 h-6 rounded-full bg-black/70 text-white text-[10px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200 flex items-center justify-center'
 					>
 						<Pencil size={12} />
 					</button>
@@ -174,7 +174,7 @@ export default function ProjectAvatar({
 						type='button'
 						onClick={() => deleteAvatar()}
 						disabled={isUploading || isDeleting}
-						className='cursor-pointer absolute -bottom-2 -right-2 flex items-center w-6 h-6 rounded-full bg-black/70 text-white text-[10px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200'
+						className='cursor-pointer absolute -bottom-2 -right-2 flex items-center w-6 h-6 rounded-full bg-black/70 text-white text-[10px] font-medium backdrop-blur-sm hover:bg-black transition-all duration-200 flex items-center justify-center'
 					>
 						<Trash size={12} />
 					</button>

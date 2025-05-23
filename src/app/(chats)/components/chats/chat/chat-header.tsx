@@ -2,46 +2,15 @@
 
 import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { Button } from '@/components/ui/shadcn/button'
+import TypingDots from '@/components/ui/typing-dots/typing-dots'
 import { useSocket } from '@/hooks/useSocket'
 import { ChatServerEvent, IParticipant } from '@/types/chat.types'
 import { PanelLeft } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { cn } from '@/lib/utils'
 
 interface ChatHeaderProps {
 	correspondent?: IParticipant
 	onToggleSidebar: () => void
-}
-
-const TypingDots = () => {
-	useEffect(() => {
-		console.log('[TypingDots] Component rendered')
-	}, [])
-
-	return (
-		<div className='flex items-center opacity-50'>
-			<div className='flex space-x-1'>
-				{[0, 1, 2].map(i => (
-					<motion.span
-						key={i}
-						className='block w-1 h-1 rounded-full bg-gray-500 dark:bg-gray-400'
-						animate={{
-							y: [0, -4, 0],
-							opacity: [0.6, 1, 0.6],
-						}}
-						transition={{
-							duration: 1.2,
-							repeat: Infinity,
-							repeatDelay: 0,
-							delay: i * 0.2,
-						}}
-					/>
-				))}
-			</div>
-			<span className='ml-1 text-sm'>печатает</span>
-		</div>
-	)
 }
 
 export default function ChatHeader({
@@ -75,7 +44,7 @@ export default function ChatHeader({
 					name={correspondent?.displayUsername}
 				/>
 				<div>
-					<h3 className='mr-2'>
+					<h3 className='mr-2 text-lg'>
 						{correspondent?.displayUsername || 'Неизвестный пользователь'}
 					</h3>
 					{isTyping ? (
