@@ -328,7 +328,15 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		const handleEditedMessage = (editedMessage: IMessage) => {
 			if (editedMessage.chatId === id) {
 				setMessages(prev =>
-					prev.map(m => (m.id === editedMessage.id ? editedMessage : m))
+					prev.map(m => {
+						if (m.id === editedMessage.id) {
+							return {
+								...editedMessage,
+								readReceipt: m.readReceipt || editedMessage.readReceipt,
+							}
+						}
+						return m
+					})
 				)
 				queryClient.invalidateQueries({ queryKey: ['get-direct-chats'] })
 			}
@@ -344,6 +352,8 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 		const messageToEdit = messages.find(m => m.id === messageId)
 		if (!messageToEdit) return
 
+		const currentReadReceipt = messageToEdit.readReceipt
+
 		socket.emit(ChatClientEvent.EDIT_MESSAGE, {
 			chatId: id,
 			messageId: messageId,
@@ -352,7 +362,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 
 		setMessages(prev =>
 			prev.map(m =>
-				m.id === messageId ? { ...m, content: newContent, isEdited: true } : m
+				m.id === messageId ? { ...m, content: newContent, isEdited: true, readReceipt: currentReadReceipt } : m
 			)
 		)
 		setEditingMessage(null)

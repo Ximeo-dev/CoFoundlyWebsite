@@ -5,7 +5,6 @@ import { useState } from 'react'
 import SkeletonView from '../../components/user-anket/anket-view/skeleton-view'
 import { useProjects } from '@/hooks/anket/useProjects'
 import ProjectEditor from './project-editor'
-import ProjectCardList from './project-card-list/project-card-list'
 import ProjectPreviewCard from './preview/components/project-preview-card'
 import { IProject } from '@/types/project.types'
 

@@ -261,7 +261,7 @@ export default function RegisterForm() {
 								},
 							})}
 							onChange={e => validatePasswords(e, 'password')}
-							error={errors.password?.message}
+							error={errors.password && errors.password.message}
 							className='mt-8 mb-4'
 						/>
 						<InputField

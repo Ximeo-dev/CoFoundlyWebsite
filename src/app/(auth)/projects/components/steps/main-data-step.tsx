@@ -1,9 +1,7 @@
 'use client'
 
 import { useFormContext, useWatch } from 'react-hook-form'
-import Avatar from '../../../components/profile-info/avatar'
 import { useState } from 'react'
-import IndustryModal from '../../../components/user-anket/steps/professional/Industry-modal'
 import ProjectIndustryModal from './project-industry-modal'
 
 export default function MainDataStep() {
@@ -13,9 +11,6 @@ export default function MainDataStep() {
 
 	return (
 		<div className='space-y-6'>
-			{/* <div className='flex items-center justify-center'>
-				<Avatar size={512} editable className='w-fit' />
-			</div> */}
 			<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
 				Личные данные
 			</h3>

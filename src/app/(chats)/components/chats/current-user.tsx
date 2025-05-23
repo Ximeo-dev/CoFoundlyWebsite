@@ -9,8 +9,8 @@ export default function CurrentUser() {
   return (
 		<div className='p-5 flex items-center justify-between'>
 			<div className='flex items-center'>
-				<Avatar size={64} hasAvatar className='mr-4'  />
-				<div className='text-sm'>
+				<Avatar size={64} hasAvatar className='mr-3'  />
+				<div className='text-base'>
 					<h2>{user?.displayUsername}</h2>
 				</div>
 			</div>

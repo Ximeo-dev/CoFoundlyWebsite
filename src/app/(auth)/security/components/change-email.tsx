@@ -134,7 +134,7 @@ export default function ChangeEmail() {
 				<Modal
 					onClose={() => setIsOpenEmailModal(false)}
 					isOpen={isOpenEmailModal}
-					className={styles.modal}
+					className='p-4 w-[350px] md:w-[450px]'
 				>
 					<div className={styles.modal_inner}>
 						<h2 className={styles.modal_title}>Смена почты</h2>

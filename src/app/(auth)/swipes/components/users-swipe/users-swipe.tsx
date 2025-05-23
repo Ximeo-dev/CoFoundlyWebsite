@@ -50,7 +50,12 @@ export default function UsersSwipe() {
 			userId: string
 			action: 'like' | 'skip'
 		}) => swipeService.swipeAction(userId, action),
-		onSuccess: async () => {
+		onSuccess: async (response) => {
+			if (response?.isMatch) {
+				toast.success(`У Вас match с ${currentAnket?.name}! Можете начать общение прямо сейчас`, {
+					duration: 7000
+				})
+			}
 			if (remainingAnkets.length > 0 && anket) {
 				setCurrentAnket(remainingAnkets[0])
 				setRemainingAnkets(remainingAnkets.slice(1))

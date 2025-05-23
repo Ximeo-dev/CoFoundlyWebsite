@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/shadcn/button'
 import Tooltip from '@/components/ui/tooltip/tooltip'
 import TwoFA from '@/components/ui/2fa/2fa'
 import { ResponseError } from '@/types/error.types'
+import ProjectAvatar from '@/components/ui/project-avatar/project-avatar'
 
 export default function ProjectPreviewCard({
 	project,
@@ -106,7 +107,11 @@ export default function ProjectPreviewCard({
 						)}
 					>
 						<div className={styles.left_block_inner}>
-							<div className='relative w-1/2 h-32 rounded-md overflow-hidden mb-7 border border-border' />
+							<ProjectAvatar
+								size={512}
+								projectName={project.name || 'Новый проект'}
+								className='shrink-0 mb-5'
+							/>
 							<m.h1
 								variants={textVariants}
 								initial='initial'
