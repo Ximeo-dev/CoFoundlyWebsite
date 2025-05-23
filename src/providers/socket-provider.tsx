@@ -1,37 +1,41 @@
 'use client'
 
-import React, { createContext, useEffect, useState } from 'react'
-import { Socket } from 'socket.io-client'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { getSocket } from '@/lib/socket'
+import type { Socket } from 'socket.io-client'
+import { getAccessToken } from '@/services/auth-token.services'
+import { authService } from '@/services/auth.service'
 
-export const SocketContext = createContext<Socket | undefined>(undefined)
+export const SocketContext = createContext<Socket | null>(null)
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-	const [socket, setSocket] = useState<Socket | null>(null)
+	const token = getAccessToken() ?? ''
+	const socket = getSocket(token)
+	socket.auth = { token: token }
+	socket.connect()
 
 	useEffect(() => {
-		const socketInstance = getSocket()
+		let isMounted = true
 
-		socketInstance.on('connect', () => {
-			console.log('✅ Socket connected:', socketInstance.id)
+		socket.on('disconnect', async reason => {
+			console.log('Socket disconnected', reason)
+			if (!isMounted) return
+			try {
+				const response = await authService.getNewTokens()
+				const newToken = response.data.accessToken
+				socket.auth = { newToken }
+				setTimeout(() => socket.connect(), 2000)
+			} catch (err) {
+				console.error('Reauth failed', err)
+			}
 		})
-
-		socketInstance.on('disconnect', reason => {
-			console.warn('⚠️ Socket disconnected:', reason)
-		})
-
-		socketInstance.on('errors', err => {
-			console.error('❌ Socket connection error:', err)
-		})
-
-		setSocket(socketInstance)
 
 		return () => {
-			socketInstance.disconnect()
+			isMounted = false
+			socket.off('disconnect')
+			socket.disconnect()
 		}
-	}, [])
-
-	if (!socket) return null
+	}, [socket])
 
 	return (
 		<SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

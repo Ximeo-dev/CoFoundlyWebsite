@@ -13,6 +13,7 @@ import { slideUp } from '@/lib/motion-variants'
 import { cn } from '@/lib/utils'
 import { Check, Eye, EyeOff, KeyRound } from 'lucide-react'
 import zxcvbn from 'zxcvbn'
+import { securityService } from '@/services/security.service'
 
 interface IResetPasswordConfirmForm {
 	password: string
@@ -38,7 +39,7 @@ export default function ConfirmForm() {
   const { mutate: confirm } = useMutation({
 		mutationKey: ['confirm-reset-password'],
 		mutationFn: ({ password, token }: IResetPasswordData) =>
-			authService.resetPasswordConfirm(password, token),
+			securityService.resetPasswordConfirm(password, token),
 		onSuccess: () => {
 			toast.success('Пароль восстановлен')
 			reset()

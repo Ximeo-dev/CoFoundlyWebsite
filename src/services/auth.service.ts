@@ -73,25 +73,6 @@ class AuthService {
 
 		return response.data
 	}
-
-	async resetPasswordRequest(email: string) {
-		const response = axiosClassic.post(`/security/reset-password`, {
-			email,
-		})
-
-		return response
-	}
-
-	async resetPasswordConfirm(password: string, token: string) {
-		const response = await axiosClassic.post<IConfirmPassword>(
-			`/security/reset-password/confirm`,
-			{ password },
-			{
-				params: { token },
-			}
-		)
-		return response
-	}
 }
 
 export const authService = new AuthService()

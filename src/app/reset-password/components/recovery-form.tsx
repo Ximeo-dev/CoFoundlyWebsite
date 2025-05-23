@@ -10,6 +10,7 @@ import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { slideUp } from '@/lib/motion-variants'
 import { cn } from '@/lib/utils'
 import { Mail } from 'lucide-react'
+import { securityService } from '@/services/security.service'
 
 interface IRecovery {
 	email: string
@@ -22,7 +23,8 @@ export default function RecoveryForm() {
 
 	const { mutate: resetPassword } = useMutation({
 		mutationKey: ['reset-password'],
-		mutationFn: ({ email }: IRecovery) => authService.resetPasswordRequest(email),
+		mutationFn: ({ email }: IRecovery) =>
+			securityService.resetPasswordRequest(email),
 		onSuccess: () => {
 			toast.success('Запрос на сброс пароля отправлен')
 			reset()

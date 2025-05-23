@@ -11,7 +11,7 @@ export interface IChangePasswordForm {
 
 export type IChangeEmailDto = IChangeEmailForm
 
-interface IChangeEmailForm {
+export interface IChangeEmailForm {
 	currentPassword: string
 	newEmail: string
 }

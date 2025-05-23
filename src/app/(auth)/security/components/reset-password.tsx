@@ -1,19 +1,19 @@
 'use client'
 
-import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import styles from './security.module.css'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import FadeInUp from '@/components/ui/fade-on-view/fade-on-view'
+import { securityService } from '@/services/security.service'
 
 export default function ResetPassword() {
   const { user } = useAuth()
 
   const { mutate: resetPassword } = useMutation({
 		mutationKey: ['reset-password'],
-		mutationFn: (email: any) => authService.resetPasswordRequest(email),
+		mutationFn: (email: any) => securityService.resetPasswordRequest(email),
 		onSuccess: () => {
 			toast.success('Запрос на изменение пароля отправлен')
 		},
