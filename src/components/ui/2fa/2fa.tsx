@@ -1,5 +1,6 @@
 'use client'
 
+import { useAuth } from '@/hooks/useAuth'
 import Modal from '../modal/modal'
 
 interface ITwoFa {
@@ -8,6 +9,10 @@ interface ITwoFa {
 }
 
 export default function TwoFA({ isOpen, onClose }: ITwoFa) {
+	const { user } = useAuth()
+
+	if (!user?.securitySettings.twoFactorEnabled) return
+
   return (
 		<Modal isOpen={isOpen} onClose={onClose} className='p-6'>
 			<h2 className='text-xl'>Подтвердите действие в{' '}</h2>
