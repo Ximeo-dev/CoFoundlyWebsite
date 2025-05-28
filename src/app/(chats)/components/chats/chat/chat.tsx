@@ -45,7 +45,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	const messagesContainerRef = useRef<HTMLDivElement>(null)
 	const isInitialMount = useRef(true)
 	const isLoadingInitial = useRef(true)
-	const { setActiveChatUserId } = useNotifications()
+	const { setActiveChatUserId, toggleSound } = useNotifications()
 
 	const correspondent = initialData.participants.find(
 		p => p.userId !== user?.id
@@ -61,12 +61,14 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 	useEffect(() => {
 		if (correspondent?.userId) {
 			setActiveChatUserId(correspondent.userId)
+			toggleSound(false)
 		}
 
 		return () => {
 			setActiveChatUserId(null)
+			toggleSound(true)
 		}
-	}, [correspondent, setActiveChatUserId])
+	}, [correspondent, setActiveChatUserId, toggleSound])
 
 	const findFirstUnreadMessage = useCallback(
 		(messages: IMessage[]) => {
