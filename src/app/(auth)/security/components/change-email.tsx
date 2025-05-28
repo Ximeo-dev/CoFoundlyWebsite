@@ -34,7 +34,7 @@ export default function ChangeEmail() {
 		mutationFn: (data: IChangeEmailDto) =>
 			securityService.changeEmailRequest(data),
 		onSuccess: data => {
-			toast.success(data.message)
+			toast.success('Подтверждение отправлено на новый почтовый адрес')
 			setIsOpenEmailModal(false)
 			reset()
 		},
@@ -165,7 +165,7 @@ export default function ChangeEmail() {
 								</Link>
 								<InputField
 									icon={<Mail />}
-									placeholder='Почта'
+									placeholder='Новая почта'
 									type='text'
 									{...register('newEmail', {
 										required: true,
