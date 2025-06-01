@@ -35,15 +35,17 @@ export default function AnketView({
 	intent,
 	handleIntentChange,
 	handleSwipeAction,
+	isEmpty = false,
 }: {
 	anket: any
 	onEdit?: () => void
 	editable?: boolean
 	showProgress?: boolean
 	id?: string
-	intent?: 'similar' | 'complement'
-	handleIntentChange?: (value: 'similar' | 'complement') => void
+	intent?: 'similar' | 'complement' | 'liked'
+	handleIntentChange?: (value: 'similar' | 'complement' | 'liked') => void
 	handleSwipeAction?: (action: 'skip' | 'like') => void
+	isEmpty?: boolean
 }) {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [isBotModalOpen, setIsBotModalOpen] = useState(false)
@@ -82,7 +84,6 @@ export default function AnketView({
 		deleteAnket()
 	}
 
-
 	const displayAge =
 		anket?.age !== undefined && anket?.age !== null
 			? anket.age
@@ -91,7 +92,7 @@ export default function AnketView({
 			: '—'
 
 	const textVariants = {
-		initial: { x: 15, opacity: 0, },
+		initial: { x: 15, opacity: 0 },
 		animate: { x: 0, opacity: 1 },
 	}
 
@@ -104,13 +105,12 @@ export default function AnketView({
 					'bg-background border border-border rounded-[15px]'
 				)}
 			>
-				{' '}
 				<div className={cn(styles.view_inner, `border-b border-border`)}>
 					<div className={styles.view_top}>
 						<h2 className={styles.view_top_text}>
 							{editable ? 'Ваша анкета' : 'Анкета'}
 						</h2>
-						{showProgress && <ProgressBar progress={progress} />}
+						{showProgress && anket && <ProgressBar progress={progress} />}
 						{editable && (
 							<div className='flex items-center gap-x-5'>
 								<button
@@ -132,315 +132,344 @@ export default function AnketView({
 								</button>
 							</div>
 						)}
-						{!editable && (
-							<Select onValueChange={handleIntentChange} value={intent}>
-								<SelectTrigger className='w-[200px]'>
-									<SelectValue placeholder='Выберите тип поиска' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem className='cursor-pointer' value='similar'>
-										Схожие
-									</SelectItem>
-									<SelectItem className='cursor-pointer' value='complement'>
-										Дополняющие
-									</SelectItem>
-								</SelectContent>
-							</Select>
-						)}
+						{!editable &&
+							handleIntentChange &&
+							intent && (
+								<Select onValueChange={handleIntentChange} value={intent}>
+									<SelectTrigger className='w-[200px]'>
+										<SelectValue placeholder='Выберите тип поиска' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem className='cursor-pointer' value='similar'>
+											Схожие
+										</SelectItem>
+										<SelectItem className='cursor-pointer' value='complement'>
+											Дополняющие
+										</SelectItem>
+										<SelectItem className='cursor-pointer' value='liked'>
+											Лайкнувшие
+										</SelectItem>
+									</SelectContent>
+								</Select>
+							)}
 					</div>
 				</div>
-				<div className={styles.info_block}>
-					<div
-						className={cn(
-							styles.info_block_left,
-							'border-b md:border-b-0 md:border-r border-border'
-						)}
-					>
-						<div className={styles.left_block_inner}>
-							<Avatar key={id} id={id} size={512} name={anket.name} hasAvatar />
-							<m.h1
+				{isEmpty ? (
+					<div className='h-[500px] flex items-center justify-center'>
+						<div className='text-center text-gray-500 dark:text-neutral-500'>
+							Нет пользователей, которые вас лайкнули
+						</div>
+					</div>
+				) : (
+					<div className={styles.info_block}>
+						<div
+							className={cn(
+								styles.info_block_left,
+								'border-b md:border-b-0 md:border-r border-border'
+							)}
+						>
+							<div className={styles.left_block_inner}>
+								<Avatar
+									key={id}
+									id={id}
+									size={512}
+									name={anket.name}
+									hasAvatar
+								/>
+								<m.h1
+									variants={textVariants}
+									initial='initial'
+									animate='animate'
+									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.1 }}
+									className={styles.personal_data}
+								>
+									{anket?.name}, {displayAge}
+								</m.h1>
+							</div>
+							{!editable && (
+								<div className='flex justify-between mt-12 md:mt-24'>
+									<button
+										className='bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 px-3 py-2 rounded-lg cursor-pointer hover:-translate-y-0.5 transition-transform duration-300'
+										onClick={() => handleSwipeAction?.('skip')}
+										disabled={!handleSwipeAction}
+									>
+										<span className='flex items-center gap-x-2'>
+											<X size={23} />
+											<span>Пропустить</span>
+										</span>
+									</button>
+									<button
+										className='bg-black dark:bg-white rounded-lg text-white dark:text-black px-3 py-2 cursor-pointer hover:-translate-y-0.5 transition-transform duration-300'
+										onClick={() => handleSwipeAction?.('like')}
+										disabled={!handleSwipeAction}
+									>
+										<span className='flex items-center gap-x-2'>
+											<Handshake size={23} />
+											<span>Лайк</span>
+										</span>
+									</button>
+								</div>
+							)}
+						</div>
+
+						<div className={styles.info_block_right}>
+							<m.h3
 								variants={textVariants}
 								initial='initial'
 								animate='animate'
-								transition={{ duration: 0.3, ease: 'easeOut', delay: 0.1 }}
-								className={styles.personal_data}
+								transition={{ duration: 0.3, ease: 'easeOut', delay: 0.2 }}
+								className={styles.right_title}
 							>
-								{anket?.name}, {displayAge}
-							</m.h1>
-						</div>
-						{!editable && (
-							<div className='flex justify-between mt-12 md:mt-24'>
-								<button
-									className='bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 px-3 py-2 rounded-lg cursor-pointer hover:-translate-y-0.5 transition-transform duration-300'
-									onClick={() => handleSwipeAction?.('skip')}
-									disabled={!handleSwipeAction}
-								>
-									<span className='flex items-center gap-x-2'>
-										<X size={23} />
-										<span>Пропустить</span>
-									</span>
-								</button>
-								<button
-									className='bg-black dark:bg-white rounded-lg text-white dark:text-black px-3 py-2 cursor-pointer hover:-translate-y-0.5 transition-transform duration-300'
-									onClick={() => handleSwipeAction?.('like')}
-									disabled={!handleSwipeAction}
-								>
-									<span className='flex items-center gap-x-2'>
-										<Handshake size={23} />
-										<span>Лайк</span>
-									</span>
-								</button>
-							</div>
-						)}
-					</div>
-
-					<div className={styles.info_block_right}>
-						<m.h3
-							variants={textVariants}
-							initial='initial'
-							animate='animate'
-							transition={{ duration: 0.3, ease: 'easeOut', delay: 0.2 }}
-							className={styles.right_title}
-						>
-							Информация в анкете
-						</m.h3>
-						<div className={styles.right_inner}>
-							<div>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
-									className='text-sm text-muted-foreground'
-								>
-									Род деятельности
-								</m.p>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.33 }}
-									className={cn('mt-1', !anket?.job && 'text-muted-foreground')}
-								>
-									{typeof anket?.job === 'string'
-										? anket?.job
-										: anket?.job?.name || 'Не указано'}
-								</m.p>
-							</div>
-							<div>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.35 }}
-									className='text-sm text-muted-foreground'
-								>
-									О себе
-								</m.p>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.38 }}
-									className={cn('mt-1', !anket?.bio && 'text-muted-foreground')}
-								>
-									{anket?.bio || 'Не указано'}
-								</m.p>
-							</div>
-							<div>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.4 }}
-									className='text-sm text-muted-foreground'
-								>
-									Навыки
-								</m.p>
-								<div className='mt-2'>
-									{anket?.skills?.length ? (
-										<div className='flex flex-wrap gap-x-2 gap-y-3'>
-											{anket.skills.map((skill: any, i: number) => (
-												<m.span
-													key={i}
-													variants={textVariants}
-													initial='initial'
-													animate='animate'
-													transition={{
-														duration: 0.3,
-														ease: 'easeOut',
-														delay: 0.43,
-													}}
-													className='bg-primary text-white dark:text-black text-sm px-3 py-1 rounded-full'
-												>
-													{typeof skill === 'string' ? skill : skill.name}
-												</m.span>
-											))}
-										</div>
-									) : (
-										<m.p
-											variants={textVariants}
-											initial='initial'
-											animate='animate'
-											transition={{
-												duration: 0.3,
-												ease: 'easeOut',
-												delay: 0.43,
-											}}
-											className='text-muted-foreground'
-										>
-											Не указано
-										</m.p>
-									)}
+								Информация в анкете
+							</m.h3>
+							<div className={styles.right_inner}>
+								<div>
+									<m.p
+										variants={textVariants}
+										initial='initial'
+										animate='animate'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+										className='text-sm text-muted-foreground'
+									>
+										Род деятельности
+									</m.p>
+									<m.p
+										variants={textVariants}
+										initial='initial'
+										animate='animate'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.33 }}
+										className={cn(
+											'mt-1',
+											!anket?.job && 'text-muted-foreground'
+										)}
+									>
+										{typeof anket?.job === 'string'
+											? anket?.job
+											: anket?.job?.name || 'Не указано'}
+									</m.p>
 								</div>
-							</div>
-							<div>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.45 }}
-									className='text-sm text-muted-foreground'
-								>
-									Языки
-								</m.p>
-								<div className='mt-2'>
-									{anket?.languages?.length ? (
-										<div className='flex flex-wrap gap-2'>
-											{anket.languages.map((language: any, i: number) => (
-												<m.span
-													key={i}
-													variants={textVariants}
-													initial='initial'
-													animate='animate'
-													transition={{
-														duration: 0.3,
-														ease: 'easeOut',
-														delay: 0.48,
-													}}
-													className='text-black dark:text-white'
-												>
-													{typeof language === 'string'
-														? language
-														: language.name}
-													{i < anket.languages.length - 1 && ', '}
-												</m.span>
-											))}
-										</div>
-									) : (
-										<m.p
-											variants={textVariants}
-											initial='initial'
-											animate='animate'
-											transition={{
-												duration: 0.3,
-												ease: 'easeOut',
-												delay: 0.48,
-											}}
-											className='text-muted-foreground'
-										>
-											Не указано
-										</m.p>
-									)}
+								<div>
+									<m.p
+										variants={textVariants}
+										initial='initial'
+										animate='animate'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.35 }}
+										className='text-sm text-muted-foreground'
+									>
+										О себе
+									</m.p>
+									<m.p
+										variants={textVariants}
+										initial='initial'
+										animate='animate'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.38 }}
+										className={cn(
+											'mt-1',
+											!anket?.bio && 'text-muted-foreground'
+										)}
+									>
+										{anket?.bio || 'Не указано'}
+									</m.p>
 								</div>
-							</div>
-							<div>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.48 }}
-									className='text-sm text-muted-foreground'
-								>
-									Интересующие ниши
-								</m.p>
-								<div className='mt-2'>
-									{anket?.industries?.length ? (
-										<div className='flex flex-wrap gap-2'>
-											{anket.industries.map((industry: any, i: number) => (
-												<m.span
-													key={i}
-													variants={textVariants}
-													initial='initial'
-													animate='animate'
-													transition={{
-														duration: 0.3,
-														ease: 'easeOut',
-														delay: 0.51,
-													}}
-													className='text-black dark:text-white'
-												>
-													{typeof industry === 'string'
-														? industry
-														: industry.name}
-													{i < anket.industries.length - 1 && ', '}
-												</m.span>
-											))}
-										</div>
-									) : (
-										<m.p
-											variants={textVariants}
-											initial='initial'
-											animate='animate'
-											transition={{
-												duration: 0.3,
-												ease: 'easeOut',
-												delay: 0.51,
-											}}
-											className='text-muted-foreground'
-										>
-											Не указано
-										</m.p>
-									)}
-								</div>
-							</div>
-							<div>
-								<m.p
-									variants={textVariants}
-									initial='initial'
-									animate='animate'
-									transition={{ duration: 0.3, ease: 'easeOut', delay: 0.53 }}
-									className='text-sm text-muted-foreground mb-1'
-								>
-									Портфолио
-								</m.p>
-								{anket?.portfolio?.length ? (
-									anket.portfolio.map((link: string, index: number) => (
-										<div className='flex flex-col overflow-hidden'>
-											<m.a
-												key={index}
-												href={link}
-												target='_blank'
+								<div>
+									<m.p
+										variants={textVariants}
+										initial='initial'
+										animate='animate'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.4 }}
+										className='text-sm text-muted-foreground'
+									>
+										Навыки
+									</m.p>
+									<div className='mt-2'>
+										{anket?.skills?.length ? (
+											<div className='flex flex-wrap gap-x-2 gap-y-3'>
+												{anket.skills.map((skill: any, i: number) => (
+													<m.span
+														key={i}
+														variants={textVariants}
+														initial='initial'
+														animate='animate'
+														transition={{
+															duration: 0.3,
+															ease: 'easeOut',
+															delay: 0.43,
+														}}
+														className='bg-primary text-white dark:text-black text-sm px-3 py-1 rounded-full'
+													>
+														{typeof skill === 'string' ? skill : skill.name}
+													</m.span>
+												))}
+											</div>
+										) : (
+											<m.p
 												variants={textVariants}
 												initial='initial'
 												animate='animate'
 												transition={{
 													duration: 0.3,
 													ease: 'easeOut',
-													delay: 0.56,
+													delay: 0.43,
 												}}
-												className='whitespace-nowrap truncate mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white w-fit'
+												className='text-muted-foreground'
 											>
-												{link}
-											</m.a>
-										</div>
-									))
-								) : (
+												Не указано
+											</m.p>
+										)}
+									</div>
+								</div>
+								<div>
 									<m.p
 										variants={textVariants}
 										initial='initial'
 										animate='animate'
-										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.56 }}
-										className='text-muted-foreground'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.45 }}
+										className='text-sm text-muted-foreground'
 									>
-										Не указано
+										Языки
 									</m.p>
-								)}
+									<div className='mt-2'>
+										{anket?.languages?.length ? (
+											<div className='flex flex-wrap gap-2'>
+												{anket.languages.map((language: any, i: number) => (
+													<m.span
+														key={i}
+														variants={textVariants}
+														initial='initial'
+														animate='animate'
+														transition={{
+															duration: 0.3,
+															ease: 'easeOut',
+															delay: 0.48,
+														}}
+														className='text-black dark:text-white'
+													>
+														{typeof language === 'string'
+															? language
+															: language.name}
+														{i < anket.languages.length - 1 && ', '}
+													</m.span>
+												))}
+											</div>
+										) : (
+											<m.p
+												variants={textVariants}
+												initial='initial'
+												animate='animate'
+												transition={{
+													duration: 0.3,
+													ease: 'easeOut',
+													delay: 0.48,
+												}}
+												className='text-muted-foreground'
+											>
+												Не указано
+											</m.p>
+										)}
+									</div>
+								</div>
+								<div>
+									<m.p
+										variants={textVariants}
+										initial='initial'
+										animate='animate'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.48 }}
+										className='text-sm text-muted-foreground'
+									>
+										Интересующие ниши
+									</m.p>
+									<div className='mt-2'>
+										{anket?.industries?.length ? (
+											<div className='flex flex-wrap gap-2'>
+												{anket.industries.map((industry: any, i: number) => (
+													<m.span
+														key={i}
+														variants={textVariants}
+														initial='initial'
+														animate='animate'
+														transition={{
+															duration: 0.3,
+															ease: 'easeOut',
+															delay: 0.51,
+														}}
+														className='text-black dark:text-white'
+													>
+														{typeof industry === 'string'
+															? industry
+															: industry.name}
+														{i < anket.industries.length - 1 && ', '}
+													</m.span>
+												))}
+											</div>
+										) : (
+											<m.p
+												variants={textVariants}
+												initial='initial'
+												animate='animate'
+												transition={{
+													duration: 0.3,
+													ease: 'easeOut',
+													delay: 0.51,
+												}}
+												className='text-muted-foreground'
+											>
+												Не указано
+											</m.p>
+										)}
+									</div>
+								</div>
+								<div>
+									<m.p
+										variants={textVariants}
+										initial='initial'
+										animate='animate'
+										transition={{ duration: 0.3, ease: 'easeOut', delay: 0.53 }}
+										className='text-sm text-muted-foreground mb-1'
+									>
+										Портфолио
+									</m.p>
+									{anket?.portfolio?.length ? (
+										anket.portfolio.map((link: string, index: number) => (
+											<div className='flex flex-col overflow-hidden'>
+												<m.a
+													key={index}
+													href={link}
+													target='_blank'
+													variants={textVariants}
+													initial='initial'
+													animate='animate'
+													transition={{
+														duration: 0.3,
+														ease: 'easeOut',
+														delay: 0.56,
+													}}
+													className='whitespace-nowrap truncate mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white w-fit'
+												>
+													{link}
+												</m.a>
+											</div>
+										))
+									) : (
+										<m.p
+											variants={textVariants}
+											initial='initial'
+											animate='animate'
+											transition={{
+												duration: 0.3,
+												ease: 'easeOut',
+												delay: 0.56,
+											}}
+											className='text-muted-foreground'
+										>
+											Не указано
+										</m.p>
+									)}
+								</div>
 							</div>
 						</div>
+						{!editable && <ScrollIndicator />}
 					</div>
-				</div>
-				{!editable && <ScrollIndicator />}
+				)}
 			</div>
 			{isModalOpen && (
 				<Modal

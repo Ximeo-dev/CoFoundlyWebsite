@@ -63,11 +63,6 @@ class AnketService {
 
 		return response.data
 	}
-
-	async swipeUsers(intent: 'similar' | 'complement') {
-		const response = await axiosWithAuth.get(`/swipe?intent=${intent}`)
-		return response.data
-	}
 }
 
 export const anketService = new AnketService()
