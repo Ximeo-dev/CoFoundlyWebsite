@@ -216,9 +216,15 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 				const prevScrollTop = container?.scrollTop || 0
 
 				setMessages(prev => {
-					const merged = [...newMessages, ...prev]
+					const existingIds = new Set(prev.map(m => m.id))
+					const uniqueNewMessages = newMessages.filter(
+						m => !existingIds.has(m.id)
+					)
+
+					const merged = [...uniqueNewMessages, ...prev]
 					return merged.sort(
-						(a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
+						(a, b) =>
+							new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
 					)
 				})
 
@@ -423,7 +429,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 
 	if (!user?.id) {
 		return (
-			<div className='p-5 text-center'>Ошибка: Пользователь не авторизован</div>
+			<div className='p-5 text-center'></div>
 		)
 	}
 

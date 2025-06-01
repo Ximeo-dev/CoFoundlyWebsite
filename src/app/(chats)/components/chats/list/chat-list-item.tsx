@@ -1,14 +1,16 @@
 'use client'
 
-import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { ChatServerEvent, IChat } from '@/types/chat.types'
 import dayjs from 'dayjs'
+import 'dayjs/locale/ru'
 import Avatar from '@/app/(auth)/components/profile-info/avatar'
 import { useSocket } from '@/hooks/useSocket'
 import UnreadMessageIndicator from './unread-message-indicator'
 import { useEffect, useState } from 'react'
 import { Check, CheckCheck } from 'lucide-react'
+
+dayjs.locale('ru')
 
 interface IChatListItem {
 	chat: IChat

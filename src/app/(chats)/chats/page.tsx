@@ -136,7 +136,7 @@ export default function ChatsPage() {
 						{isMobile && (
 							<button
 								onClick={() => setSelectedChat(null)}
-								className='absolute top-6 left-3 z-10 p-2'
+								className='absolute top-3.5 md:top-6 left-3 z-10 p-2'
 							>
 								<ArrowLeft size={22} />
 							</button>

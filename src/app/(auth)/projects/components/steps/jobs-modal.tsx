@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/shadcn/button'
 import { anketService } from '@/services/anket.service'
 import { searchSort } from '@/utils/searchSort'
 import { useQuery } from '@tanstack/react-query'
+import { X, CheckCircle2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -55,7 +56,7 @@ export default function JobsModal({
 			onClose={onClose}
 			className='w-[90vw] max-w-[400px] sm:max-w-[450px] min-h-[400px] mx-auto'
 		>
-			<div className='p-4 sm:p-6 flex flex-col h-full'>
+			<div className='px-4 pt-4 sm:px-6 sm:pt-6 flex flex-col h-full'>
 				<h3 className='text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100'>
 					Выберите работы
 				</h3>
@@ -97,21 +98,20 @@ export default function JobsModal({
 						{errors.jobs.message as string}
 					</p>
 				)}
-				<div className='mt-6 flex flex-col sm:flex-row justify-center gap-3'>
+				<div className='sticky bottom-0 left-0 bg-background px-4 py-3 flex justify-center gap-3 sm:gap-8 z-10'>
 					<Button
 						variant='destructive'
 						onClick={resetJobs}
-						className='w-full sm:w-auto px-4 py-2 rounded-lg'
+						className='flex items-center gap-2 text-sm sm:text-base justify-center'
 					>
-						Сбросить
+						<X className='w-4 h-4' /> Сбросить
 					</Button>
-					<button
-						type='button'
+					<Button
 						onClick={onClose}
-						className='w-full sm:w-auto px-4 py-2 bg-black text-white hover:bg-neutral-700 dark:bg-[#EDEDED] dark:text-black dark:hover:bg-white/80 transition-colors duration-300 rounded-lg'
+						className='bg-black text-white dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-white/90 flex items-center gap-2 text-sm sm:text-base justify-center'
 					>
-						Готово
-					</button>
+						<CheckCircle2 className='w-4 h-4' /> Готово
+					</Button>
 				</div>
 			</div>
 		</Modal>

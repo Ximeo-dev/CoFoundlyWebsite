@@ -42,7 +42,10 @@ export const AnketFormSchema = z.object({
 				message: 'Возраст должен быть не менее 14 лет',
 			}
 		),
-	bio: z.string().min(10, 'Должно быть более 10 символов').max(256, 'Должно быть менее 256 символов'),
+	bio: z
+		.string()
+		.min(10, 'Должно быть более 10 символов')
+		.max(256, 'Должно быть менее 256 символов'),
 	job: z.string().min(1, 'Род деятельности обязателен'),
 	skills: z
 		.array(z.string())
@@ -57,8 +60,15 @@ export const AnketFormSchema = z.object({
 		.max(5, 'Максимум можно выбрать 5 ниш')
 		.optional(),
 	portfolio: z
-		.array(z.string().url('Некорректная ссылка'))
-		.max(10, 'Максимум 10 ссылок')
+		.array(
+			z
+				.string()
+				.trim()
+				.refine(val => val === '' || z.string().url().safeParse(val).success, {
+					message: 'Некорректная ссылка',
+				})
+		)
+		.max(5, { message: 'Максимум 5 ссылок' })
 		.optional(),
 })
 

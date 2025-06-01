@@ -12,6 +12,7 @@ export default function MoreInfoStep() {
 		formState: { errors },
 		control,
 		register,
+		trigger,
 	} = useFormContext()
 	const { fields, append, remove } = useFieldArray({
 		control,
@@ -25,6 +26,16 @@ export default function MoreInfoStep() {
 		.map(language => language)
 		.filter(Boolean)
 		.join(', ')
+
+	const handleAddLink = () => {
+		append('')
+		setTimeout(() => trigger('portfolio'), 0)
+	}
+
+	const handleRemoveLink = (i: number) => {
+		remove(i)
+		setTimeout(() => trigger('portfolio'), 0)
+	}
 
 	return (
 		<div className='space-y-6 sm:space-y-4'>
@@ -61,35 +72,42 @@ export default function MoreInfoStep() {
 						Можете добавить свое портфолио
 					</p>
 				</div>
-				{fields.map((field, index) => (
+				{fields.map((field, i) => (
 					<div
 						key={field.id}
 						className='flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2'
 					>
 						<Input
-							{...register(`portfolio.${index}`)}
+							{...register(`portfolio.${i}`)}
 							placeholder='https://example.com'
 							className='flex-1 text-base sm:text-sm h-11'
 						/>
+						{Array.isArray(errors.portfolio) &&
+							errors.portfolio[i]?.message && (
+								<p className='text-red-500 text-sm'>
+									{(errors.portfolio[i] as { message?: string })?.message}
+								</p>
+							)}
 						<Button
 							type='button'
 							variant='destructive'
-							onClick={() => remove(index)}
+							onClick={() => handleRemoveLink(i)}
 							className='h-11 w-full sm:w-auto px-4'
 						>
 							Удалить
 						</Button>
 					</div>
 				))}
-
-				<Button
-					type='button'
-					variant='outline'
-					onClick={() => append('')}
-					className='h-11 w-full text-base sm:text-sm'
-				>
-					Добавить ссылку
-				</Button>
+				{fields.length < 5 && ( // Prevent adding more than 5 links
+					<Button
+						type='button'
+						variant='outline'
+						onClick={handleAddLink}
+						className='h-11 w-full text-base sm:text-sm'
+					>
+						Добавить ссылку
+					</Button>
+				)}
 			</div>
 
 			<LanguageModal
