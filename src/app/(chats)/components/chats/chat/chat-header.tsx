@@ -35,7 +35,7 @@ export default function ChatHeader({
 	}, [correspondent?.userId, socket])
 
 	return (
-		<div className='ml-14 md:ml-0 p-5 flex items-center justify-between'>
+		<div className='ml-14 md:ml-0 p-3 md:p-5 flex items-center justify-between'>
 			<div className='flex items-center gap-3'>
 				<Avatar
 					size={64}
@@ -44,13 +44,13 @@ export default function ChatHeader({
 					name={correspondent?.displayUsername}
 				/>
 				<div>
-					<h3 className='mr-2 text-lg'>
+					<h3 className='mr-2 md:text-lg'>
 						{correspondent?.displayUsername || 'Неизвестный пользователь'}
 					</h3>
 					{isTyping ? (
 						<TypingDots />
 					) : correspondent?.profile?.job ? (
-						<p className='text-sm opacity-50'>
+						<p className='text-xs md:text-sm opacity-50'>
 							{typeof correspondent.profile.job === 'string'
 								? correspondent.profile.job
 								: correspondent.profile.job.name}
