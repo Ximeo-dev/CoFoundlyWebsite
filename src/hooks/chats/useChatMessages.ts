@@ -1,21 +1,35 @@
-import { useState, useEffect, useCallback } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { chatService } from '@/services/chat.service'
-import { IMessage, ChatServerEvent, ChatClientEvent } from '@/types/chat.types'
-import { useSocket } from '@/hooks/useSocket'
-import { useAuth } from '@/hooks/useAuth'
+import { IMessage } from '@/types/chat.types'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-export const useChatMessages = (chatId: string, userId?: string) => {
+interface UseChatMessagesProps {
+	chatId: string
+	messagesContainerRef: any
+}
+
+export default function useChatMessages ({
+	chatId,
+	messagesContainerRef,
+}: UseChatMessagesProps) {
 	const [messages, setMessages] = useState<IMessage[]>([])
-	const [editingMessage, setEditingMessage] = useState<IMessage | null>(null)
-	const queryClient = useQueryClient()
-	const socket = useSocket()
+	const [page, setPage] = useState(1)
+	const [hasMore, setHasMore] = useState(true)
+	const [isLoadingMore, setIsLoadingMore] = useState(false)
+	const isInitialMount = useRef(true)
+	const isLoadingInitial = useRef(true)
 
-	const { data: initialMessages } = useQuery({
+	const {
+		data: initialMessages,
+		isLoading,
+		error,
+	} = useQuery({
 		queryKey: ['get-messages', chatId, 1],
 		queryFn: async () => await chatService.getChatMessages(chatId, 1, 30),
 		enabled: !!chatId,
 		initialData: [],
+		staleTime: 0,
+		gcTime: 0,
 	})
 
 	useEffect(() => {
@@ -24,37 +38,107 @@ export const useChatMessages = (chatId: string, userId?: string) => {
 				(a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
 			)
 			setMessages(sorted)
+			setPage(1)
+			setHasMore(initialMessages.length === 30)
+			isLoadingInitial.current = false
 		}
 	}, [initialMessages])
 
-	const handleNewMessage = useCallback((message: IMessage) => {
-		/* ... */
-	}, [])
+	const loadMoreMessages = useCallback(async () => {
+		if (isLoadingMore || !hasMore) return
 
-	const handleDeleteMessage = useCallback((messageId: string) => {
-		/* ... */
-	}, [])
+		setIsLoadingMore(true)
+		try {
+			const newMessages = await chatService.getChatMessages(
+				chatId,
+				page + 1,
+				30
+			)
+			if (newMessages.length === 0) {
+				setHasMore(false)
+			} else {
+				const container = messagesContainerRef.current
+				const prevScrollHeight = container?.scrollHeight || 0
+				const prevScrollTop = container?.scrollTop || 0
 
-	const handleEditMessage = useCallback(
-		(messageId: string, newContent: string) => {
-			/* ... */
-		},
-		[]
-	)
+				setMessages(prev => {
+					const existingIds = new Set(prev.map(m => m.id))
+					const uniqueNewMessages = newMessages.filter(
+						m => !existingIds.has(m.id)
+					)
+					const merged = [...uniqueNewMessages, ...prev]
+					return merged.sort(
+						(a, b) =>
+							new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()
+					)
+				})
+
+				if (newMessages.length > 0) {
+					setPage(prev => prev + 1)
+				}
+
+				setTimeout(() => {
+					if (container) {
+						const newScrollHeight = container.scrollHeight
+						container.scrollTop =
+							newScrollHeight - prevScrollHeight + prevScrollTop
+					}
+				}, 0)
+			}
+		} catch (error) {
+			console.error('Error loading more messages:', error)
+		} finally {
+			setIsLoadingMore(false)
+		}
+	}, [chatId, page, isLoadingMore, hasMore, messagesContainerRef])
+
+	const handleScroll = useCallback(() => {
+		const container = messagesContainerRef.current
+		if (!container) return
+
+		if (
+			container.scrollTop < 50 &&
+			hasMore &&
+			!isLoadingMore &&
+			messages.length >= page * 30
+		) {
+			loadMoreMessages()
+		}
+	}, [
+		hasMore,
+		isLoadingMore,
+		loadMoreMessages,
+		messages.length,
+		page,
+		messagesContainerRef,
+	])
 
 	useEffect(() => {
-		socket.on(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
+		const container = messagesContainerRef.current
+		if (!container) return
+
+		container.addEventListener('scroll', handleScroll)
 		return () => {
-			socket.off(ChatServerEvent.NEW_MESSAGE, handleNewMessage)
+			container.removeEventListener('scroll', handleScroll)
 		}
-	}, [handleNewMessage, socket])
+	}, [handleScroll])
+
+	useEffect(() => {
+		setPage(1)
+		setHasMore(true)
+		setMessages([])
+		isInitialMount.current = true
+		isLoadingInitial.current = true
+	}, [chatId])
 
 	return {
 		messages,
-		editingMessage,
-		setEditingMessage,
-		handleDeleteMessage,
-		handleEditMessage,
-		// ... другие методы
+		setMessages,
+		isLoading,
+		error,
+		isLoadingMore,
+		hasMore,
+		isInitialMount,
+		isLoadingInitial,
 	}
 }
