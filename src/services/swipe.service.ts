@@ -6,7 +6,7 @@ import { ISwipeActionResponse } from '@/types/swipe.types'
 class SwipeService {
 	private BASE_URL = `${API_URL}/swipe`
 
-	async swipeUsers(intent: 'similar' | 'complement') {
+	async swipeUsers(intent: 'similar' | 'complement' | 'liked') {
 		const response = await axiosWithAuth.get<IAnket>(
 			`${this.BASE_URL}?intent=${intent}`
 		)
