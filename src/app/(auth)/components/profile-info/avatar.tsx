@@ -22,6 +22,8 @@ interface IAvatarUploader {
 	smallChatAvatar?: boolean
 	bigChatAvatar?: boolean
 	notificationAvatar?: boolean
+	onFileSelect?: (file: File) => void
+	tempAvatar?: string | null
 }
 
 export default function Avatar({
@@ -33,7 +35,9 @@ export default function Avatar({
 	hasAvatar = false,
 	smallChatAvatar = false,
 	bigChatAvatar = false,
-	notificationAvatar = false
+	notificationAvatar = false,
+	onFileSelect,
+	tempAvatar = null,
 }: IAvatarUploader) {
 	const inputRef = useRef<HTMLInputElement>(null)
 	const queryClient = useQueryClient()
@@ -92,7 +96,12 @@ export default function Avatar({
 				toast.error('Размер файла не должен превышать 3 МБ')
 				return
 			}
-			uploadAvatar(file)
+
+			if (onFileSelect) {
+				onFileSelect(file)
+			} else {
+				uploadAvatar(file)
+			}
 		}
 	}
 
@@ -125,13 +134,14 @@ export default function Avatar({
 		'flex items-center justify-center'
 	)
 
-	const avatarUserId = id || user?.id
-	const avatarUrl =
-		hasAvatar && avatarUserId
-			? `${API_URL}/images/avatar/user/${avatarUserId}/${size}?v=${
+  const avatarUserId = id || user?.id
+	const avatarUrl = tempAvatar
+		? tempAvatar
+		: hasAvatar && avatarUserId
+		? `${API_URL}/images/avatar/user/${avatarUserId}/${size}?v=${
 				avatarVersion || Date.now()
-			}`
-			: null
+		  }`
+		: null
 
 	return (
 		<div className={cn(className, 'relative')}>

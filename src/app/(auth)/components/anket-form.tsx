@@ -20,6 +20,8 @@ import { calculateProgress } from '@/utils/calculateProgress'
 import styles from './profile.module.css'
 import { cn } from '@/lib/utils'
 import ProgressBar from '@/components/ui/progress-bar/progress-bar'
+import { anketService } from '@/services/anket.service'
+import { toast } from 'sonner'
 
 interface IAnketForm {
 	initialValues?: AnketFormValues
@@ -143,24 +145,38 @@ export default function AnketForm({
 
 // TODO: data: AnketFormType
 
-	const submitHandler = async (data: any) => {
-		try {
-			setIsFormSubmitting(true)
-			const transformedData = {
-				...data,
-				skills: data.skills?.map((skill: any) =>
-					typeof skill === 'object' ? skill.id : skill
-				),
-				portfolio: data.portfolio?.map((link: any) => link.trim()),
-			}
-			await onSubmit(transformedData)
-			localStorage.removeItem(localStorageKey)
-			localStorage.removeItem(stepStorageKey)
-		} catch (error) {
-		} finally {
-			setIsFormSubmitting(false)
+const submitHandler = async (data: any) => {
+	try {
+		setIsFormSubmitting(true)
+
+		const { avatarFile, ...anketData } = data
+
+		const transformedData = {
+			...anketData,
+			skills: anketData.skills?.map((skill: any) =>
+				typeof skill === 'object' ? skill.id : skill
+			),
+			portfolio: anketData.portfolio?.map((link: any) => link.trim()),
 		}
+
+		await onSubmit(transformedData)
+
+		if (avatarFile) {
+			try {
+				await anketService.uploadAvatar(avatarFile)
+				toast.success('Аватар успешно загружен')
+			} catch (error) {
+				toast.error('Не удалось загрузить аватар, но анкета создана')
+			}
+		}
+
+		localStorage.removeItem(localStorageKey)
+		localStorage.removeItem(stepStorageKey)
+	} catch (error) {
+	} finally {
+		setIsFormSubmitting(false)
 	}
+}
 
 	const handleCancel = () => {
 		localStorage.removeItem(localStorageKey)
