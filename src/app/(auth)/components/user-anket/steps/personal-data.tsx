@@ -4,18 +4,47 @@ import { Controller, useFormContext } from 'react-hook-form'
 import Avatar from '../../profile-info/avatar'
 import { DatePicker } from '@/components/ui/date-picker/date-picker'
 import { format } from 'date-fns'
+import { useEffect, useState } from 'react'
 
 export default function PersonalData() {
-	const {
+  const {
 		control,
 		register,
 		formState: { errors },
+		setValue,
+		watch,
 	} = useFormContext()
+
+	const [tempAvatar, setTempAvatar] = useState<File | null>(null)
+	const [tempAvatarUrl, setTempAvatarUrl] = useState<string | null>(null)
+
+	useEffect(() => {
+		return () => {
+			if (tempAvatarUrl) {
+				URL.revokeObjectURL(tempAvatarUrl)
+			}
+		}
+	}, [tempAvatarUrl])
+
+	const handleFileSelect = (file: File) => {
+		setTempAvatar(file)
+		const url = URL.createObjectURL(file)
+		setTempAvatarUrl(url)
+		setValue('avatarFile', file)
+	}
+
 
 	return (
 		<div className='space-y-6'>
 			<div className='flex items-center justify-center'>
-				<Avatar size={512} editable className='w-fit' hasAvatar />
+				<Avatar
+					size={512}
+					editable
+					className='w-fit'
+					hasAvatar={watch('hasAvatar') || !!tempAvatar}
+					onFileSelect={handleFileSelect}
+					tempAvatar={tempAvatarUrl}
+				/>
 			</div>
 			<div>
 				<h3 className='text-lg font-medium text-gray-900 dark:text-gray-100 mb-1.5'>
