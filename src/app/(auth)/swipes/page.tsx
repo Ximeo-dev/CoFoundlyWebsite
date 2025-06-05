@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function SwipeUsersPage() {
   return (
-		<div className='mb-20 pb-16 sm:pb-0'>
+		<div className='mb-20 sm:pb-0'>
 			<SwipeTabs />
 		</div>
 	)
