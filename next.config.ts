@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'cofoundly-api.infinitum.su',
+				hostname: 'api.co-foundly.ru',
 				pathname: '/**',
 			},
 		],
