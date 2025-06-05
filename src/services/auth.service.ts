@@ -1,6 +1,6 @@
 import { axiosClassic, axiosWithAuth } from '@/api/interceptors'
 import { API_URL } from '@/constants/api.constants'
-import { IAuthForm, IAuthResponse, IConfirmPassword, ILoginForm } from '@/types/auth.types'
+import { IAuthForm, IAuthResponse, ILoginForm } from '@/types/auth.types'
 import { removeAccessTokenFromStorage, saveAccessTokenToStorage } from './auth-token.services'
 
 class AuthService {
