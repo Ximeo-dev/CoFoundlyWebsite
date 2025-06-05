@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 import { Check, Eye, EyeOff, KeyRound } from 'lucide-react'
 import zxcvbn from 'zxcvbn'
 import { securityService } from '@/services/security.service'
+import { removeAccessTokenFromStorage } from '@/services/auth-token.services'
 
 interface IResetPasswordConfirmForm {
 	password: string
@@ -23,6 +24,7 @@ interface IResetPasswordConfirmForm {
 interface IResetPasswordData {
 	password: string
 	token: string
+	userId: string
 }
 
 export default function ConfirmForm() {
@@ -35,14 +37,16 @@ export default function ConfirmForm() {
 
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
+  const userId = searchParams.get('userId')
 
   const { mutate: confirm } = useMutation({
 		mutationKey: ['confirm-reset-password'],
-		mutationFn: ({ password, token }: IResetPasswordData) =>
-			securityService.resetPasswordConfirm(password, token),
+		mutationFn: ({ password, token, userId }: IResetPasswordData) =>
+			securityService.resetPasswordConfirm(password, token, userId),
 		onSuccess: () => {
 			toast.success('Пароль восстановлен')
 			reset()
+			removeAccessTokenFromStorage()
 			router.push('/login')
 		},
 		onError: (error: any) => {
@@ -106,11 +110,11 @@ export default function ConfirmForm() {
   }, [isValid, errors.password])
 
   const onSubmit: SubmitHandler<IResetPasswordConfirmForm> = data => {
-    if (!token) {
+    if (!token || !userId) {
       router.push('/reset-password')
       return toast.error('Срок действия ссылки восстановления пароля истёк')
     }
-    confirm({ password: data.password, token })
+    confirm({ password: data.password, token, userId })
   }
 
 	return (

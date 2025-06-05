@@ -31,12 +31,12 @@ class SecurityService {
 		return response
 	}
 
-	async resetPasswordConfirm(password: string, token: string) {
+	async resetPasswordConfirm(password: string, token: string, userId: string) {
 		const response = await axiosClassic.post<IConfirmPassword>(
 			`${this.BASE_URL}/reset-password/confirm`,
 			{ password },
 			{
-				params: { token },
+				params: { token, userId },
 			}
 		)
 		return response
