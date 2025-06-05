@@ -5,7 +5,7 @@
 
 Frontend-репозиторий для сервиса **CoFoundly**, реализованный на основе **Next.js 15**, с использованием **React 19**, **TailwindCSS 4** и **TypeScript**
 
-Production-версия доступна по адресу: https://cofoundly.infinitum.su
+Production-версия доступна по адресу: https://co-foundly.ru
 
 Backend-репозиторий: https://github.com/Ximeo-dev/CoFoundlyBackend.git
 
