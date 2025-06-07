@@ -46,10 +46,16 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 			<ContextMenu>
 				<ContextMenuTrigger asChild>
 					<div
-						className={`flex mb-3`}
+						className={`mb-3 flex md:justify-start ${
+							isSender ? 'justify-end' : 'justify-start'
+						}`}
 					>
 						<div className='relative flex flex-col'>
-							<div className={`flex items-end gap-2 flex-row`}>
+							<div
+								className={`flex items-end gap-2 ${
+									isSender ? 'flex-row-reverse' : 'flex-row'
+								} md:flex-row`}
+							>
 								<Avatar
 									smallChatAvatar
 									size={64}
@@ -59,7 +65,7 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 									name={message?.sender?.displayUsername}
 								/>
 								<div
-									className={`text-sm text-white rounded-2xl rounded-bl-none relative dark:border-none border border-border ${
+									className={`text-sm text-white rounded-2xl rounded-br-none md:rounded-br-2xl md:rounded-bl-none relative dark:border-none border border-border ${
 										message.isEdited ? 'py-2 pl-3' : 'py-1.5 px-3'
 									} ${
 										isSender
@@ -117,19 +123,14 @@ export function Message({ message, onDelete, onEdit, isSender }: MessageProps) {
 					</div>
 				</ContextMenuTrigger>
 
-				<ContextMenuContent
-					className='w-48'
-				>
+				<ContextMenuContent className='w-48'>
 					<ContextMenuItem onClick={handleCopy} className='cursor-pointer'>
 						<Copy className='mr-2 h-4 w-4' />
 						Копировать
 					</ContextMenuItem>
 					{isSender && (
 						<>
-							<ContextMenuItem
-								className='cursor-pointer'
-								onClick={handleEdit}
-							>
+							<ContextMenuItem className='cursor-pointer' onClick={handleEdit}>
 								<Edit className='mr-2 h-4 w-4' />
 								Редактировать
 							</ContextMenuItem>
