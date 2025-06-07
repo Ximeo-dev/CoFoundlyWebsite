@@ -132,26 +132,24 @@ export default function AnketView({
 								</button>
 							</div>
 						)}
-						{!editable &&
-							handleIntentChange &&
-							intent && (
-								<Select onValueChange={handleIntentChange} value={intent}>
-									<SelectTrigger className='w-[200px]'>
-										<SelectValue placeholder='Выберите тип поиска' />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem className='cursor-pointer' value='similar'>
-											Схожие
-										</SelectItem>
-										<SelectItem className='cursor-pointer' value='complement'>
-											Дополняющие
-										</SelectItem>
-										<SelectItem className='cursor-pointer' value='liked'>
-											Лайкнувшие
-										</SelectItem>
-									</SelectContent>
-								</Select>
-							)}
+						{!editable && handleIntentChange && intent && (
+							<Select onValueChange={handleIntentChange} value={intent}>
+								<SelectTrigger className='w-[200px]'>
+									<SelectValue placeholder='Выберите тип поиска' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem className='cursor-pointer' value='similar'>
+										Схожие
+									</SelectItem>
+									<SelectItem className='cursor-pointer' value='complement'>
+										Дополняющие
+									</SelectItem>
+									<SelectItem className='cursor-pointer' value='liked'>
+										Лайкнувшие
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						)}
 					</div>
 				</div>
 				{isEmpty ? (
@@ -441,7 +439,7 @@ export default function AnketView({
 													transition={{
 														duration: 0.3,
 														ease: 'easeOut',
-														delay: 0.56,
+														delay: 0.4,
 													}}
 													className='whitespace-nowrap truncate mt-1 text-base transition-all duration-500 border-b border-b-foreground dark:hover:border-b-white border-dashed text-foreground hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-white w-fit'
 												>

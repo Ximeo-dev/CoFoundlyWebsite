@@ -15,7 +15,6 @@ import useChatScroll from '@/hooks/chats/useChatScroll'
 import useChatSocket from '@/hooks/chats/useChatSocket'
 import MessagesList from './messages-list'
 
-
 interface ChatProps {
 	id: string
 	initialData: IChat
@@ -93,7 +92,7 @@ export default function Chat({ id, initialData, onClose }: ChatProps) {
 
 					<div
 						ref={messagesContainerRef}
-						className='px-5 py-3 overflow-y-auto border-t border-border'
+						className='px-3 md:px-5 py-3 overflow-y-auto border-t border-border'
 					>
 						<MessagesList
 							messages={messages}
