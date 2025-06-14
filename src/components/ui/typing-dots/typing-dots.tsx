@@ -1,13 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 export default function TypingDots () {
-  useEffect(() => {
-    console.log('[TypingDots] Component rendered')
-  }, [])
-
   return (
     <div className='flex items-center opacity-50'>
       <div className='flex space-x-1'>

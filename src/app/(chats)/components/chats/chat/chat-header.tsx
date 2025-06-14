@@ -22,7 +22,6 @@ export default function ChatHeader({
 
 	useEffect(() => {
 		const handleTyping = (data: { userId: string; typing: boolean }) => {
-			console.log('[ChatHeader] Received typing event:', data)
 			if (data.userId === correspondent?.userId) {
 				setIsTyping(data.typing)
 			}

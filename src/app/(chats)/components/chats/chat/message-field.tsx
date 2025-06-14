@@ -27,7 +27,6 @@ export default function MessageField({
 
 	const sendTypingStatus = useCallback(
 		(typing: boolean) => {
-			console.log(`Sending typing status: ${typing}`)
 			if (!socket.connected) return
 			if (isTypingRef.current === typing) return
 
