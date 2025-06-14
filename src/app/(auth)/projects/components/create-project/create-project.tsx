@@ -13,7 +13,6 @@ export default function CreateProject({
 	onCancel?: () => void
 }) {
 	const handleSubmit = async (data: IProjectRequest) => {
-		console.log('with', data)
 		try {
 			const response = await projectService.createProject(data)
 			toast.success('Проект успешно создан')

@@ -59,11 +59,6 @@ export default function ProjectForm({
 		}
 	}, [stepStorageKey])
 
-	console.log(
-		'[ProjectForm] initialValues:',
-		JSON.stringify(initialValues, null, 2)
-	)
-
 	const methods = useForm<ProjectFormType>({
 		defaultValues: {
 			name: '',
@@ -152,7 +147,6 @@ export default function ProjectForm({
 	const submitHandler = async (data: ProjectFormType) => {
 		try {
 			setIsFormSubmitting(true)
-			console.log('[ProjectForm] Raw form data:', JSON.stringify(data, null, 2))
 			const transformedData: IProjectRequest = {
 				name: data.name,
 				description: data.description,
@@ -179,10 +173,6 @@ export default function ProjectForm({
 						)
 						?.filter(Boolean) || [],
 			}
-			console.log(
-				'[ProjectForm] Transformed data:',
-				JSON.stringify(transformedData, null, 2)
-			)
 			await onSubmit(transformedData)
 			localStorage.removeItem(localStorageKey)
 			localStorage.removeItem(stepStorageKey)

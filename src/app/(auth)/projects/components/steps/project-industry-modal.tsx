@@ -39,7 +39,6 @@ export default function ProjectIndustryModal({
 	}, [industry, searchQuery])
 
   const selectIndustry = (industryName: string) => {
-		console.log('Выбранная ниша:', industryName)
 		setValue('industry', industryName, { shouldValidate: true })
 	}
 

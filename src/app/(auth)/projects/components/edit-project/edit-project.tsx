@@ -22,13 +22,7 @@ export default function EditProject({
 				console.error('[EditProject] Missing project ID:', initialData)
 				throw new Error('Project ID is missing')
 			}
-			console.log(
-				'[EditProject] Submitting data for project ID:',
-				initialData.id
-			)
-			console.log('[EditProject] Data:', JSON.stringify(data, null, 2))
 			const response = await projectService.editProject(data, initialData.id)
-			console.log('[EditProject] Success response:', response)
 			toast.success('Проект успешно обновлен')
 			onUpdated(response)
 		} catch (error: any) {
